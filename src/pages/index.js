@@ -5,6 +5,7 @@ import Trusted from "./HomePage/Trusted";
 import PopularCourses from "./HomePage/PopularCourses";
 import FeedBack from "./HomePage/FeedBack";
 import TotalUserSection from './HomePage/TotalUserSection';
+import WhyChooseUs from "./HomePage/WhyChooseUs/WhyChooseUs";
 
 export default function Home() {
   return (
@@ -23,6 +24,7 @@ export default function Home() {
       <PopularCourses />
       <FeedBack />
       <TotalUserSection />
+      <WhyChooseUs />
     </>
   );
 }

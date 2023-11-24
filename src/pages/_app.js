@@ -2,6 +2,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Navbar from './../components/Navbar/index';
 import '@/styles/globals.css'
+import Footer from '@/components/Footer/Footer';
 
 function MyApp({ Component, pageProps }) {
   const theme = createTheme({
@@ -22,6 +23,7 @@ function MyApp({ Component, pageProps }) {
       <CssBaseline />
       <Navbar />
       <Component {...pageProps} />
+      <Footer />
     </ThemeProvider>
   );
 }
