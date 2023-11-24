@@ -1,9 +1,10 @@
-import Head from 'next/head';
-import { Toolbar } from '@mui/material';
-import Banner from './HomePage/Banner';
-import Trusted from './HomePage/Trusted';
-import PopularCourses from './HomePage/PopularCourses';
-
+import Head from "next/head";
+import { Toolbar } from "@mui/material";
+import Banner from "./HomePage/Banner";
+import Trusted from "./HomePage/Trusted";
+import PopularCourses from "./HomePage/PopularCourses";
+import FeedBack from "./HomePage/FeedBack";
+import TotalUserSection from './HomePage/TotalUserSection';
 
 export default function Home() {
   return (
@@ -15,10 +16,13 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Toolbar />
-
       <Banner />
-      <Trusted />
+      <div style={{ marginTop: "4rem", marginBottom: "4rem" }}>
+        <Trusted />
+      </div>{" "}
       <PopularCourses />
+      <FeedBack />
+      <TotalUserSection />
     </>
   );
 }
