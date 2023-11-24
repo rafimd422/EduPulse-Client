@@ -89,9 +89,9 @@ function Navbar(props) {
         ))}
       </List>
       <Button
-        onClick={() => {
-          router.push();
-        }}
+        // onClick={() => {
+        //   router.push();
+        // }}
         variant="outlined"
         color="error"
       >

@@ -40,7 +40,8 @@ function Banner() {
               pr: { md: 0 },
             }}
           >
-            <Typography component="p" variant="h3" color="black" fontWeight={'800'} sx={{lineHeight:"4rem", mb:'4px'}}>
+            <Typography component="p" variant="h3" color="black" fontWeight={'800'} sx={{lineHeight:"4rem", mb:'4px',  fontFamily:'EB Garamond'
+}}> 
             Elevate Your Expertise with Edupalse
             </Typography>
             <Typography variant="p" color="inherit" paragraph>

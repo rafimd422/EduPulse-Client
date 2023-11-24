@@ -7,6 +7,7 @@ import FeedBack from "@/components/HomePage/FeedBack";
 import TotalUserSection from "@/components/HomePage/TotalUserSection";
 import WhyChooseUs from "@/components/HomePage/WhyChooseUs/WhyChooseUs";
 import Faq from './../components/HomePage/Faq';
+import Teacher from './../components/HomePage/Teacher';
 
 export default function Home() {
   return (
@@ -26,6 +27,7 @@ export default function Home() {
       <FeedBack />
       <TotalUserSection />
       <WhyChooseUs />
+      <Teacher />
       <Faq />
     </>
   );
