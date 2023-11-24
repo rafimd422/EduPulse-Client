@@ -1,12 +1,12 @@
 import Head from "next/head";
 import { Toolbar } from "@mui/material";
-import Banner from "./HomePage/Banner";
-import Trusted from "./HomePage/Trusted";
-import PopularCourses from "./HomePage/PopularCourses";
-import FeedBack from "./HomePage/FeedBack";
-import TotalUserSection from './HomePage/TotalUserSection';
-import WhyChooseUs from "./HomePage/WhyChooseUs/WhyChooseUs";
-import Faq from './HomePage/Faq';
+import Banner from './../components/HomePage/Banner';
+import Trusted from "@/components/HomePage/Trusted";
+import PopularCourses from "@/components/HomePage/PopularCourses";
+import FeedBack from "@/components/HomePage/FeedBack";
+import TotalUserSection from "@/components/HomePage/TotalUserSection";
+import WhyChooseUs from "@/components/HomePage/WhyChooseUs/WhyChooseUs";
+import Faq from './../components/HomePage/Faq';
 
 export default function Home() {
   return (

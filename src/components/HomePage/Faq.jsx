@@ -1,8 +1,8 @@
 import { Accordion, AccordionDetails, AccordionSummary, Box, Container, Grid,Typography } from '@mui/material'
 import Lottie from 'lottie-react'
 import faq from '../../assets/Faq/faq.json'
-import Title from './../../components/Title/Title';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Title from './../Title/Title';
 
 
 
