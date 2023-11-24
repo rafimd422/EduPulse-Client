@@ -20,11 +20,12 @@ import logo from './../../assets/logo.png'
 import Image from "next/image";
 import Button from '@mui/material/Button';
 
+
 const drawerWidth = 260;
 const navItems = [
   { name: "Home", route: "/" },
   { name: "All Classes", route: "/allclasses" },
-  { name: "Teach on Phero", route: "/teachonphero" },
+  { name: "Teach on Edupulse", route: "/teachonedupulse" },
 ];
 
 function Navbar(props) {
@@ -66,9 +67,9 @@ const router = useRouter()
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: "flex", justifyContent:'space-between' }}>
+    <Box sx={{ display: "flex" , justifyContent:'space-between'}}>
       <CssBaseline />
-      <AppBar component="nav" sx={{bgColor: 'black'}}>
+      <AppBar component="nav" sx={{bgColor: '#0d0c0c',fontFamily:'monospace', boxShadow:'alice 1px 1px 1px 1px'}}>
       <Container maxWidth="lg">
       <Toolbar>
   <IconButton
@@ -111,7 +112,7 @@ const router = useRouter()
 
 
       </AppBar>
-      <nav sx={{bgColor: 'gray'}}>
+      <nav>
         <Drawer
           container={container}
           variant="temporary"
