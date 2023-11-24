@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { Toolbar } from '@mui/material';
 import Banner from './HomePage/Banner';
 import Trusted from './HomePage/Trusted';
+import PopularCourses from './HomePage/PopularCourses';
 
 
 export default function Home() {
@@ -17,6 +18,7 @@ export default function Home() {
 
       <Banner />
       <Trusted />
+      <PopularCourses />
     </>
   );
 }

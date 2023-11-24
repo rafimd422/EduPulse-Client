@@ -6,6 +6,7 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import GoogleIcon from '@mui/icons-material/Google';
 import PinterestIcon from '@mui/icons-material/Pinterest';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import Title from './../../components/Title/Title';
 
 const useStyles = (theme) => ({
     item: {
@@ -29,10 +30,7 @@ const Trusted = () => {
 
   return (
     <Paper sx={{my:'1rem'}} elevation={0}>
-
-      <Typography variant="h3" color="black" fontWeight={'800'} sx={{lineHeight:"4rem", mb:'4px', textAlign:'center'}}> 
-        Partner With the <span style={{color:'#800000'}}>Industry leaders</span>
-      </Typography>
+<Title title='Partner With the' titleColor='Industry leaders' />
       <Container maxWidth='lg' sx={{display:'flex', justifyContent:'center', gap:'3rem', flexWrap:'wrap', my:'2.4rem'}}>
         <Grid item className={styles.item}>
         <TwitterIcon sx={{height:'100px', width:'80px'}} />
