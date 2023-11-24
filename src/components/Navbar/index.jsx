@@ -14,11 +14,12 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
-import { Container } from "@mui/material";
+import { Avatar, Container, Grid, Menu, MenuItem, Tooltip } from "@mui/material";
 import { useRouter } from "next/router";
 import logo from './../../assets/logo.png'
 import Image from "next/image";
 import Button from '@mui/material/Button';
+
 
 
 const drawerWidth = 260;
@@ -32,8 +33,18 @@ function Navbar(props) {
 const router = useRouter()
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
+  };
+
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   const drawer = (
@@ -59,7 +70,9 @@ const router = useRouter()
 ))}
 
       </List>
-      <Button variant="outlined" color="error">Sign In</Button>
+      <Button onClick={()=> {
+        router.push('/login')
+      }} variant="outlined" color="error">Sign In</Button>
     </Box>
   );
 
@@ -92,7 +105,8 @@ const router = useRouter()
       alt="logo"
     />
   </Typography>
-  <Box sx={{ display: { xs: "none", sm: "flex" }, justifyContent:'center' }}>
+<Grid sx={{display:'flex', flexDirection:{sm:'row' ,xs:'row-reverse'}, justifyContent:'space-evenly', alignItems:'center' }} width={'100%'}>
+<Box sx={{ display: { xs: "none", sm: "flex" }, justifyContent:'center' }}>
   {navItems.map((item) => (
   <ListItem key={item.name} disablePadding>
     <ListItemButton sx={{ textAlign: "center", display: 'inline' }}>
@@ -106,7 +120,38 @@ const router = useRouter()
 ))}
 
 </Box>
-<Button variant="outlined" color="error">Sign In</Button>
+<Button  onClick={()=> {
+        router.push('/login')
+      }} variant="outlined" color="error">Sign In</Button>
+<div>
+
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleMenu}
+ sx={{ p: 0 }}>
+                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              </IconButton>
+            </Tooltip>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                <MenuItem onClick={handleClose}>My account</MenuItem>
+              </Menu>
+            </div>
+</Grid>
+
 </Toolbar>
 </Container>
 
@@ -132,7 +177,9 @@ const router = useRouter()
         >
           {drawer}
         </Drawer>
+
       </nav>
+
     </Box>
   );
 }
