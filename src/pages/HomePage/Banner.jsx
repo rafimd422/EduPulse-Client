@@ -47,6 +47,9 @@ function Banner() {
             <Typography variant="p" color="inherit" paragraph>
             Explore a world of knowledge and skills at Edupalse. Our platform offers a diverse range of courses, expert instructors, and flexible learning options to help you achieve your goals. Start your journey to success today!
             </Typography>
+            <Link variant="subtitle1" href="#">
+              
+            </Link>
           </Box>
         </Grid>
       </Grid>

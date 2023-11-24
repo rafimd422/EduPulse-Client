@@ -14,13 +14,18 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
-import { Avatar, Container, Grid, Menu, MenuItem, Tooltip } from "@mui/material";
+import {
+  Avatar,
+  Container,
+  Grid,
+  Menu,
+  MenuItem,
+  Tooltip,
+} from "@mui/material";
 import { useRouter } from "next/router";
-import logo from './../../assets/logo.png'
+import logo from "./../../assets/logo.png";
 import Image from "next/image";
-import Button from '@mui/material/Button';
-
-
+import Button from "@mui/material/Button";
 
 const drawerWidth = 260;
 const navItems = [
@@ -30,7 +35,7 @@ const navItems = [
 ];
 
 function Navbar(props) {
-const router = useRouter()
+  const router = useRouter();
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -48,31 +53,50 @@ const router = useRouter()
   };
 
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center", backgroundColor:'black', height:'100vh' }}>
-    <Image
-      src={logo}
-      width={'100%'}
-      height={100}
-      alt="logo"
-    />
+    <Box
+      onClick={handleDrawerToggle}
+      sx={{ textAlign: "center", backgroundColor: "black", height: "100vh" }}
+    >
+      <Image src={logo} width={"100%"} height={100} alt="logo" />
       <Divider />
       <List>
-      {navItems.map((item) => (
-  <ListItem key={item.name} disablePadding>
-    <ListItemButton sx={{ textAlign: "center", display: 'inline' }}>
-{router.pathname === item.route ? <Link href={item.route} className="nav-link active">
-        <ListItemText primary={item.name} sx={{ color: 'whitesmoke',backgroundColor: 'red', textDecoration: 'none', padding:'.4rem', borderRadius:'.3rem' }} />
-      </Link> : <Link href={item.route} className="nav-link">
-        <ListItemText primary={item.name} sx={{ color: 'whitesmoke', textDecoration: 'none' }} />
-      </Link> }
-    </ListItemButton>
-  </ListItem>
-))}
-
+        {navItems.map((item) => (
+          <ListItem key={item.name} disablePadding>
+            <ListItemButton sx={{ textAlign: "center", display: "inline" }}>
+              {router.pathname === item.route ? (
+                <Link href={item.route} className="nav-link active">
+                  <ListItemText
+                    primary={item.name}
+                    sx={{
+                      color: "whitesmoke",
+                      backgroundColor: "red",
+                      textDecoration: "none",
+                      padding: ".4rem",
+                      borderRadius: ".3rem",
+                    }}
+                  />
+                </Link>
+              ) : (
+                <Link href={item.route} className="nav-link">
+                  <ListItemText
+                    primary={item.name}
+                    sx={{ color: "whitesmoke", textDecoration: "none" }}
+                  />
+                </Link>
+              )}
+            </ListItemButton>
+          </ListItem>
+        ))}
       </List>
-      <Button onClick={()=> {
-        router.push('/login')
-      }} variant="outlined" color="error">Sign In</Button>
+      <Button
+        onClick={() => {
+          router.push();
+        }}
+        variant="outlined"
+        color="error"
+      >
+        Sign In
+      </Button>
     </Box>
   );
 
@@ -80,82 +104,116 @@ const router = useRouter()
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: "flex" , justifyContent:'space-between'}}>
+    <Box sx={{ display: "flex", justifyContent: "space-between" }}>
       <CssBaseline />
-      <AppBar component="nav" sx={{bgColor: '#0d0c0c',fontFamily:'monospace', boxShadow:'alice 1px 1px 1px 1px'}}>
-      <Container maxWidth="lg">
-      <Toolbar>
-  <IconButton
-    color="inherit"
-    aria-label="open drawer"
-    edge="start"
-    onClick={handleDrawerToggle}
-    sx={{ mr: 2, display: { sm: "none" } }}
-  >
-    <MenuIcon />
-  </IconButton>
-  <Typography
-    component="div"
-    sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-  >
-    <Image
-      src={logo}
-      width={230}
-      height={100}
-      alt="logo"
-    />
-  </Typography>
-<Grid sx={{display:'flex', flexDirection:{sm:'row' ,xs:'row-reverse'}, justifyContent:'space-evenly', alignItems:'center' }} width={'100%'}>
-<Box sx={{ display: { xs: "none", sm: "flex" }, justifyContent:'center' }}>
-  {navItems.map((item) => (
-  <ListItem key={item.name} disablePadding>
-    <ListItemButton sx={{ textAlign: "center", display: 'inline' }}>
-{router.pathname === item.route ? <Link href={item.route} className="nav-link active">
-        <ListItemText primary={item.name} sx={{ color: 'whitesmoke',backgroundColor: 'red', textDecoration: 'none', padding:'.4rem', borderRadius:'.3rem' }} />
-      </Link> : <Link href={item.route} className="nav-link" sx={{textDecoration: 'none'}}>
-        <ListItemText primary={item.name} sx={{ color: 'whitesmoke', textDecoration: 'none' }} />
-      </Link> }
-    </ListItemButton>
-  </ListItem>
-))}
-
-</Box>
-<Button  onClick={()=> {
-        router.push('/login')
-      }} variant="outlined" color="error">Sign In</Button>
-<div>
-
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleMenu}
- sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
+      <AppBar
+        component="nav"
+        sx={{
+          bgColor: "#0d0c0c",
+          fontFamily: "monospace",
+          boxShadow: "alice 1px 1px 1px 1px",
+        }}
+      >
+        <Container maxWidth="lg">
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2, display: { sm: "none" } }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography
+              component="div"
+              sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+            >
+              <Image src={logo} width={230} height={100} alt="logo" />
+            </Typography>
+            <Grid
+              sx={{
+                display: "flex",
+                flexDirection: { sm: "row", xs: "row-reverse" },
+                justifyContent: "space-evenly",
+                alignItems: "center",
+              }}
+              width={"100%"}
+            >
+              <Box
+                sx={{
+                  display: { xs: "none", sm: "flex" },
+                  justifyContent: "center",
                 }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
-              </Menu>
-            </div>
-</Grid>
-
-</Toolbar>
-</Container>
-
-
+                {navItems.map((item) => (
+                  <ListItem key={item.name} disablePadding sx={{width:'fit-content'}} >
+                    <ListItemButton
+                      sx={{ textAlign: "center", display: "inline" }}
+                    >
+                      {router.pathname === item.route ? (
+                        <Link href={item.route} className="nav-link active">
+                          <ListItemText
+                            primary={item.name}
+                            sx={{
+                              color: "whitesmoke",
+                              backgroundColor: "red",
+                              textDecoration: "none",
+                              padding: ".4rem",
+                              borderRadius: ".3rem",
+                            }}
+                          />
+                        </Link>
+                      ) : (
+                        <Link
+                          href={item.route}
+                          className="nav-link"
+                          sx={{ textDecoration: "none" }}
+                        >
+                          <ListItemText
+                            primary={item.name}
+                            sx={{ color: "whitesmoke", textDecoration: "none" }}
+                          />
+                        </Link>
+                      )}
+                    </ListItemButton>
+                  </ListItem>
+                ))}
+              </Box>
+              <Button variant="outlined" color="error">
+                Sign In
+              </Button>
+              <div>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleMenu} sx={{ p: 0 }}>
+                    <Avatar
+                      alt="Remy Sharp"
+                      src="/static/images/avatar/2.jpg"
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                >
+                  <MenuItem onClick={handleClose}>Profile</MenuItem>
+                  <MenuItem onClick={handleClose}>My account</MenuItem>
+                </Menu>
+              </div>
+            </Grid>
+          </Toolbar>
+        </Container>
       </AppBar>
       <nav>
         <Drawer
@@ -171,15 +229,12 @@ const router = useRouter()
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
-             
             },
           }}
         >
           {drawer}
         </Drawer>
-
       </nav>
-
     </Box>
   );
 }

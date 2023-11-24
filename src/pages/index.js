@@ -6,6 +6,7 @@ import PopularCourses from "./HomePage/PopularCourses";
 import FeedBack from "./HomePage/FeedBack";
 import TotalUserSection from './HomePage/TotalUserSection';
 import WhyChooseUs from "./HomePage/WhyChooseUs/WhyChooseUs";
+import Faq from './HomePage/Faq';
 
 export default function Home() {
   return (
@@ -25,6 +26,7 @@ export default function Home() {
       <FeedBack />
       <TotalUserSection />
       <WhyChooseUs />
+      <Faq />
     </>
   );
 }

@@ -26,7 +26,7 @@ const WhyChooseUs = () => {
       <Container maxWidth="lg" sx={{ my: "4rem" }}>
         <Title title={"Why"} titleColor={"Choose Us?"} />
 
-        <Grid container spacing={2}>
+        <Grid container spacing={2} sx={{my:'1rem'}}>
           {whyChooseUsData.map((data, index) => (
             <Grid key={index} item xs={12} sm={6} md={4}>
               <Paper
@@ -49,7 +49,7 @@ const WhyChooseUs = () => {
 
                 <br />
 
-                <Typography variant="p" sx={{ py: "1rem" }}>
+                <Typography sx={{ py: "1rem", fontSize:'0.875rem' }} >
                   {data.description}
                 </Typography>
               </Paper>
