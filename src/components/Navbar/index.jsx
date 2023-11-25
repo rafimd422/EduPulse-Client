@@ -88,15 +88,14 @@ function Navbar(props) {
           </ListItem>
         ))}
       </List>
-      <Button
-        // onClick={() => {
-        //   router.push();
-        // }}
-        variant="outlined"
+<Link href={'/auth/signin'}
+>  <Button
+variant="outlined"
         color="error"
       >
         Sign In
-      </Button>
+</Button>
+      </Link>
     </Box>
   );
 
@@ -180,9 +179,14 @@ function Navbar(props) {
                   </ListItem>
                 ))}
               </Box>
-              <Button variant="outlined" color="error">
-                Sign In
-              </Button>
+              <Link href={'/auth/signin'}
+>  <Button
+variant="outlined"
+        color="error"
+      >
+        Sign In
+</Button>
+      </Link>
               <div>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleMenu} sx={{ p: 0 }}>

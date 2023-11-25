@@ -71,14 +71,9 @@ const Faq = () => {
         </AccordionDetails>
       </Accordion>)}
 </Box>
-{/* // acordian */}
-
-
 
 <Lottie animationData={faq} />
 </Grid>
-
-
 
 </Container>
 </Box>

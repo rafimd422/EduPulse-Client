@@ -11,12 +11,12 @@ import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import ToolBar from '@mui/material/ToolBar';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {useState} from 'react'
-
+import Toolbar from '@mui/material/Toolbar';
+import lottieFile from '../../../assets/login/login.json'
+import Lottie from 'lottie-react';
 
 
 
@@ -28,6 +28,9 @@ export default function signIn() {
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
 
+
+
+    //event handler
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -37,26 +40,28 @@ export default function signIn() {
     });
   };
 
+
+
+
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
 
   return (
-      <Grid container component="main" sx={{ height: '100vh' }}>
+      <Grid container component="main" justifyContent={'center'} sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid
           item
           xs={false}
           sm={4}
           md={7}
-          sx={{
-            backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          xl={6}
+          sx={{alignSelf:'center', display:{xs:'none', sm:'grid'}}}
+        >
+        <Lottie animationData={lottieFile} />
+        </Grid>
+
+        <Grid item xs={12} sm={8} md={5} xl={6} elevation={6} marginTop={'3rem'} square>
           <Box
             sx={{
               my: 8,
@@ -66,13 +71,9 @@ export default function signIn() {
               alignItems: 'center',
             }}
           >
-            <ToolBar />
-            <ToolBar />
-            <ToolBar />
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
+            <Toolbar />
+            <Toolbar />
+            <Typography component="h1" color={'#708090'} fontWeight={'bold'} variant="h5">
               Sign in
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
@@ -86,8 +87,6 @@ export default function signIn() {
                 autoComplete="email"
                 autoFocus
               />
-
-
 
 
 
@@ -113,34 +112,19 @@ export default function signIn() {
   />
 </FormControl>
 
-
-
-
-
-
-
-
-
-
-
-
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+                sx={{ mt: 3, mb: 2, backgroundColor:'rgb(128, 0, 0)' }}
               >
                 Sign In
               </Button>
               <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
+                "Don't have an account?
+                  <Link href="/auth/signup" variant="body2">
+                    {"Sign Up"}
                   </Link>
                 </Grid>
               </Grid>
