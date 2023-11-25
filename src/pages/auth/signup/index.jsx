@@ -13,12 +13,17 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import InputAdornment from '@mui/material/InputAdornment';
 import Head from "next/head";
 import axios from "axios";
+import swal from "sweetalert";
+import { AuthContext } from "@/Provider/AuthProvider";
+import { useRouter } from "next/router";
 
 
 export default function index() {
     const [showPassword, setShowPassword] = React.useState(false);
+    const { createUSer,updateUserProfile } = React.useContext(AuthContext);
+    const router = useRouter()
 
-// event handler 
+    // event handler 
 const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -38,11 +43,38 @@ const handleSubmit = async (event) => {
             image: res.data?.data?.display_url,
             name: data.get('firstName') +" " + data.get('lastName'),
           };
+
+          createUSer(user?.email, user?.password)
+          .then(() => {
+            updateUserProfile(user?.name, user?.image)
+            router.push('/')
+          })
+          .catch((error) => {
+            swal({
+              title: "Error!",
+              text: error.message.replace("Firebase: Error ", ""),
+              icon: "error",
+            });
+          });
+
           console.log(user)
+
+
+
+
+
+
+
+
+
     })
     .catch(error => console.log(error.message))
 
   };
+
+
+
+
 
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -50,9 +82,6 @@ const handleSubmit = async (event) => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-
-
-
   return (
     <Box>
         <Head>

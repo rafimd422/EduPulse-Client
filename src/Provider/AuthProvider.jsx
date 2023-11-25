@@ -6,8 +6,10 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  updateProfile,
 } from "firebase/auth";
-import auth from "./../Firebase/firebase.config";
+import swal from "sweetalert";
+import auth from "@/config/firebase.config";
 
 export const AuthContext = createContext(null)
 const AuthProvider = ({children}) => {
@@ -35,7 +37,19 @@ const AuthProvider = ({children}) => {
       return signOut(auth);
     };
   
-
+    const updateUserProfile = (name, photo) => {
+      updateProfile(auth.currentUser, {
+        displayName: name,
+        photoURL: photo,
+      }).then(() => {
+        console.log("Updated SUccessfully");
+        swal({
+          title: "Good job!",
+          text: "Registration Successfull",
+          icon: "success",
+        });
+      });
+    };
   
 
 
@@ -61,11 +75,12 @@ const AuthProvider = ({children}) => {
         createUSer,
         signIn,
         logOut,
+        updateUserProfile,
         googleSignIn,
       };
   return (
     <AuthContext.Provider value={authInfo}>
-      
+      {children}
     </AuthContext.Provider>
   )
 }

@@ -3,6 +3,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Navbar from './../components/Navbar/index';
 import '@/styles/globals.css'
 import Footer from '@/components/Footer/Footer';
+import AuthProvider from '@/Provider/AuthProvider';
 
 function MyApp({ Component, pageProps }) {
   const theme = createTheme({
@@ -18,12 +19,15 @@ function MyApp({ Component, pageProps }) {
   });
 
 
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Navbar />
+<AuthProvider>
+<Navbar />
       <Component {...pageProps} />
       <Footer />
+</AuthProvider>
     </ThemeProvider>
   );
 }
