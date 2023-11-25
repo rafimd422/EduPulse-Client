@@ -17,6 +17,7 @@ import swal from "sweetalert";
 import { AuthContext } from "@/Provider/AuthProvider";
 import { useRouter } from "next/router";
 import Loading from "@/components/Loading/Loading";
+import SocialLogin from './../../../components/SocialLogin/SocialLogin';
 
 
 export default function index() {
@@ -65,19 +66,9 @@ const handleSubmit = async (event) => {
             return <Loading />
           }
 
-
-
-
-
-
-
     })
     .catch(error => console.log(error.message))
-
   };
-
-
-
 
 
 
@@ -157,7 +148,6 @@ const handleSubmit = async (event) => {
                 autoComplete="email"
               />
             </Grid>
-
             <Grid item xs={12}>
             <FormControl variant="outlined" fullWidth>
   <OutlinedInput
@@ -182,35 +172,6 @@ const handleSubmit = async (event) => {
 </FormControl>
 
             </Grid>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
           </Grid>
           <Button
             type="submit"
@@ -220,6 +181,7 @@ const handleSubmit = async (event) => {
           >
             Sign Up
           </Button>
+          <SocialLogin />
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Typography variant="body2">

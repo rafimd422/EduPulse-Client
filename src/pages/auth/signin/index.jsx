@@ -19,6 +19,9 @@ import Head from "next/head";
 import { AuthContext } from "@/Provider/AuthProvider";
 import { useRouter } from "next/router";
 import swal from "sweetalert";
+import GoogleButton from "react-google-button";
+import SocialLogin from './../../../components/SocialLogin/SocialLogin';
+
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
@@ -32,6 +35,7 @@ export default function SignIn() {
     const data = new FormData(event.currentTarget);
     const email = data.get("email");
     const password = data.get("password");
+
 
     signIn(email, password)
       .then((result) => {
@@ -71,6 +75,7 @@ export default function SignIn() {
         justifyContent="center"
         sx={{ height: "100vh" }}
       >
+
         <CssBaseline />
         <Grid
           item
@@ -159,6 +164,7 @@ export default function SignIn() {
               >
                 Sign In
               </Button>
+<SocialLogin />
               <Grid container>
                 <Grid item>
                   Don't have an account?
