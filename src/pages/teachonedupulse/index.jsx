@@ -20,12 +20,26 @@ const categories = [
 const ExperienceOptions = ["Beginner", "Experienced", "Some Idea"];
 
 export default function TeachOnEduPulse() {
+
+
+
+
+  // event handler
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.target;
     console.log(form.experience.value);
+    const name = form.name.value;
+    const image = form.image.value;
+    const experience = form.experience.value;
+    const courseTitle = form.courseTitle.value;
+    const category = form.category.value;
+
+    console.log({ category, courseTitle, experience, image, name });
   };
 
+
+  
   return (
     <Box sx={{ my: "2rem" }}>
       <Toolbar />
@@ -69,7 +83,6 @@ export default function TeachOnEduPulse() {
 
           <TextField
             type="file"
-            label="Your Image"
             variant="outlined"
             margin="normal"
             name="image"
@@ -92,9 +105,10 @@ export default function TeachOnEduPulse() {
           </TextField>
 
           <TextField
-            label="Title"
+            label="Course Title"
             variant="outlined"
             margin="normal"
+            name="courseTitle"
             required
           />
 
@@ -103,6 +117,7 @@ export default function TeachOnEduPulse() {
             label="Category"
             variant="outlined"
             margin="normal"
+            name="category"
             required
           >
             {categories.map((category) => (

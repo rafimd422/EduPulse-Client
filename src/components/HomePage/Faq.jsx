@@ -51,8 +51,8 @@ const Faq = () => {
     my:'2rem'}} style={{
   fontFamily:'EB Garamond'
 }}>
-{faqs.map(ques => 
-<Accordion sx={{backgroundColor:'#F3F3F3'}} >
+{faqs.map((ques,idx) => 
+<Accordion key={idx} sx={{backgroundColor:'#F3F3F3'}} >
         <AccordionSummary 
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
