@@ -20,7 +20,6 @@ export default function index() {
 
 // event handler 
 const handleSubmit = async (event) => {
-  
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // preparing our api to make image upload input working
