@@ -10,7 +10,7 @@ export default function CourseCards({course}) {
       <CardMedia
         component="img"
         height="194"
-        image={course.image}
+        image={course.courseImage}
         alt={course.courseTitle}
       />
       <CardContent sx={{ textAlign: 'start' }}>
