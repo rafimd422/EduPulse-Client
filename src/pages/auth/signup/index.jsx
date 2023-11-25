@@ -1,55 +1,65 @@
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
-
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { FormControl, IconButton, OutlinedInput } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import InputAdornment from '@mui/material/InputAdornment';
-
-
-
-
-
+import Head from "next/head";
+import axios from "axios";
 
 
 export default function index() {
     const [showPassword, setShowPassword] = React.useState(false);
 
-    const handleClickShowPassword = () => setShowPassword((show) => !show);
-  
-    const handleMouseDownPassword = (event) => {
-      event.preventDefault();
-    };
-
-
-
-
 // event handler 
-const handleSubmit = (event) => {
+const handleSubmit = async (event) => {
+  
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-      image: data.get('image'),
-      name: data.get('firstName') +" " + data.get('lastName'),
-    });
+    // preparing our api to make image upload input working
+    const photo = data.get('image')
+    const formData = new FormData();
+    formData.append('image', photo);
+    await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    .then(res => {
+        const user = {
+            email: data.get('email'),
+            password: data.get('password'),
+            image: res.data?.data?.display_url,
+            name: data.get('firstName') +" " + data.get('lastName'),
+          };
+          console.log(user)
+    })
+    .catch(error => console.log(error.message))
+
+  };
+
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
   };
 
 
 
   return (
     <Box>
+        <Head>
+    <title> Sign Up || EduPulse</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </Head>
         <Toolbar/>
         <Toolbar/>
         <Container component="main" maxWidth="sm">

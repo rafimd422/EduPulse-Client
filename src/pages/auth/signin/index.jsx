@@ -1,4 +1,3 @@
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -8,7 +7,6 @@ import InputAdornment from '@mui/material/InputAdornment';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Link from '@mui/material/Link';
-import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -17,6 +15,7 @@ import {useState} from 'react'
 import Toolbar from '@mui/material/Toolbar';
 import lottieFile from '../../../assets/login/login.json'
 import Lottie from 'lottie-react';
+import Head from 'next/head';
 
 
 
@@ -48,7 +47,12 @@ export default function signIn() {
   };
 
   return (
-      <Grid container component="main" justifyContent={'center'} sx={{ height: '100vh' }}>
+<Box>
+<Head>
+    <title> Sign in || EduPulse</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </Head>
+  <Grid container component="main" justifyContent={'center'} sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid
           item
@@ -132,5 +136,6 @@ export default function signIn() {
           </Box>
         </Grid>
       </Grid>
+</Box>
   );
 }
