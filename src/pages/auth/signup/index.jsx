@@ -16,12 +16,14 @@ import axios from "axios";
 import swal from "sweetalert";
 import { AuthContext } from "@/Provider/AuthProvider";
 import { useRouter } from "next/router";
+import Loading from "@/components/Loading/Loading";
 
 
 export default function index() {
     const [showPassword, setShowPassword] = React.useState(false);
-    const { createUSer,updateUserProfile } = React.useContext(AuthContext);
+    const { createUSer,updateUserProfile,loading}= React.useContext(AuthContext);
     const router = useRouter()
+
 
     // event handler 
 const handleSubmit = async (event) => {
@@ -59,7 +61,9 @@ const handleSubmit = async (event) => {
 
           console.log(user)
 
-
+          if(loading){
+            return <Loading />
+          }
 
 
 

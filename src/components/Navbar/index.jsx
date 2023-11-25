@@ -26,6 +26,8 @@ import { useRouter } from "next/router";
 import logo from "./../../assets/logo.png";
 import Image from "next/image";
 import Button from "@mui/material/Button";
+import { AuthContext } from "@/Provider/AuthProvider";
+import swal from "sweetalert";
 
 const drawerWidth = 260;
 const navItems = [
@@ -39,7 +41,7 @@ function Navbar(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
-
+  const {user, logOut,setLoading} = React.useContext(AuthContext)
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
@@ -51,6 +53,25 @@ function Navbar(props) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleLogout = () => {
+    swal({
+      title: "Do you want to Log Out From This Account?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        logOut()
+        .then(() => {
+          setLoading(false);
+        });
+        swal("Log Out Successfull", {
+          icon: "success",
+        });
+      }
+    });
+  }
 
   const drawer = (
     <Box
@@ -130,11 +151,11 @@ variant="outlined"
             >
               <Image src={logo} width={230} height={100} alt="logo" />
             </Typography>
-            <Grid
+            <Container
               sx={{
                 display: "flex",
                 flexDirection: { sm: "row", xs: "row-reverse" },
-                justifyContent: "space-evenly",
+                justifyContent: {sm:'space-evenly', xs:"space-between"},
                 alignItems: "center",
               }}
               width={"100%"}
@@ -179,43 +200,45 @@ variant="outlined"
                   </ListItem>
                 ))}
               </Box>
-              <Link href={'/auth/signin'}
->  <Button
+
+              <div>
+{user !== null ?   <Tooltip title="Open settings">
+                  <IconButton onClick={handleMenu} sx={{ p: 0 }}>
+                    <Avatar
+
+                      alt={user?.displayName}
+                      src={user?.photoURL}
+                    />
+                  </IconButton>
+                </Tooltip> : <Link href={'/auth/signin'}
+>  <Button 
 variant="outlined"
         color="error"
       >
         Sign In
 </Button>
-      </Link>
-              <div>
-                <Tooltip title="Open settings">
-                  <IconButton onClick={handleMenu} sx={{ p: 0 }}>
-                    <Avatar
-                      alt="Remy Sharp"
-                      src=""
-                    />
-                  </IconButton>
-                </Tooltip>
+      </Link>}
                 <Menu
                   id="menu-appbar"
                   anchorEl={anchorEl}
                   anchorOrigin={{
-                    vertical: "top",
+                    vertical: "bottom",
                     horizontal: "right",
                   }}
                   keepMounted
                   transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
+                    vertical: "bottom",
+                    horizontal: "left",
                   }}
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  <MenuItem onClick={handleClose}>Profile</MenuItem>
-                  <MenuItem onClick={handleClose}>My account</MenuItem>
+                  <MenuItem disabled sx={{fontSize:'.8rem'}} >{user?.displayName}</MenuItem>
+                  <MenuItem onClick={()=> {router.push('/dashboard')}}>Dashboard</MenuItem>
+                  <MenuItem onClick={handleLogout}>Log Out</MenuItem>
                 </Menu>
               </div>
-            </Grid>
+            </Container>
           </Toolbar>
         </Container>
       </AppBar>
