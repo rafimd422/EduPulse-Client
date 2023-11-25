@@ -5,7 +5,6 @@ import { Box, Button, Container } from "@mui/material";
 import Lottie from "lottie-react";
 import teacher from "../../assets/teacher/teacher.json";
 import Title from "../Title/Title";
-import { Router } from "next/router";
 import { useRouter } from "next/navigation";
 
 export default function Teacher() {
@@ -44,16 +43,17 @@ const router = useRouter()
               fontFamily: "EB Garamond",
             }}
           >
-            <Typography
-              variant="h2"
-              style={{
-                fontWeight: "700",
-                fontSize: "2.2rem",
-                color: "#414048",
-              }}
-            >
-              Become an Instructor
-            </Typography>
+<Typography
+  variant="h2"
+  sx={{
+    fontWeight: 700,
+    fontSize: "2.2rem",
+    color: "#414048",
+  }}
+>
+  Become an Instructor
+</Typography>
+
             <Typography
               align="center"
               sx={{
@@ -80,7 +80,7 @@ const router = useRouter()
                 p: "12px",
                 fontWeight: "bold",
                 "&:hover": {
-                  backgroundColor: "rgb(108, 8, 18)", // Styles for hover state
+                  backgroundColor: "rgb(108, 8, 18)",
                 },
               }}
               className="CheckButton"
