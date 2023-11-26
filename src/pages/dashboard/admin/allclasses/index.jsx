@@ -18,7 +18,6 @@ console.log('Reject')
 
 
 
-
   const columns = [
     { field: 'id', headerName: 'ID', width: 80 },
     {

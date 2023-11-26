@@ -1,12 +1,13 @@
 import DashboardLayout from '@/DashboardLayout';
-import { Container, Toolbar, Button, Avatar } from '@mui/material';
+import { Container, Toolbar, Button } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import Title from './../../../../components/Title/Title';
 import Head from 'next/head';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '@/hooks/useAxiosSecure';
 import Image from 'next/image';
-
+import Lottie from 'lottie-react';
+import loading from '../../../../assets/Loading/loading.json'
 
 
 
@@ -16,7 +17,7 @@ const axiosSecure = useAxiosSecure()
 
 
 
-const { data: allUsers = [], refetch,isPending } = useQuery({
+const { data: allUsers = [], refetch,isLoading } = useQuery({
   queryKey: ['users'],
   queryFn: async () => {
     const res = await axiosSecure.get('/user');
@@ -28,8 +29,10 @@ const { data: allUsers = [], refetch,isPending } = useQuery({
 });
 
 
-if(isPending){
-  console.log('pending...')
+if(isLoading){
+  return <Container sx={{height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}>
+  <Lottie animationData={loading} />
+  </Container>
 }
  
   const columns = [
@@ -38,11 +41,14 @@ if(isPending){
       headerName: 'Image',
       width: 60,
       renderCell: (params) => (
-        <Image
-          src={params.row.image || ''}
-          alt={`Image for ${params.row.fullName}`}
-          style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '70%' }}
-        />
+<Image
+  src={params.row.image || ''}
+  width={96}
+  height={96}
+  alt={`Image for ${params.row.fullName}`}
+  style={{ width: '100%', height: 'auto', objectFit: 'cover', borderRadius: '70%' }}
+/>
+
       ),
     },
     { field: 'name', headerName: 'Name', width: 150 },
@@ -54,9 +60,11 @@ if(isPending){
       width: 180,
       renderCell: (params) => (
         <div style={{ display: 'flex', gap: '4px' }}>
-          <Button variant="contained" color="primary" size="small" onClick={() => handleMakeAdmin(params.row.id)}>
+    {params.row.role === 'admin' ? <Button variant="contained" disabled color="primary" size="small">
             Make Admin
-          </Button>
+          </Button> : <Button variant="contained" color="primary" size="small" onClick={() => handleMakeAdmin(params.row._id)}>
+            Make Admin
+          </Button>}
 
         </div>
       ),
@@ -65,7 +73,7 @@ if(isPending){
 
 
   const handleMakeAdmin = (id) => {
-    console.log(`Teacher with ID ${id} approved`);
+    console.log(`User with ID ${id} approved`);
   };
 
 
