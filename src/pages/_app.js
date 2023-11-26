@@ -4,6 +4,7 @@ import Navbar from './../components/Navbar/index';
 import '@/styles/globals.css'
 import Footer from '@/components/Footer/Footer';
 import AuthProvider from '@/Provider/AuthProvider';
+import { useRouter } from 'next/router';
 
 function MyApp({ Component, pageProps }) {
   const theme = createTheme({
@@ -17,16 +18,17 @@ function MyApp({ Component, pageProps }) {
       },
     },
   });
+  const router = useRouter()
+  console.log(router)
 
-
-
+const notDashBoard = !router.pathname.includes('dashboard')
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
 <AuthProvider>
-<Navbar />
+{notDashBoard && <Navbar />}
       <Component {...pageProps} />
-      <Footer />
+      {notDashBoard && <Footer />}
 </AuthProvider>
     </ThemeProvider>
   );
