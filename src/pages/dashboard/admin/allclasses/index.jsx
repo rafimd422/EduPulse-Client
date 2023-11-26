@@ -65,16 +65,6 @@ console.log('Reject')
       actions: 'actions',
       status:'pending'
     },
-    {
-      id: 2,
-      name:'rafi',
-      email: 'rafimd2222@gmail.com' ,
-      image: (
-        <Avatar alt="Remy Sharp" src={''} sx={{ width: 60, height: 60 }} />
-      ),
-      role:'student',
-      actions: 'actions',
-    }
   ];
 
 

@@ -3,11 +3,33 @@ import { Container, Toolbar, Button, Avatar } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import Title from './../../../../components/Title/Title';
 import Head from 'next/head';
+import { useQuery } from '@tanstack/react-query';
+import useAxiosSecure from '@/hooks/useAxiosSecure';
+
+
+
 
 
 export default function users() {
+const axiosSecure = useAxiosSecure()
+
+
+
+  const {  data:allUsers = [],isPending,refetch } = useQuery({
+    queryKey: ['users'],
+    queryFn: async ()=> {
+const res = await axiosSecure.get('/user')
+return res.data;
+    },
+  })
+
+refetch()
+
+if(isPending){
+  console.log('pending...')
+}
+ 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 80 },
     {
       field: 'image',
       headerName: 'Image',
@@ -16,7 +38,7 @@ export default function users() {
         <img
           src={params.row.image || ''}
           alt={`Image for ${params.row.fullName}`}
-          style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
+          style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '70%' }}
         />
       ),
     },
@@ -37,28 +59,26 @@ export default function users() {
       ),
     },
   ];
-  const rows = [
-    {
-      id: 1,
-      name:'rafi',
-      email: 'rafimd2222@gmail.com' ,
-      image: (
-        <Avatar alt="Remy Sharp" src={''} sx={{ width: 60, height: 60 }} />
-      ),
-      role:'student',
-      actions: 'actions',
-    },
-    {
-      id: 1,
-      name:'rafi',
-      email: 'rafimd2222@gmail.com' ,
-      image: (
-        <Avatar alt="Remy Sharp" src={''} sx={{ width: 60, height: 60 }} />
-      ),
-      role:'student',
-      actions: 'actions',
-    }
-  ];
+  // const rows = [
+  //   {
+  //     name:'rafi',
+  //     email: 'rafimd2222@gmail.com' ,
+  //     image: (
+  //       <Avatar alt="Remy Sharp" src={''} sx={{ width: 60, height: 60 }} />
+  //     ),
+  //     role:'student',
+  //     actions: 'actions',
+  //   },
+  //   {
+  //     name:'rafi',
+  //     email: 'rafimd2222@gmail.com' ,
+  //     image: (
+  //       <Avatar alt="Remy Sharp" src={''} sx={{ width: 60, height: 60 }} />
+  //     ),
+  //     role:'student',
+  //     actions: 'actions',
+  //   }
+  // ];
 
   const handleMakeAdmin = (id) => {
     console.log(`Teacher with ID ${id} approved`);
@@ -77,8 +97,9 @@ export default function users() {
       <Title title={'All Our Users'} />
 <Container maxWidth='md' sx={{display:'flex', justifyContent:'center', alignItems:'center', mt:'1rem'}}>
 <DataGrid  
-      rows={rows}
+      rows={allUsers}
       columns={columns}
+      getRowId={(row) => row._id}
       initialState={{
         pagination: {
           paginationModel: { page: 0, pageSize: 5 },
