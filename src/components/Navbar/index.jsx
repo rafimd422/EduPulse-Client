@@ -24,7 +24,7 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/router";
 import logo from "./../../assets/logo.png";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import Button from "@mui/material/Button";
 import { AuthContext } from "@/Provider/AuthProvider";
 import swal from "sweetalert";

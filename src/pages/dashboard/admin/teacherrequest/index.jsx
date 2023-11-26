@@ -5,6 +5,7 @@ import Title from './../../../../components/Title/Title';
 import Head from 'next/head';
 import { useContext } from 'react';
 import { AuthContext } from '@/Provider/AuthProvider';
+import Image from 'next/image';
 
 
 
@@ -19,11 +20,14 @@ export default function TeacherRequest() {
         headerName: 'Image',
         width: 60,
         renderCell: (params) => (
-          <img
-            src={params.row.image || ''}
-            alt={`Image for ${params.row.fullName}`}
-            style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
-          />
+<div style={{ width: 60, height: 60, borderRadius: '50%', overflow: 'hidden' }}>
+        <Image
+          src={params.row.image || ''}
+          alt={`Image for ${params.row.fullName}`}
+          layout="fill"
+          objectFit="cover"
+        />
+      </div>
         ),
       },
       { field: 'fullName', headerName: 'Name', width: 130 },

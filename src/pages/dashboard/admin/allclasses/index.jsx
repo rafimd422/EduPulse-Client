@@ -26,11 +26,14 @@ console.log('Reject')
       headerName: 'Image',
       width: 60,
       renderCell: (params) => (
-        <img
+<div style={{ width: 60, height: 60, borderRadius: '50%', overflow: 'hidden' }}>
+        <Image
           src={params.row.image || ''}
           alt={`Image for ${params.row.fullName}`}
-          style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
+          layout="fill"
+          objectFit="cover"
         />
+      </div>
       ),
     },
     { field: 'title', headerName: 'Title', width: 150 },

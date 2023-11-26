@@ -8,44 +8,40 @@ import PinterestIcon from '@mui/icons-material/Pinterest';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import Title from './../../components/Title/Title';
 
-const useStyles = (theme) => ({
-    item: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: '50%',
-    },
-    title: {
-      fontSize: '2rem',
-      fontWeight: '800',
-    },
-  });
-  
 
 
 const Trusted = () => {
 
-    const styles = useStyles();
 
 
   return (
     <Paper sx={{my:'1rem'}} elevation={0}>
 <Title title='Partner With the' titleColor='Industry leaders' />
       <Container maxWidth='lg' sx={{display:'flex', justifyContent:'center', gap:'3rem', flexWrap:'wrap', my:'2.4rem'}}>
-        <Grid item className={styles.item}>
+        <Grid item style={{display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'}}>
         <TwitterIcon sx={{height:'100px', width:'80px'}} />
 
         </Grid>
-        <Grid item className={styles.item}>
+        <Grid item style={{display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'}}>
         <GoogleIcon sx={{height:'100px', width:'80px'}} />
         </Grid>
-        <Grid item className={styles.item}>
+        <Grid item style={{display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'}}>
         <PinterestIcon sx={{height:'100px', width:'80px'}} />
         </Grid>
-        <Grid item className={styles.item}>
+        <Grid item style={{display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'}}>
         <AppleIcon sx={{height:'100px', width:'80px'}} />
         </Grid>
-        <Grid item className={styles.item}>
+        <Grid item style={{display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'}}>
         <LinkedInIcon sx={{height:'100px', width:'80px'}} />
         </Grid>
       </Container>

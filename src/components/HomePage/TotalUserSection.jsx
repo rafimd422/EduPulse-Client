@@ -2,7 +2,7 @@ import { Box, Card, CardContent, Container, Grid, Typography } from "@mui/materi
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 import SubscriptionsIcon from '@mui/icons-material/Subscriptions';
-import Image from "next/image";
+import Image from "next/legacy/image";
 import Title from './../../components/Title/Title';
 
 

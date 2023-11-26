@@ -5,6 +5,7 @@ import Title from './../../../../components/Title/Title';
 import Head from 'next/head';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '@/hooks/useAxiosSecure';
+import Image from 'next/image';
 
 
 
@@ -15,15 +16,17 @@ const axiosSecure = useAxiosSecure()
 
 
 
-  const {  data:allUsers = [],isPending,refetch } = useQuery({
-    queryKey: ['users'],
-    queryFn: async ()=> {
-const res = await axiosSecure.get('/user')
-return res.data;
-    },
-  })
+const { data: allUsers = [], refetch,isPending } = useQuery({
+  queryKey: ['users'],
+  queryFn: async () => {
+    const res = await axiosSecure.get('/user');
+    return res.data;
+  },
+  onSuccess: () => {
+    refetch();
+  },
+});
 
-refetch()
 
 if(isPending){
   console.log('pending...')
@@ -35,7 +38,7 @@ if(isPending){
       headerName: 'Image',
       width: 60,
       renderCell: (params) => (
-        <img
+        <Image
           src={params.row.image || ''}
           alt={`Image for ${params.row.fullName}`}
           style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '70%' }}
@@ -59,26 +62,7 @@ if(isPending){
       ),
     },
   ];
-  // const rows = [
-  //   {
-  //     name:'rafi',
-  //     email: 'rafimd2222@gmail.com' ,
-  //     image: (
-  //       <Avatar alt="Remy Sharp" src={''} sx={{ width: 60, height: 60 }} />
-  //     ),
-  //     role:'student',
-  //     actions: 'actions',
-  //   },
-  //   {
-  //     name:'rafi',
-  //     email: 'rafimd2222@gmail.com' ,
-  //     image: (
-  //       <Avatar alt="Remy Sharp" src={''} sx={{ width: 60, height: 60 }} />
-  //     ),
-  //     role:'student',
-  //     actions: 'actions',
-  //   }
-  // ];
+
 
   const handleMakeAdmin = (id) => {
     console.log(`Teacher with ID ${id} approved`);
