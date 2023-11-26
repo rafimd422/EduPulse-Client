@@ -1,8 +1,70 @@
-import DashboardLayout from '@/DashboardLayout'
-import { Toolbar } from '@mui/material'
-import Head from 'next/head'
+import DashboardLayout from '@/DashboardLayout';
+import { Container, Toolbar, Button, Avatar } from '@mui/material';
+import { DataGrid } from '@mui/x-data-grid';
+import Title from './../../../../components/Title/Title';
+import Head from 'next/head';
+
 
 export default function users() {
+  const columns = [
+    { field: 'id', headerName: 'ID', width: 80 },
+    {
+      field: 'image',
+      headerName: 'Image',
+      width: 60,
+      renderCell: (params) => (
+        <img
+          src={params.row.image || ''}
+          alt={`Image for ${params.row.fullName}`}
+          style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
+        />
+      ),
+    },
+    { field: 'name', headerName: 'Name', width: 150 },
+    { field: 'email', headerName: 'Email', width: 180 },
+    { field: 'role', headerName: 'Role', width: 130 },
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      width: 180,
+      renderCell: (params) => (
+        <div style={{ display: 'flex', gap: '4px' }}>
+          <Button variant="contained" color="primary" size="small" onClick={() => handleMakeAdmin(params.row.id)}>
+            Make Admin
+          </Button>
+
+        </div>
+      ),
+    },
+  ];
+  const rows = [
+    {
+      id: 1,
+      name:'rafi',
+      email: 'rafimd2222@gmail.com' ,
+      image: (
+        <Avatar alt="Remy Sharp" src={''} sx={{ width: 60, height: 60 }} />
+      ),
+      role:'student',
+      actions: 'actions',
+    },
+    {
+      id: 1,
+      name:'rafi',
+      email: 'rafimd2222@gmail.com' ,
+      image: (
+        <Avatar alt="Remy Sharp" src={''} sx={{ width: 60, height: 60 }} />
+      ),
+      role:'student',
+      actions: 'actions',
+    }
+  ];
+
+  const handleMakeAdmin = (id) => {
+    console.log(`Teacher with ID ${id} approved`);
+  };
+
+
   return (
     <DashboardLayout>
   <Head>
@@ -12,7 +74,23 @@ export default function users() {
     <link rel="icon" href="/favicon.ico" />
   </Head>
       <Toolbar />
-      All Users
+      <Title title={'All Our Users'} />
+<Container maxWidth='md' sx={{display:'flex', justifyContent:'center', alignItems:'center', mt:'1rem'}}>
+<DataGrid  
+      rows={rows}
+      columns={columns}
+      initialState={{
+        pagination: {
+          paginationModel: { page: 0, pageSize: 5 },
+        },
+      }}
+      pageSizeOptions={[5, 10]}
+      style={{ width: 'fit-content'}}
+    />
+</Container>
     </DashboardLayout>
   )
 }
+
+
+
