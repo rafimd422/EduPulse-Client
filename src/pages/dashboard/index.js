@@ -7,7 +7,6 @@ const Dashboard = () => {
   return (
     <DashboardLayout>
       <Toolbar />
-      
     </DashboardLayout>
   );
 };

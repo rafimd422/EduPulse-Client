@@ -86,20 +86,18 @@ export default function Sidebar() {
     { name: "My Enroll Class", route: "/dashboard/student/enrollclass" }
 
   ];
-  const AdminMenu = [
-    { name: "Profile", route: "/dashboard/profile" },
-    { name: "Teacher Request", route: "/dashboard/student/enrollclass" },
-    { name: "Users", route: "/dashboard/profile" },
-    { name: "All Classes", route: "/dashboard" }
-   
-  ];
+
   const TeacherMenu = [
     { name: "Profile", route: "/dashboard/profile" },
-    { name: "Add class", route: "/dashboard/enrollclass" },
-    { name: "Users", route: "/dashboard/profile" },
-    { name: "My class", route: "/dashboard/profile" }
+    { name: "Add class", route: "/dashboard/teacher/addclass" },
+    { name: "My class", route: "/dashboard/teacher/myclass" }
   ];
-
+  const AdminMenu = [
+    { name: "Profile", route: "/dashboard/profile" },
+    { name: "Teacher Request", route: "/dashboard/admin/teacherrequest" },
+    { name: "Users", route: "/dashboard/admin/users" },
+    { name: "All Classes", route: "/dashboard/admin/allclasses" }
+  ]
 
   return (
     <Box sx={{ display: "flex" }}>
