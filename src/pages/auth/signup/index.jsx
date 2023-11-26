@@ -18,13 +18,14 @@ import { AuthContext } from "@/Provider/AuthProvider";
 import { useRouter } from "next/router";
 import Loading from "@/components/Loading/Loading";
 import SocialLogin from './../../../components/SocialLogin/SocialLogin';
+import useAxiosPublic from "@/hooks/useAxiosPublic";
 
 
 export default function index() {
     const [showPassword, setShowPassword] = React.useState(false);
     const { createUSer,updateUserProfile,loading}= React.useContext(AuthContext);
     const router = useRouter()
-
+    const axiosPublic = useAxiosPublic()
 
     // event handler 
 const handleSubmit = async (event) => {
@@ -46,10 +47,18 @@ const handleSubmit = async (event) => {
             image: res.data?.data?.display_url,
             name: data.get('firstName') +" " + data.get('lastName'),
           };
-
           createUSer(user?.email, user?.password)
           .then(() => {
             updateUserProfile(user?.name, user?.image)
+            const userData = {
+              email:user.email,
+              image: user.image,
+              name: user.name
+            }
+            axiosPublic.post('/user',userData)
+            .then(res => {
+              console.log(res.data)
+            })
             router.push('/')
           })
           .catch((error) => {
