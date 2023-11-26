@@ -1,10 +1,83 @@
-import React from 'react'
-import DashboardLayout from '@/DashboardLayout'
-import { Toolbar } from '@mui/material'
-import Head from 'next/head'
-
+import DashboardLayout from '@/DashboardLayout';
+import { Container, Toolbar, Button, Avatar } from '@mui/material';
+import { DataGrid } from '@mui/x-data-grid';
+import Title from './../../../../components/Title/Title';
+import Head from 'next/head';
 
 export default function index() {
+
+
+
+
+const handleApprove = id => {
+console.log('approve')
+}
+const handleReject = id => {
+console.log('Reject')
+}
+
+
+
+
+  const columns = [
+    { field: 'id', headerName: 'ID', width: 80 },
+    {
+      field: 'image',
+      headerName: 'Image',
+      width: 60,
+      renderCell: (params) => (
+        <img
+          src={params.row.image || ''}
+          alt={`Image for ${params.row.fullName}`}
+          style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
+        />
+      ),
+    },
+    { field: 'title', headerName: 'Title', width: 150 },
+    { field: 'email', headerName: 'Email', width: 180 },
+    { field: 'description', headerName: 'Description', width: 130 },
+    { field: 'status', headerName: 'Status', width: 130 },
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      width: 180,
+      renderCell: (params) => (
+        <div style={{ display: 'flex', gap: '4px' }}>
+          <Button variant="contained" color="primary" size="small" onClick={() => handleApprove(params.row.id)}>
+            Approve
+          </Button>
+          <Button variant="contained" color="error" size="small" onClick={() => handleReject(params.row.id)}>
+            Reject
+          </Button>
+        </div>
+      ),
+    },
+  ];
+  const rows = [
+    {
+      id: 1,
+      title:'rafi',
+      email: 'rafimd2222@gmail.com' ,
+      image: (
+        <Avatar alt="Remy Sharp" src={''} sx={{ width: 60, height: 60 }} />
+      ),
+      role:'student',
+      actions: 'actions',
+      status:'pending'
+    },
+    {
+      id: 2,
+      name:'rafi',
+      email: 'rafimd2222@gmail.com' ,
+      image: (
+        <Avatar alt="Remy Sharp" src={''} sx={{ width: 60, height: 60 }} />
+      ),
+      role:'student',
+      actions: 'actions',
+    }
+  ];
+
+
   return (
     <DashboardLayout>
                             <Head>
@@ -14,7 +87,20 @@ export default function index() {
     <link rel="icon" href="/favicon.ico" />
   </Head>
       <Toolbar />
-      All Classes
+   <Title title={'All Classes'} />
+   <Container maxWidth='lg' sx={{display:'flex', justifyContent:'center', alignItems:'center', mt:'1rem'}}>
+<DataGrid  
+      rows={rows}
+      columns={columns}
+      initialState={{
+        pagination: {
+          paginationModel: { page: 0, pageSize: 5 },
+        },
+      }}
+      pageSizeOptions={[5, 10]}
+      style={{ width: 'fit-content'}}
+    />
+</Container>
     </DashboardLayout>
   )
 }
