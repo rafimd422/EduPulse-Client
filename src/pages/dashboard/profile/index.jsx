@@ -1,12 +1,34 @@
 import DashboardLayout from '@/DashboardLayout'
-import userCurrentUser from '@/hooks/userCurrentUser'
-import { Toolbar } from '@mui/material'
+import useCurrentUser from '@/hooks/useCurrentUser'
+import { Container, Toolbar } from '@mui/material'
+import Lottie from 'lottie-react'
 import Head from 'next/head'
-import React from 'react'
+import loading from '../../../assets/Loading/loading.json'
 
-export default function Profile() {
-const {currentUser, refetch } = userCurrentUser()
+const Profile = () => {
+const {currentUser, refetch, isLoading } = useCurrentUser()
+
 console.log(currentUser)
+
+
+if (isLoading) {
+  return (
+    <Container
+      sx={{
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Lottie animationData={loading} />
+    </Container>
+  );
+}
+
+if(currentUser?.length === 0){
+  refetch()
+}
 
   return (
     <DashboardLayout>
@@ -21,3 +43,5 @@ console.log(currentUser)
     </DashboardLayout>
   )
 }
+
+export default Profile

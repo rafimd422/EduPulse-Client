@@ -18,6 +18,8 @@ import ListItemText from "@mui/material/ListItemText";
 import { Container } from "@mui/material";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import useCurrentUser from "@/hooks/useCurrentUser";
+import Loading from "../Loading/Loading";
 
 const drawerWidth = 240;
 
@@ -66,7 +68,6 @@ export default function Sidebar() {
   const StudentMenu = [
     { name: "Profile", route: "/dashboard/profile" },
     { name: "My Enroll Class", route: "/dashboard/student/enrollclass" }
-
   ];
 
   const TeacherMenu = [
@@ -80,6 +81,15 @@ export default function Sidebar() {
     { name: "Users", route: "/dashboard/admin/users" },
     { name: "All Classes", route: "/dashboard/admin/allclasses" }
   ]
+
+const {currentUser, refetch,isLoading} = useCurrentUser()
+
+
+if(isLoading){
+  return <Loading />
+  }
+
+  const userRole = currentUser?.[0]?.role;
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -125,7 +135,7 @@ export default function Sidebar() {
         <Divider />
         {/* Student */}
         <List>
-        {StudentMenu.map((item, index) => (
+    {userRole === 'student' && StudentMenu.map((item, index) => (
   <Link style={{textDecoration:'none', color:'black', fontWeight:'bold'}} href={item?.route || ''} key={index}>
     <ListItem disablePadding sx={{ ...(isActiveRoute === item?.route && { backgroundColor: 'red', color:'white' }) }}>
       <ListItemButton>
@@ -138,7 +148,7 @@ export default function Sidebar() {
         </List>
         <Divider />
         <List>
-        {TeacherMenu.map((item, index) => (
+        {userRole === 'Teacher' && TeacherMenu.map((item, index) => (
   <Link style={{textDecoration:'none', color:'black', fontWeight:'bold'}} href={item?.route || ''} key={index}>
     <ListItem disablePadding sx={{ ...(isActiveRoute === item?.route && { backgroundColor: 'red', color:'white' }) }}>
       <ListItemButton>
@@ -152,7 +162,7 @@ export default function Sidebar() {
         <Divider />
         {/* Admin */}
         <List>
-        {AdminMenu.map((item, index) => (
+        {userRole === 'admin' && AdminMenu.map((item, index) => (
   <Link style={{textDecoration:'none', color:'black', fontWeight:'bold'}} href={item?.route || ''} key={index}>
     <ListItem disablePadding sx={{ ...(isActiveRoute === item?.route && { backgroundColor: 'red', color:'white' }) }}>
       <ListItemButton>
