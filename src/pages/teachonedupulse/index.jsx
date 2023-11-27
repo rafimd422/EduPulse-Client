@@ -8,38 +8,77 @@ import {
   Button,
 } from "@mui/material";
 import Title from "./../../components/Title/Title";
-
-const categories = [
-  "Web Development",
-  "Digital Marketing",
-  "Graphic Design",
-  "Data Science",
-  "Mobile App Development",
-];
-
-const ExperienceOptions = ["Beginner", "Experienced", "Some Idea"];
-
-export default function TeachOnEduPulse() {
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import useAxiosSecure from "@/hooks/useAxiosSecure";
+import Lottie from "lottie-react";
+import Loading from "../../assets/Loading/loading.json";
+import { useContext } from "react";
+import { AuthContext } from "@/Provider/AuthProvider";
+import swal from "sweetalert";
 
 
 
-
-  // event handler
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const form = event.target;
-    console.log(form.experience.value);
-    const name = form.name.value;
-    const image = form.image.value;
-    const experience = form.experience.value;
-    const courseTitle = form.courseTitle.value;
-    const category = form.category.value;
-
-    console.log({ category, courseTitle, experience, image, name });
-  };
+const TeachOnEduPulse = () => {
+    const {user} = useContext(AuthContext)
+const axiosSecure = useAxiosSecure()
 
 
+
+    const mutation = useMutation({
+      mutationFn: async (event) => {
+          event.preventDefault();
+          const form = event.target;
+          const photo = form.image.files[0];
+          const formData = new FormData();
+          formData.append('image', photo);
+    
+          const res = await axios.post(
+            `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`,
+            formData,
+            {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            }
+          );
+              const imageUrl = res.data?.data?.display_url;
+
+              const name = form.name.value;
+              const experience = form.experience.value;
+              const title = form.courseTitle.value;
+              const category = form.category.value;
+
+              const teacherData = { category, title, experience, image: imageUrl, name, status:'Pending',email: user?.email }
+
+             axiosSecure.post('/teacherRequest',teacherData)
+             .then(res => {
+               console.log(res.data)
+               if(res.data?.insertedId){
+                swal("Good job!", "Your Requst Is Under Review", "success")
+               }
+             })
+
+              console.log(teacherData);
+      },
+    });
+    
+    if(mutation.isLoading){
+        <Lottie animationData={Loading} />
+    }
+
+
+  const categories = [
+    "Web Development",
+    "Digital Marketing",
+    "Graphic Design",
+    "Data Science",
+    "Mobile App Development",
+  ];
   
+  const ExperienceOptions = ["Beginner", "Experienced", "Some Idea"];
+  
+
   return (
     <Box sx={{ my: "2rem" }}>
       <Toolbar />
@@ -71,21 +110,23 @@ export default function TeachOnEduPulse() {
             maxWidth: "400px",
             marginTop: "2rem",
           }}
-          onSubmit={handleSubmit}
+          onSubmit={mutation.mutate}
         >
-          <TextField
-            label="Name"
-            name="name"
-            variant="outlined"
-            margin="normal"
-            required
-          />
+<TextField
+  value={user?.displayName}
+  name="name"
+  variant="outlined"
+  margin="normal"
+  required
+  disabled
+/>
 
           <TextField
             type="file"
             variant="outlined"
             margin="normal"
             name="image"
+            id="image"
             required
           />
 
@@ -97,15 +138,15 @@ export default function TeachOnEduPulse() {
             required
             name="experience"
           >
-            {ExperienceOptions.map((option) => (
-              <MenuItem key={option} value={option}>
+            {ExperienceOptions.map((option,index) => (
+              <MenuItem key={index} value={option}>
                 {option}
               </MenuItem>
             ))}
           </TextField>
 
           <TextField
-            label="Course Title"
+            label="Title"
             variant="outlined"
             margin="normal"
             name="courseTitle"
@@ -126,13 +167,16 @@ export default function TeachOnEduPulse() {
               </MenuItem>
             ))}
           </TextField>
+          
+          <Button type="submit" variant="contained" disabled={mutation.isLoading}>
+  {mutation.isLoading ? 'Submitting...' : 'Submit'}
+</Button>
 
-          <Button type="submit" variant="contained">
-            Submit
-          </Button>
         </form>
       </Container>
       <Toolbar />
     </Box>
   );
 }
+
+export default TeachOnEduPulse;
