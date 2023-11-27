@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import * as React from 'react';
+import React from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -15,18 +15,19 @@ import Head from "next/head";
 import axios from "axios";
 import swal from "sweetalert";
 import { AuthContext } from "@/Provider/AuthProvider";
-import { useRouter } from "next/router";
 import Loading from '../../../assets/Loading/loading.json'
 import SocialLogin from './../../../components/SocialLogin/SocialLogin';
 import useAxiosPublic from "@/hooks/useAxiosPublic";
 import Lottie from "lottie-react";
+import { useState, useContext } from 'react';
+import { useRouter } from 'next/router';
 
 
-export default function signUp() {
-    const [showPassword, setShowPassword] = React.useState(false);
-    const { createUSer,updateUserProfile,loading}= React.useContext(AuthContext);
-    const router = useRouter()
-    const axiosPublic = useAxiosPublic()
+const SignUp = () => {
+    const [showPassword, setShowPassword] = useState(false);
+    const { createUSer,updateUserProfile,loading}= useContext(AuthContext);
+    const router = useRouter();
+    const axiosPublic = useAxiosPublic();
 
     // event handler 
 const handleSubmit = async (event) => {
@@ -205,3 +206,5 @@ const handleSubmit = async (event) => {
     </Box>
   )
 }
+
+export default SignUp
