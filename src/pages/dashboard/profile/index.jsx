@@ -1,9 +1,13 @@
 import DashboardLayout from '@/DashboardLayout'
+import userCurrentUser from '@/hooks/userCurrentUser'
 import { Toolbar } from '@mui/material'
 import Head from 'next/head'
 import React from 'react'
 
-export default function index() {
+export default function Profile() {
+const {currentUser, refetch } = userCurrentUser()
+console.log(currentUser)
+
   return (
     <DashboardLayout>
         <Head>
