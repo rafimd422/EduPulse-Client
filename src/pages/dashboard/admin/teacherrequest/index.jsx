@@ -65,11 +65,12 @@ const TeacherRequest = () => {
       ),
     },
     { field: "name", headerName: "Name", width: 130 },
-    { field: "experience", headerName: "Experience", width: 130 },
+  
     { field: "title", headerName: "Title", width: 130 },
     { field: "category", headerName: "Category", width: 130 },
     { field: "status", headerName: "Status", width: 130 },
-    {
+    { field: "experience", headerName: "Experience", width: 130 },
+  {
       field: "actions",
       headerName: "Actions",
       width: 180,
@@ -96,6 +97,14 @@ const TeacherRequest = () => {
     },
   ];
 
+
+  teacherRequest.forEach(ele => {
+    if(ele.status === 'approved' || ele.status === 'rejected'){
+    return columns.pop()
+      
+  }
+  })
+
   //handle approve
 
   const handleApprove = (id) => {
@@ -114,17 +123,35 @@ const TeacherRequest = () => {
               icon: "success",
             });
           } else {
-            swal("User role is not changed");
-            
+            swal("User role is not changed"); 
           }
         });
       }
     });
   };
+
   //handle reject
 
   const handleReject = (id) => {
-    console.log(`Teacher with ID ${id} rejected`);
+
+    swal({
+      title: "Are you sure?",
+      text: "Do you want to reject this request?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        axiosPublic.patch(`/teacherRequest/reject/${id}`).then((res) => {
+          if (res.data?.modifiedCount > 0 ) {
+            refetch();
+            swal("Teacher Rejected Successfully!", {
+              icon: "success",
+            });
+          }
+        });
+      }
+    });
   };
   refetch();
 

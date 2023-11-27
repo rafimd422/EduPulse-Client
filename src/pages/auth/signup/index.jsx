@@ -56,7 +56,7 @@ const handleSubmit = async (event) => {
               email:user.email,
               image: user.image,
               name: user.name,
-              role: 'user'
+              role: 'student'
             }
             axiosPublic.post('/user',userData)
             .then(res => {

@@ -20,7 +20,7 @@ export default function SocialLogin() {
           email: result.user?.email,
           image: result.user?.photoURL,
           name: result.user?.displayName,
-          role: 'user'
+          role: 'student'
         };
         axiosPublic.post('/user', userData)
           .then(res => {
