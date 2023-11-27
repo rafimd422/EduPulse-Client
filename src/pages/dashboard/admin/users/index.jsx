@@ -8,10 +8,12 @@ import useAxiosSecure from "@/hooks/useAxiosSecure";
 import Image from "next/image";
 import Lottie from "lottie-react";
 import loading from "../../../../assets/Loading/loading.json";
+import swal from "sweetalert";
+import { useRouter } from "next/router";
 
 const Users = () => {
   const axiosSecure = useAxiosSecure();
-
+  const router = useRouter()
   const {
     data: allUsers = [],
     refetch,
@@ -27,6 +29,8 @@ const Users = () => {
     },
   });
 
+
+console.log(allUsers)
   if (isLoading) {
     return (
       <Container
@@ -90,9 +94,31 @@ const Users = () => {
     },
   ];
 
-  const handleMakeAdmin = (id) => {
-    console.log(`User with ID ${id} approved`);
+  const handleMakeAdmin = id => {
+    swal({
+      title: "Are you sure?",
+      text: "Do You want to give the admin role to this user?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+  axiosSecure.patch(`/user/admin/${id}`)
+  .then(res => {
+      if(res.data.modifiedCount > 0){
+          refetch()
+          swal("user got the admin role!", {
+              icon: "success",
+          });
+      } else {
+          swal("User role is not changed");
+        }
+  })
+}});
+
   };
+
 
   return (
     <DashboardLayout>
@@ -127,7 +153,7 @@ const Users = () => {
         />
       </Container>
     </DashboardLayout>
-  );
+  )
 };
 
 export default Users;

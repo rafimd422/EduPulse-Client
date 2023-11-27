@@ -22,15 +22,12 @@ export default function SocialLogin() {
           name: result.user?.displayName,
           role: 'user'
         };
-  
         axiosPublic.post('/user', userData)
           .then(res => {
             console.log(res.data);
-            if (router.pathname !== "/auth/signup") {
-              router.push(router.pathname);
-            } else {
-              router.push("/");
-            }
+
+              router.push('/');
+            
             swal("Logged In!", "Successfully!", "success");
           })
           .catch(error => {
