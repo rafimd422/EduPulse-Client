@@ -19,10 +19,11 @@ import { Container } from "@mui/material";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import useCurrentUser from "@/hooks/useCurrentUser";
-import Loading from "../Loading/Loading";
+import Lottie from "lottie-react";
+import loading from '../.././assets/Loading/loading.json'
+
 
 const drawerWidth = 240;
-
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -86,7 +87,11 @@ const {currentUser, refetch,isLoading} = useCurrentUser()
 
 
 if(isLoading){
-  return <Loading />
+  return (
+    <Container sx={{height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}>
+      <Lottie animationData={loading} />
+    </Container>
+  )
   }
 
   const userRole = currentUser?.[0]?.role;
@@ -146,7 +151,6 @@ if(isLoading){
 ))}
 
         </List>
-        <Divider />
         <List>
         {userRole === 'Teacher' && TeacherMenu.map((item, index) => (
   <Link style={{textDecoration:'none', color:'black', fontWeight:'bold'}} href={item?.route || ''} key={index}>

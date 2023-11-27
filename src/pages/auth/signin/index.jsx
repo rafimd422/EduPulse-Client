@@ -19,7 +19,6 @@ import Head from "next/head";
 import { AuthContext } from "@/Provider/AuthProvider";
 import { useRouter } from "next/router";
 import swal from "sweetalert";
-import GoogleButton from "react-google-button";
 import SocialLogin from './../../../components/SocialLogin/SocialLogin';
 
 
@@ -39,7 +38,6 @@ export default function SignIn() {
 
     signIn(email, password)
       .then((result) => {
-        const user = result.user;
         swal("Log In Successfull", {
           icon: "success",
         });
@@ -55,7 +53,6 @@ export default function SignIn() {
           text: error.message.replace("Firebase: Error ", ''),
           icon: "error",
         });
-        console.log(error.message);
       });
   };
 

@@ -24,8 +24,7 @@ const useCurrentUser = () => {
   });
 
   useEffect(() => {
-    // Fetch data when user changes (if needed)
-    refetch();
+   refetch();
   }, [user, refetch]);
 
   return { currentUser, refetch, isLoading };

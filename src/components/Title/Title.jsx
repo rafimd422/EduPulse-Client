@@ -9,7 +9,7 @@ const Title = ({ title, titleColor }) => {
         {title} <span style={{ color: '#800000' }}>{titleColor}</span>
       </Typography>
     </Box>
-  );
+  );                          
 };
 
 export default Title;

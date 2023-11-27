@@ -1,6 +1,6 @@
-import { Container } from "@mui/material";
 import { Lottie } from 'lottie-react';
 import loading from '../../assets/Loading/loading.json'
+import { Container } from '@mui/material';
 
 export default function Loading() {
   return (

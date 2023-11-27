@@ -4,12 +4,19 @@ import { Container, Toolbar } from '@mui/material'
 import Lottie from 'lottie-react'
 import Head from 'next/head'
 import loading from '../../../assets/Loading/loading.json'
+import {
+  Avatar,
+  Box,
+  Card,
+  CardContent,
+  Divider,
+  Typography
+} from '@mui/material';
 
 const Profile = () => {
 const {currentUser, refetch, isLoading } = useCurrentUser()
 
 console.log(currentUser)
-
 
 if (isLoading) {
   return (
@@ -25,11 +32,11 @@ if (isLoading) {
     </Container>
   );
 }
-
-if(currentUser?.length === 0){
+if(currentUser === null){
   refetch()
 }
-
+const user = currentUser[0]
+console.log(user)
   return (
     <DashboardLayout>
         <Head>
@@ -39,9 +46,60 @@ if(currentUser?.length === 0){
     <link rel="icon" href="/favicon.ico" />
   </Head>
       <Toolbar />
-     Profile
+
+
+ <Container>
+ <Card>
+    <CardContent>
+      <Box
+        sx={{
+          alignItems: 'center',
+          display: 'flex',
+          flexDirection: 'column'
+        }}
+      >
+        <Avatar
+           src={user?.image}
+          sx={{
+            height: 80,
+            mb: 2,
+            width: 80
+          }}
+        />
+        <Typography
+          gutterBottom
+          variant="h5"
+        >
+           {user?.name}
+        </Typography>
+        <Typography
+          color="text.secondary"
+          variant="body2"
+        >
+         {user?.role}
+        </Typography>
+        <Typography
+          color="text.secondary"
+          variant="body2"
+        >
+           {user?.email} 
+        </Typography>
+      </Box>
+    </CardContent>
+    <Divider />
+  </Card>
+ </Container>
+
     </DashboardLayout>
   )
 }
 
 export default Profile
+
+
+
+
+
+
+
+
