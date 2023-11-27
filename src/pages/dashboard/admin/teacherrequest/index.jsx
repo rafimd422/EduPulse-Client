@@ -3,34 +3,91 @@ import { Container, Toolbar, Button, Avatar } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import Title from './../../../../components/Title/Title';
 import Head from 'next/head';
-import { useContext } from 'react';
-import { AuthContext } from '@/Provider/AuthProvider';
 import Image from 'next/image';
+import useAxiosSecure from '@/hooks/useAxiosSecure';
+import { useQuery } from '@tanstack/react-query';
+import Lottie from 'lottie-react';
+import loading from "../../../../assets/Loading/loading.json";
 
 
 
-export default function TeacherRequest() {
+ const TeacherRequest = () => {
 
-    const { user } = useContext(AuthContext);
+
+
+  const axiosSecure = useAxiosSecure();
+  const {
+    data: teacherRequest = [],
+    refetch,
+    isLoading,
+  } = useQuery({
+    queryKey: ["Teacher-Request"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/teacherRequest");
+      return res.data;
+    },
+    onSuccess: () => {
+      refetch();
+    },
+  });
+
+
+  if (isLoading) {
+    return (
+      <Container
+        sx={{
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Lottie animationData={loading} />
+      </Container>
+    );
+  }
+
+
+
+
+
+
+
+
+
+
+  // http://localhost:5000/teacherRequest
+
+
+
+
+
+
+
+
+
 
     const columns = [
-      { field: 'id', headerName: 'ID', width: 70 },
-      {
-        field: 'image',
-        headerName: 'Image',
-        width: 60,
-        renderCell: (params) => (
-<div style={{ width: 60, height: 60, borderRadius: '50%', overflow: 'hidden' }}>
+    {
+      field: "image",
+      headerName: "Image",
+      width: 60,
+      renderCell: (params) => (
         <Image
-          src={params.row.image || ''}
+          src={params.row.image || ""}
+          width={96}
+          height={96}
           alt={`Image for ${params.row.fullName}`}
-          layout="fill"
-          objectFit="cover"
+          style={{
+            width: "100%",
+            height: "auto",
+            objectFit: "cover",
+            borderRadius: "70%",
+          }}
         />
-      </div>
-        ),
-      },
-      { field: 'fullName', headerName: 'Name', width: 130 },
+      ),
+    },
+      { field: 'name', headerName: 'Name', width: 130 },
       { field: 'experience', headerName: 'Experience', width: 130 },
       { field: 'title', headerName: 'Title', width: 130 },
       { field: 'category', headerName: 'Category', width: 130 },
@@ -51,22 +108,7 @@ export default function TeacherRequest() {
         ),
       },
     ];
-  console.log(user?.photoURL)
-    const rows = [
-      {
-        id: 1,
-        lastName: 'Snow',
-        firstName: 'Jon',
-        age: 35,
-        image: (
-          <Avatar alt="Remy Sharp" src={user?.photoURL} sx={{ width: 60, height: 60 }} />
-        ),
-        experience: '5 years',
-        title: 'Math Teacher',
-        category: 'Mathematics',
-        status: 'Pending',
-      },
-    ];
+
   
     const handleApprove = (id) => {
       console.log(`Teacher with ID ${id} approved`);
@@ -88,8 +130,9 @@ export default function TeacherRequest() {
       <Title title={'Teacher Request'} />
       <Container maxWidth="lg" align="center" style={{ marginTop: '2rem' }}>
       <DataGrid
-  rows={rows}
+  rows={teacherRequest}
   columns={columns}
+  getRowId={(row)=> row._id}
   initialState={{
     pagination: {
       paginationModel: { page: 0, pageSize: 5 },
@@ -101,3 +144,5 @@ export default function TeacherRequest() {
     </DashboardLayout>
   );
 }
+
+export default TeacherRequest

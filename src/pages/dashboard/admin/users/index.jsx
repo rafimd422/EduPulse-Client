@@ -9,11 +9,9 @@ import Image from "next/image";
 import Lottie from "lottie-react";
 import loading from "../../../../assets/Loading/loading.json";
 import swal from "sweetalert";
-import { useRouter } from "next/router";
 
 const Users = () => {
   const axiosSecure = useAxiosSecure();
-  const router = useRouter()
   const {
     data: allUsers = [],
     refetch,
@@ -30,7 +28,6 @@ const Users = () => {
   });
 
 
-console.log(allUsers)
   if (isLoading) {
     return (
       <Container
