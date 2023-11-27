@@ -1,20 +1,18 @@
-import DashboardLayout from '@/DashboardLayout';
-import { Container, Toolbar, Button, Avatar } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
-import Title from './../../../../components/Title/Title';
-import Head from 'next/head';
-import Image from 'next/image';
-import useAxiosSecure from '@/hooks/useAxiosSecure';
-import { useQuery } from '@tanstack/react-query';
-import Lottie from 'lottie-react';
+import DashboardLayout from "@/DashboardLayout";
+import { Container, Toolbar, Button } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
+import Title from "./../../../../components/Title/Title";
+import Head from "next/head";
+import Image from "next/image";
+import useAxiosSecure from "@/hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
+import Lottie from "lottie-react";
 import loading from "../../../../assets/Loading/loading.json";
+import useAxiosPublic from "@/hooks/useAxiosPublic";
+import swal from "sweetalert";
 
-
-
- const TeacherRequest = () => {
-
-
-
+const TeacherRequest = () => {
+  const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure();
   const {
     data: teacherRequest = [],
@@ -31,7 +29,6 @@ import loading from "../../../../assets/Loading/loading.json";
     },
   });
 
-
   if (isLoading) {
     return (
       <Container
@@ -47,27 +44,7 @@ import loading from "../../../../assets/Loading/loading.json";
     );
   }
 
-
-
-
-
-
-
-
-
-
-  // http://localhost:5000/teacherRequest
-
-
-
-
-
-
-
-
-
-
-    const columns = [
+  const columns = [
     {
       field: "image",
       headerName: "Image",
@@ -87,37 +64,70 @@ import loading from "../../../../assets/Loading/loading.json";
         />
       ),
     },
-      { field: 'name', headerName: 'Name', width: 130 },
-      { field: 'experience', headerName: 'Experience', width: 130 },
-      { field: 'title', headerName: 'Title', width: 130 },
-      { field: 'category', headerName: 'Category', width: 130 },
-      { field: 'status', headerName: 'Status', width: 130 },
-      {
-        field: 'actions',
-        headerName: 'Actions',
-        width: 180,
-        renderCell: (params) => (
-          <div style={{ display: 'flex', gap: '4px' }}>
-            <Button variant="contained" color="primary" size="small" onClick={() => handleApprove(params.row.id)}>
-              Approve
-            </Button>
-            <Button variant="contained" color="secondary" size="small" onClick={() => handleReject(params.row.id)}>
-              Reject
-            </Button>
-          </div>
-        ),
-      },
-    ];
+    { field: "name", headerName: "Name", width: 130 },
+    { field: "experience", headerName: "Experience", width: 130 },
+    { field: "title", headerName: "Title", width: 130 },
+    { field: "category", headerName: "Category", width: 130 },
+    { field: "status", headerName: "Status", width: 130 },
+    {
+      field: "actions",
+      headerName: "Actions",
+      width: 180,
+      renderCell: (params) => (
+        <div style={{ display: "flex", gap: "4px" }}>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={() => handleApprove(params.row._id)}
+          >
+            Approve
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            size="small"
+            onClick={() => handleReject(params.row._id)}
+          >
+            Reject
+          </Button>
+        </div>
+      ),
+    },
+  ];
 
-  
-    const handleApprove = (id) => {
-      console.log(`Teacher with ID ${id} approved`);
-    };
-  
-    const handleReject = (id) => {
-      console.log(`Teacher with ID ${id} rejected`);
-    };
-  
+  //handle approve
+
+  const handleApprove = (id) => {
+    swal({
+      title: "Are you sure?",
+      text: "Do you want to accept him as a teacher?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        axiosPublic.patch(`/teacherRequest/${id}`).then((res) => {
+          if (res.data?.TeacherRequest?.modifiedCount > 0 || res.data?.userCollection?.modifiedCount > 0 ) {
+            refetch();
+            swal("Teacher Approved Successfully!", {
+              icon: "success",
+            });
+          } else {
+            swal("User role is not changed");
+            
+          }
+        });
+      }
+    });
+  };
+  //handle reject
+
+  const handleReject = (id) => {
+    console.log(`Teacher with ID ${id} rejected`);
+  };
+  refetch();
+
   return (
     <DashboardLayout>
       <Head>
@@ -127,22 +137,22 @@ import loading from "../../../../assets/Loading/loading.json";
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Toolbar />
-      <Title title={'Teacher Request'} />
-      <Container maxWidth="lg" align="center" style={{ marginTop: '2rem' }}>
-      <DataGrid
-  rows={teacherRequest}
-  columns={columns}
-  getRowId={(row)=> row._id}
-  initialState={{
-    pagination: {
-      paginationModel: { page: 0, pageSize: 5 },
-    },
-  }}
-  pageSizeOptions={[5, 10]}
-/>
+      <Title title={"Teacher Request"} />
+      <Container maxWidth="lg" align="center" style={{ marginTop: "2rem" }}>
+        <DataGrid
+          rows={teacherRequest}
+          columns={columns}
+          getRowId={(row) => row._id}
+          initialState={{
+            pagination: {
+              paginationModel: { page: 0, pageSize: 5 },
+            },
+          }}
+          pageSizeOptions={[5, 10]}
+        />
       </Container>
     </DashboardLayout>
   );
-}
+};
 
-export default TeacherRequest
+export default TeacherRequest;
