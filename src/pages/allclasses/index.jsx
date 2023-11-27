@@ -7,21 +7,6 @@ import CourseCards from '@/components/AllCourses/CourseCards';
 const AllClasses = () => {
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   const courses = [
     {
       instructorName: "John Doe",

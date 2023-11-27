@@ -10,10 +10,14 @@ import Lottie from "lottie-react";
 import loading from "../../../../assets/Loading/loading.json";
 import useAxiosPublic from "@/hooks/useAxiosPublic";
 import swal from "sweetalert";
+import { useRouter } from "next/router";
+import useCurrentUser from "@/hooks/useCurrentUser";
 
 const TeacherRequest = () => {
   const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure();
+  const router = useRouter()
+  const { currentUser } = useCurrentUser()
   const {
     data: teacherRequest = [],
     refetch,
@@ -154,6 +158,10 @@ const TeacherRequest = () => {
     });
   };
   refetch();
+
+  if(currentUser?.role !== 'admin'){
+    router.push('/_error')
+      }
 
   return (
     <DashboardLayout>

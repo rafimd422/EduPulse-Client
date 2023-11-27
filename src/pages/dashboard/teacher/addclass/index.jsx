@@ -34,7 +34,7 @@ console.log(res.data)
 const courseData = {
   title,price,shortDesc,courseOutline,
 image: res.data?.data?.display_url,
-teacher: user?.displayName, teacherMail: user?.email,userImage: user?.photoURL
+teacher: user?.displayName, teacherMail: user?.email,userImage: user?.photoURL, status:'pending'
 }
 console.log(courseData)
       })

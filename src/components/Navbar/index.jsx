@@ -234,7 +234,7 @@ variant="outlined"
                   onClose={handleClose}
                 >
                   <MenuItem disabled sx={{fontSize:'.8rem'}} >{user?.displayName}</MenuItem>
-                  <MenuItem onClick={()=> {router.push('/dashboard')}}>Dashboard</MenuItem>
+                  <MenuItem onClick={()=> {router.push('/dashboard/profile')}}>Dashboard</MenuItem>
                   <MenuItem onClick={handleLogout}>Log Out</MenuItem>
                 </Menu>
               </div>

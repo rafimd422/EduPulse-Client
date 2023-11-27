@@ -9,9 +9,13 @@ import Image from "next/image";
 import Lottie from "lottie-react";
 import loading from "../../../../assets/Loading/loading.json";
 import swal from "sweetalert";
+import useCurrentUser from "@/hooks/useCurrentUser";
+import { useRouter } from "next/router";
 
 const Users = () => {
   const axiosSecure = useAxiosSecure();
+  const {currentUser} = useCurrentUser()
+  const router = useRouter()
   const {
     data: allUsers = [],
     refetch,
@@ -115,8 +119,11 @@ const Users = () => {
 }});
 
   };
+  if(currentUser?.role !== 'admin'){
+router.push('/_error')
+  }
 
-
+if(currentUser?.role === 'admin'){
   return (
     <DashboardLayout>
       <Head>
@@ -151,6 +158,8 @@ const Users = () => {
       </Container>
     </DashboardLayout>
   )
+}
+
 };
 
 export default Users;

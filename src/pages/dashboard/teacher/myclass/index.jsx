@@ -1,6 +1,7 @@
 import DashboardLayout from '@/DashboardLayout'
 import { Toolbar } from '@mui/material'
 import Head from 'next/head'
+import Title from './../../../../components/Title/Title';
 
 export default function myClass() {
   return (
@@ -12,7 +13,7 @@ export default function myClass() {
     <link rel="icon" href="/favicon.ico" />
   </Head>
       <Toolbar />
-      My class
+      <Title title={'My'} titleColor={'Classes'} />
     </DashboardLayout>
   )
 }
