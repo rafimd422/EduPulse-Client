@@ -12,7 +12,7 @@ const TotalUserSection = () => {
       <Container maxWidth='lg' align='center' >
         <Title title={'Platform'} titleColor={'Analytics'}/>
         <Typography color={'#708090'} maxWidth={'700px'} margin={'1rem'}>
-        Get an in-depth look at our website's performance and impact. This section highlights user count, available classes, and student enrollment.
+        {"Get an in-depth look at our website's performance and impact. This section highlights user count, available classes, and student enrollment."}
         </Typography>
         <Grid align='center'
           sx={{ display: "flex",flexWrap:'wrap', justifyContent:{sm:'center' ,lg:'space-between'},alignItems:'center' , mx: "4rem" }}

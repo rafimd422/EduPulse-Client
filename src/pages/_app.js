@@ -20,7 +20,7 @@ function MyApp({ Component, pageProps }) {
     },
   });
   const router = useRouter()
-  console.log(router)
+  // console.log(router)
   const queryClient = new QueryClient()
 
 const notDashBoard = !router.pathname.includes('dashboard')

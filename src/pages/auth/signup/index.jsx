@@ -21,7 +21,7 @@ import SocialLogin from './../../../components/SocialLogin/SocialLogin';
 import useAxiosPublic from "@/hooks/useAxiosPublic";
 
 
-export default function index() {
+export default function Index() {
     const [showPassword, setShowPassword] = React.useState(false);
     const { createUSer,updateUserProfile,loading}= React.useContext(AuthContext);
     const router = useRouter()

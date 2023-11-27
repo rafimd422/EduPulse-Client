@@ -3,6 +3,7 @@ import { Container, Toolbar, Button, Avatar } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import Title from './../../../../components/Title/Title';
 import Head from 'next/head';
+import Image from 'next/image';
 
 export default function index() {
 

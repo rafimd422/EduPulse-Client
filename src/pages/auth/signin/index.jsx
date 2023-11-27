@@ -167,7 +167,7 @@ export default function SignIn() {
 <SocialLogin />
               <Grid container>
                 <Grid item>
-                  Don't have an account?
+                  {"Don't have an account?"}
                   <Link href="/auth/signup" variant="body2">
                     Sign Up
                   </Link>

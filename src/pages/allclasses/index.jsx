@@ -86,12 +86,12 @@ const AllClasses = () => {
               }}
               variant="h3"
             >
-              Welcome to Edupulse, where learning knows no bounds. Explore our collection of courses designed to meet your educational needs. From programming to data science, we've got you covered.
+              {"Welcome to Edupulse, where learning knows no bounds. Explore our collection of courses designed to meet your educational needs. From programming to data science, we've got you covered."}
             </Typography>
 
 <Toolbar />
 <Toolbar sx={{align:'center', display:'flex', flexWrap:'wrap', gap:'1rem', justifyContent:'center'}} >
-  {courses.map(course => <CourseCards course={course}  />)}
+  {courses.map(course => <CourseCards key={course} course={course}  />)}
 </Toolbar>
 </Container>
 
