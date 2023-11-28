@@ -1,12 +1,13 @@
 import * as React from 'react';
 import {Typography,CardActions,Card,CardMedia,CardContent, Button,Chip } from '@mui/material';
+import Link from 'next/link';
 
 
 const CourseCards = ({course}) => {
 
 // To DO: Dynamic Enrollment status
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 360, height: '500px' }}>
       <CardMedia
         component="img"
         height="194"
@@ -23,7 +24,7 @@ const CourseCards = ({course}) => {
 
         <br />
         <Typography variant='body2' marginBottom='.4rem' color="text.secondary">
-          <strong>Overview:</strong> {course.shortDesc}
+          <strong>Overview:</strong> {course.shortDesc.slice(0,180)}...
         </Typography> 
         
         <Chip label={`${200} Students Enrolled`} color="success" variant="outlined" />
@@ -31,9 +32,12 @@ const CourseCards = ({course}) => {
       </CardContent>
       
       <CardActions sx={{ justifyContent: 'flex-end', width: '100%' }} disableSpacing>
-      <Button sx={{ backgroundColor: 'rgb(128, 0, 0)', color: 'white', p: 2, textAlign: 'end' }} className="CheckButton">
-  Enroll Now!
-</Button>
+      <Link href={`/allclasses/${course?._id}`}>
+  <Button sx={{ backgroundColor: 'rgb(128, 0, 0)', color: 'white', p: 2, textAlign: 'end' }} className="CheckButton">
+    Enroll Now!
+  </Button>
+</Link>
+
 
       </CardActions>
     </Card>
