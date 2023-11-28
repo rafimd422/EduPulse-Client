@@ -6,6 +6,8 @@ import Title from './../../components/Title/Title';
 import CourseCards from '@/components/AllCourses/CourseCards';
 import useAxiosSecure from '@/hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
+import Lottie from 'lottie-react';
+import loading from '../../assets/Loading/loading.json';
 const AllClasses = () => {
 const axiosSecure = useAxiosSecure()
 
@@ -47,23 +49,29 @@ const axiosSecure = useAxiosSecure()
   
   //classreq
   const {
-    data: courses,
+    data: approvedClass,
     refetch,
     isLoading,
   } = useQuery({
-    queryKey: ["CurrentUser"],
+    queryKey: ["courses"],
     queryFn: async () => {
-      if (user?.email) {
         const res = await axiosSecure.get("/classreq");
         return res.data;
-      }
-      return null;
+
     },
   });
 
 
 
+if(isLoading){
+  
+  return  <Container sx={{height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}>
+  <Lottie animationData={loading} />
+</Container>
+}
 
+const courses = approvedClass.filter(ele => ele.status === 'approved')
+console.log(courses)
 
   return (
     <>
@@ -90,7 +98,7 @@ const axiosSecure = useAxiosSecure()
 
 <Toolbar />
 <Toolbar sx={{align:'center', display:'flex', flexWrap:'wrap', gap:'1rem', justifyContent:'center'}} >
-  {courses.map(course => <CourseCards key={course} course={course}  />)}
+  {courses?.map(course => <CourseCards key={course._id} course={course}  />)}
 </Toolbar>
 </Container>
 

@@ -2,31 +2,31 @@ import * as React from 'react';
 import {Typography,CardActions,Card,CardMedia,CardContent, Button,Chip } from '@mui/material';
 
 
-export default function CourseCards({course}) {
+const CourseCards = ({course}) => {
 
-
+// To DO: Dynamic Enrollment status
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
         component="img"
         height="194"
-        image={course.courseImage}
-        alt={course.courseTitle}
+        image={course.image}
+        alt={course.title}
       />
       <CardContent sx={{ textAlign: 'start' }}>
         <Typography variant="h6" sx={{ fontSize: '1rem', fontWeight: 'bold' }} color="text.secondary">
-          {course.courseTitle}
+          {course.title}
         </Typography>
         <Typography variant="body2" sx={{ fontSize: '0.9rem', fontWeight: 'bold', textAlign: 'start' }} color="text.secondary">
-  By {course.instructorName}
+  By {course.teacher}
 </Typography>
 
         <br />
         <Typography variant='body2' marginBottom='.4rem' color="text.secondary">
-          <strong>Overview:</strong> {course.shortOverview}
+          <strong>Overview:</strong> {course.shortDesc}
         </Typography> 
         
-        <Chip label={`${course.totalEnrollment} Students Enrolled`} color="success" variant="outlined" />
+        <Chip label={`${200} Students Enrolled`} color="success" variant="outlined" />
 
       </CardContent>
       
@@ -40,3 +40,6 @@ export default function CourseCards({course}) {
 
   );
 }
+
+
+export default CourseCards;
