@@ -159,9 +159,6 @@ const TeacherRequest = () => {
   };
   refetch();
 
-  if(currentUser?.role !== 'admin'){
-    router.push('/_error')
-      }
 
   return (
     <DashboardLayout>

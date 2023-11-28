@@ -117,13 +117,10 @@ const Users = () => {
         }
   })
 }});
-
   };
-  if(currentUser?.role !== 'admin'){
-router.push('/_error')
-  }
 
-if(currentUser?.role === 'admin'){
+
+if(currentUser){
   return (
     <DashboardLayout>
       <Head>

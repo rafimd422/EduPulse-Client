@@ -4,12 +4,31 @@ import { DataGrid } from '@mui/x-data-grid';
 import Title from './../../../../components/Title/Title';
 import Head from 'next/head';
 import Image from 'next/image';
+import useAxiosSecure from '@/hooks/useAxiosSecure';
+import { useQuery } from '@tanstack/react-query';
+import Lottie from 'lottie-react';
+import loading from '../../../../assets/Loading/loading.json';
 
-export default function index() {
+ const AllClasses = () => {
+const axiosSecure = useAxiosSecure()
 
 
 
+const handleAddCourse = async() =>{
+ const res = await axiosSecure.get('/classreq')
+  return res.data;
+}
 
+const {data:courses, isLoading, refetch} = useQuery({ queryKey: ['AllCourses'], queryFn: handleAddCourse })
+
+
+if(isLoading){
+  return  <Container sx={{height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}>
+  <Lottie animationData={loading} />
+</Container>
+}
+
+console.log(courses)
 const handleApprove = id => {
 console.log('approve')
 }
@@ -36,8 +55,10 @@ console.log('Reject')
       </div>
       ),
     },
-    { field: 'title', headerName: 'Title', width: 150 },
+    { field: 'name', headerName: 'Name', width: 150 },
     { field: 'email', headerName: 'Email', width: 180 },
+    { field: 'title', headerName: 'Title', width: 150 },
+ 
     { field: 'description', headerName: 'Description', width: 130 },
     { field: 'status', headerName: 'Status', width: 130 },
     {
@@ -56,19 +77,19 @@ console.log('Reject')
       ),
     },
   ];
-  const rows = [
-    {
-      id: 1,
-      title:'rafi',
-      email: 'rafimd2222@gmail.com' ,
-      image: (
-        <Avatar alt="Remy Sharp" src={''} sx={{ width: 60, height: 60 }} />
-      ),
-      role:'student',
-      actions: 'actions',
-      status:'pending'
-    },
-  ];
+  const rows = courses.map((course,index) => ({
+    id: index + 1,
+    name: course.teacher,
+    title: course.title,
+    email: course.teacherMail,
+    description: course.shortDesc,
+    image: (
+      <Avatar alt={course.userImage} src={course.userImage || ''} sx={{ width: 60, height: 60 }} />
+    ),
+    role: 'Teacher',
+    actions: 'actions',
+    status: course.status,
+  }));
 
 
   return (
@@ -80,8 +101,8 @@ console.log('Reject')
     <link rel="icon" href="/favicon.ico" />
   </Head>
       <Toolbar />
+   <Container maxWidth='lg' sx={{display:'flex', flexDirection:'column', justifyContent:'center',minHeight:'40vh', alignItems:'center', mt:'1rem', gap:'1rem'}}>
    <Title title={'All Classes'} />
-   <Container maxWidth='lg' sx={{display:'flex', justifyContent:'center', alignItems:'center', mt:'1rem'}}>
 <DataGrid  
       rows={rows}
       columns={columns}
@@ -97,3 +118,6 @@ console.log('Reject')
     </DashboardLayout>
   )
 }
+
+
+export default AllClasses
