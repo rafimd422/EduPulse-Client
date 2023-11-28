@@ -16,8 +16,8 @@ import { useContext } from "react";
 import { AuthContext } from "@/Provider/AuthProvider";
 import Lottie from "lottie-react";
 import loading from "../../../../assets/Loading/loading.json";
-import { useRouter } from "next/router";
 import Link from "next/link";
+import swal from "sweetalert";
 
 const MyClass = () => {
   const axiosSecure = useAxiosSecure();
@@ -54,6 +54,23 @@ const MyClass = () => {
     );
   }
   refetch();
+
+  const handleDelete = async (id) => {
+    const willDelete = await swal({
+      title: "Are you sure?",
+      text: "Are you sure that you want to delete this file?",
+      icon: "warning",
+      dangerMode: true,
+    });
+
+    if (willDelete) {
+      axiosSecure.delete(`/classreq/${id}`).then((res) => {
+        if (res.data.deletedCount > 0) {
+          swal("Deleted!", "Your imaginary file has been deleted!", "success");
+        }
+      });
+    }
+  };
 
   return (
     <DashboardLayout>
@@ -135,15 +152,24 @@ const MyClass = () => {
                     Update
                   </Button>
                 </Link>
-                <Button size="md" variant="contained" color="error">
+                <Button
+                  onClick={() => handleDelete(classItem._id)}
+                  size="md"
+                  variant="contained"
+                  color="error"
+                >
                   Delete
                 </Button>
-                <Link href={`/dashboard/teacher/myclass/${classItem._id}`}>
+{classItem.status !== 'approved' ? 
+                  <Button disabled variant="outlined" color="error" size="md">
+                    See Details
+                  </Button>
+               :                 <Link href={`/dashboard/teacher/myclass/${classItem._id}`}>
                   {" "}
                   <Button variant="outlined" color="error" size="md">
                     See Details
                   </Button>
-                </Link>
+                </Link>}
               </CardActions>
             </Card>
           ))}
