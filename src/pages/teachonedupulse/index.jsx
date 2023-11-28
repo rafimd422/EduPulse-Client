@@ -59,7 +59,6 @@ const axiosSecure = useAxiosSecure()
                }
              })
 
-              console.log(teacherData);
       },
     });
     

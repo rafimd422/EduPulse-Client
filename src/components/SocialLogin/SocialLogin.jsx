@@ -14,7 +14,6 @@ export default function SocialLogin() {
   const handleGoogleLogin = () => {
     googleSignIn()
       .then(result => {
-        console.log(result.user);
   
         const userData = {
           email: result.user?.email,
@@ -24,8 +23,6 @@ export default function SocialLogin() {
         };
         axiosPublic.post('/user', userData)
           .then(res => {
-            console.log(res.data);
-
               router.push('/');
             
             swal("Logged In!", "Successfully!", "success");
