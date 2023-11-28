@@ -43,7 +43,6 @@ const AllClasses = () => {
     }
   ];
   
-  console.log(courses);
   
 
 

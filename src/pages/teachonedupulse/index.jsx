@@ -113,11 +113,13 @@ const axiosSecure = useAxiosSecure()
         >
 <TextField
   value={user?.displayName}
-  name="name"
   variant="outlined"
   margin="normal"
   required
-  disabled
+  InputProps={{
+    style: {
+      color: 'black',
+    },}}
 />
 
           <TextField

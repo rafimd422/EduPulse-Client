@@ -1,22 +1,22 @@
-import DashboardLayout from '@/DashboardLayout'
-import useCurrentUser from '@/hooks/useCurrentUser'
-import { Container, Toolbar } from '@mui/material'
-import Lottie from 'lottie-react'
-import Head from 'next/head'
-import loading from '../../../assets/Loading/loading.json'
+import DashboardLayout from '@/DashboardLayout';
+import useCurrentUser from '@/hooks/useCurrentUser';
+import { Container, Toolbar } from '@mui/material';
+import Lottie from 'lottie-react';
+import Head from 'next/head';
+import loading from '../../../assets/Loading/loading.json';
 import {
   Avatar,
   Box,
   Card,
   CardContent,
   Divider,
-  Typography
+  Typography,
 } from '@mui/material';
+
 
 const Profile = () => {
 const {currentUser, refetch, isLoading } = useCurrentUser()
 
-console.log(currentUser)
 
 if (isLoading) {
   return (
@@ -32,7 +32,18 @@ if (isLoading) {
     </Container>
   );
 }
-if(currentUser === null){
+
+if (!currentUser || currentUser.length === 0) {
+  
+  return (
+    <Container sx={{ textAlign: 'center', marginTop: '2rem' }}>
+      <Lottie animationData={loading} />
+      <Typography variant="h6">Error loading user profile. Please try again. Refreshing...</Typography>
+    </Container>
+  );
+}
+
+if(currentUser === null || currentUser?.length === 0){
   refetch()
 }
 const user = currentUser[0]
