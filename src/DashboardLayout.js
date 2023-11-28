@@ -1,16 +1,9 @@
 import React, { useContext } from 'react';
 import Sidebar from './components/DashboardCompo/Sidebar';
-import { AuthContext } from './Provider/AuthProvider';
-import SignIn from './pages/auth/signin';
+
 
 const DashboardLayout = ({ children }) => {
-const {user} = useContext(AuthContext)
 
-
-
-
-
-if(user !== null){
   return (
     <div>
       <div style={{ display: 'flex' }}>
@@ -19,9 +12,6 @@ if(user !== null){
       </div>
     </div>
   );
-}else{
-  return <SignIn />
-}
 };
 
 export default DashboardLayout;
