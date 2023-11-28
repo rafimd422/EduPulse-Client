@@ -3,15 +3,14 @@ import { Container, Toolbar, Button, Avatar } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import Title from './../../../../components/Title/Title';
 import Head from 'next/head';
-import Image from 'next/image';
 import useAxiosSecure from '@/hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import Lottie from 'lottie-react';
 import loading from '../../../../assets/Loading/loading.json';
+import swal from 'sweetalert';
 
  const AllClasses = () => {
 const axiosSecure = useAxiosSecure()
-
 
 
 const handleAddCourse = async() =>{
@@ -28,13 +27,52 @@ if(isLoading){
 </Container>
 }
 
-console.log(courses)
-const handleApprove = id => {
-console.log('approve')
-}
-const handleReject = id => {
-console.log('Reject')
-}
+const handleApprove = (id) => {
+  swal({
+    title: "Are you sure?",
+    text: "Do you want to accept This course?",
+    icon: "warning",
+    buttons: true,
+    dangerMode: true,
+  }).then((willDelete) => {
+    if (willDelete) {
+      axiosSecure.patch(`/classreq/accept/${id}`).then((res) => {
+        if (res.data?.modifiedCount > 0 || res.data?.modifiedCount > 0 ) {
+          refetch();
+          swal("Course Approved Successfully!", {
+            icon: "success",
+          });
+        } else {
+          swal("User role is not changed"); 
+        }
+      });
+    }
+  });
+};
+
+//handle reject
+
+const handleReject = (id) => {
+
+  swal({
+    title: "Are you sure?",
+    text: "Do you want to reject this Course?",
+    icon: "warning",
+    buttons: true,
+    dangerMode: true,
+  }).then((willDelete) => {
+    if (willDelete) {
+      axiosSecure.patch(`/classreq/reject/${id}`).then((res) => {
+        if (res.data?.modifiedCount > 0 ) {
+          refetch();
+          swal("Course Rejected Successfully!", {
+            icon: "success",
+          });
+        }
+      });
+    }
+  });
+};
 
 
 
@@ -46,12 +84,8 @@ console.log('Reject')
       width: 60,
       renderCell: (params) => (
 <div style={{ width: 60, height: 60, borderRadius: '50%', overflow: 'hidden' }}>
-        <Image
-          src={params.row.image || ''}
-          alt={`Image for ${params.row.fullName}`}
-          layout="fill"
-          objectFit="cover"
-        />
+
+        <Avatar alt={`Image for ${params.row.name}`} src={params.row.image || ''} sx={{ width: 70, height: 70 }} />
       </div>
       ),
     },
@@ -67,12 +101,25 @@ console.log('Reject')
       width: 180,
       renderCell: (params) => (
         <div style={{ display: 'flex', gap: '4px' }}>
-          <Button variant="contained" color="primary" size="small" onClick={() => handleApprove(params.row.id)}>
-            Approve
-          </Button>
-          <Button variant="contained" color="error" size="small" onClick={() => handleReject(params.row.id)}>
-            Reject
-          </Button>
+{params.row.status === 'approved' ? (
+  <Button variant="contained" color="success" size="small">
+    Approved
+  </Button>
+) : params.row.status === 'rejected' ? (
+  <Button variant="contained" color="error" size="small">
+    Rejected
+  </Button>
+) : (
+  <div>
+    <Button variant="contained" color="primary" size="small" onClick={() => handleApprove(params.row._id)}>
+      Approve
+    </Button>
+    <Button variant="contained" color="error" size="small" onClick={() => handleReject(params.row._id)}>
+      Reject
+    </Button>
+  </div>
+)}
+
         </div>
       ),
     },
@@ -83,12 +130,11 @@ console.log('Reject')
     title: course.title,
     email: course.teacherMail,
     description: course.shortDesc,
-    image: (
-      <Avatar alt={course.userImage} src={course.userImage || ''} sx={{ width: 60, height: 60 }} />
-    ),
+    image: course.userImage,
     role: 'Teacher',
     actions: 'actions',
     status: course.status,
+    _id: course._id,
   }));
 
 
