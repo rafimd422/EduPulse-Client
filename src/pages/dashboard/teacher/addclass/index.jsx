@@ -1,45 +1,68 @@
 import DashboardLayout from "@/DashboardLayout";
-import { Button, Grid, TextField, TextareaAutosize, Toolbar } from "@mui/material";
+import {
+  Button,
+  Grid,
+  TextField,
+  TextareaAutosize,
+  Toolbar,
+} from "@mui/material";
 import Head from "next/head";
 import Title from "./../../../../components/Title/Title";
 import { Container } from "@mui/material";
 import axios from "axios";
 import { useContext } from "react";
 import { AuthContext } from "@/Provider/AuthProvider";
+import useAxiosPublic from "@/hooks/useAxiosPublic";
+import { useRouter } from "next/router";
 
 const AddClass = () => {
+  const { user } = useContext(AuthContext);
+  const axiosPublic = useAxiosPublic();
+  const router = useRouter()
+  const handleClassAdding = (e) => {
+    e.preventDefault();
+    const data = new FormData(e.target);
+    
+    const title = data.get("courseTitle");
+    const price = data.get("price");
+    const photo = data.get("image");
+    const shortDesc = data.get("shortDesc");
+    const courseOutline = data.get("courseOutline");
+    console.log(photo);
+    const formData = new FormData();
+    formData.append("image", photo);
+    axios
+      .post(
+        `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res.data);
 
-const {user} = useContext(AuthContext)
+        const courseData = {
+          title,
+          price,
+          shortDesc,
+          courseOutline,
+          image: res.data?.data?.display_url,
+          teacher: user?.displayName,
+          teacherMail: user?.email,
+          userImage: user?.photoURL,
+          status: "pending",
+        };
+        axiosPublic.post("/classreq", courseData).then((res) => {
+          console.log(res.data);
+          swal("Your Class has been Added!", "Please Wait For the admin response!", "success");
+          router.push('/dashboard/teacher/myclass')
+        });
+      });
+  };
 
-const handleClassAdding = e => {
-  e.preventDefault()
-  const data = new FormData(e.target)
-
- const title = data.get('courseTitle')
- const price = data.get('price')
- const photo = data.get('image')
- const shortDesc = data.get('shortDesc')
- const courseOutline = data.get('courseOutline')
-console.log(photo)
-const formData = new FormData()
-formData.append('image', photo)
- axios.post(`https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-    .then(res => {
-console.log(res.data)
-        
-const courseData = {
-  title,price,shortDesc,courseOutline,
-image: res.data?.data?.display_url,
-teacher: user?.displayName, teacherMail: user?.email,userImage: user?.photoURL, status:'pending'
-}
-console.log(courseData)
-      })
-}
-  
   return (
     <DashboardLayout>
       <Head>
@@ -51,7 +74,7 @@ console.log(courseData)
       <Toolbar />
       <Title title={"Add"} titleColor={"Class"} />
 
-      <Container component='form' onSubmit={handleClassAdding}>
+      <Container component="form" onSubmit={handleClassAdding}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
             <TextField
@@ -106,25 +129,25 @@ console.log(courseData)
             />
           </Grid>
           <Grid item sm={12} md={4}>
-      <Button
-        type="submit"
-        sx={{
-          backgroundColor: '#800000',
-          color: 'white',
-          fontWeight: 'bold',
-          '&:hover': {
-            backgroundColor: 'gray',
-          },
-        }}
-      >
-        Submit Course
-      </Button>
-    </Grid>
+            <Button
+              type="submit"
+              sx={{
+                backgroundColor: "#800000",
+                color: "white",
+                fontWeight: "bold",
+                "&:hover": {
+                  backgroundColor: "gray",
+                },
+              }}
+            >
+              Submit Course
+            </Button>
+          </Grid>
         </Grid>
       </Container>
     </DashboardLayout>
   );
 };
-// 
+//
 
 export default AddClass;
