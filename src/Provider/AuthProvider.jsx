@@ -10,10 +10,11 @@ import {
 } from "firebase/auth";
 import swal from "sweetalert";
 import auth from "@/config/firebase.config";
+import useAxiosPublic from "@/hooks/useAxiosPublic";
 
 export const AuthContext = createContext(null)
 const AuthProvider = ({children}) => {
-
+const axiosPublic = useAxiosPublic()
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const googleProvider = new GoogleAuthProvider();
@@ -57,6 +58,13 @@ const AuthProvider = ({children}) => {
         const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
           setUser(currentUser);
           console.log("current user", currentUser);
+          if(currentUser !== null) {
+            const email = {email: currentUser.email}
+            axiosPublic.post('/jwt', email)
+            .then(res => {
+              localStorage.setItem('token', res.data?.token)
+            })
+          }
         });
         return unSubscribe;
       }, []);

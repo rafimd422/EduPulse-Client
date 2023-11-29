@@ -1,6 +1,8 @@
 import DashboardLayout from "@/DashboardLayout"
 import { Toolbar } from '@mui/material';
 import Head from "next/head";
+import Title from './../../../../components/Title/Title';
+import { Margin } from "@mui/icons-material";
 
 const EnrollClass = () => {
   return (
@@ -12,7 +14,12 @@ const EnrollClass = () => {
     <link rel="icon" href="/favicon.ico" />
   </Head>
       <Toolbar />
-      My Enrolled Class
+      <Title title={'My Enrolled'} titleColor={' Class'}/>
+
+
+      <div style={{margin:'6rem'}}>
+        This page is under construction
+      </div>
     </DashboardLayout>
   )
 }
