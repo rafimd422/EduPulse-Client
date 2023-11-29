@@ -64,6 +64,8 @@ const axiosPublic = useAxiosPublic()
             .then(res => {
               localStorage.setItem('token', res.data?.token)
             })
+          }else {
+            localStorage.removeItem('token')
           }
         });
         return unSubscribe;
