@@ -124,7 +124,7 @@ const handleReject = (id) => {
       ),
     },
   ];
-  const rows = courses.map((course,index) => ({
+  const rows = courses?.map((course,index) => ({
     id: index + 1,
     name: course.teacher,
     title: course.title,

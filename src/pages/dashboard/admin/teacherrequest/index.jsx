@@ -10,14 +10,14 @@ import Lottie from "lottie-react";
 import loading from "../../../../assets/Loading/loading.json";
 import useAxiosPublic from "@/hooks/useAxiosPublic";
 import swal from "sweetalert";
-import { useRouter } from "next/router";
-import useCurrentUser from "@/hooks/useCurrentUser";
+import { useContext } from "react";
+import { AuthContext } from "@/Provider/AuthProvider";
+import SignIn from "@/pages/auth/signin";
 
 const TeacherRequest = () => {
   const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure();
-  const router = useRouter()
-  const { currentUser } = useCurrentUser()
+  const {user} = useContext(AuthContext)
   const {
     data: teacherRequest = [],
     refetch,
@@ -32,6 +32,11 @@ const TeacherRequest = () => {
       refetch();
     },
   });
+
+
+if(user === null){
+  return <SignIn />
+}
 
   if (isLoading) {
     return (

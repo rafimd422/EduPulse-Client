@@ -54,13 +54,13 @@ const axiosPublic = useAxiosPublic()
   
 
 
-    useEffect(() => {
+    useEffect( () => {
         const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
           setUser(currentUser);
           console.log("current user", currentUser);
           if(currentUser !== null) {
             const email = {email: currentUser.email}
-            axiosPublic.post('/jwt', email)
+             axiosPublic.post('/jwt', email)
             .then(res => {
               localStorage.setItem('token', res.data?.token)
             })
