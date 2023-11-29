@@ -1,6 +1,12 @@
-import { useRouter } from "next/router"
+import { useRouter } from "next/router";
 import DashboardLayout from "@/DashboardLayout";
-import { Button, Grid, TextField, TextareaAutosize, Toolbar } from "@mui/material";
+import {
+  Button,
+  Grid,
+  TextField,
+  TextareaAutosize,
+  Toolbar,
+} from "@mui/material";
 import Head from "next/head";
 import { Container } from "@mui/material";
 import Title from "@/components/Title/Title";
@@ -12,74 +18,71 @@ import { AuthContext } from "@/Provider/AuthProvider";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import swal from "sweetalert";
 
-
 const Update = () => {
-    const router = useRouter()
-    const {id} = router.query
-const { user } = useContext(AuthContext)
-const axiosSecure = useAxiosSecure()
-    const {
-      data: updateClassReq,
-      refetch,
-      isLoading,
-    } = useQuery({
-      queryKey: ["updateClassReq"],
-      queryFn: async () => {
-        if(user?.email)  
-        {const res = await axiosSecure.get(`/classreq/${id}`);
-          return res.data;}else{
-            return null
-          }
-      },
-    });
-  
-    if (isLoading) {
-      return (
-        <Container
-          sx={{
-            height: "100vh",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Lottie animationData={loading} />
-        </Container>
-      );
-    }
+  const router = useRouter();
+  const { id } = router.query;
+  const { user } = useContext(AuthContext);
+  const axiosSecure = useAxiosSecure();
+  const {
+    data: updateClassReq,
+    refetch,
+    isLoading,
+  } = useQuery({
+    queryKey: ["updateClassReq"],
+    queryFn: async () => {
+      if (user?.email) {
+        const res = await axiosSecure.get(`/classreq/${id}`);
+        return res.data;
+      } else {
+        return null;
+      }
+    },
+  });
+  if (updateClassReq === null) {
     refetch();
-  
+  }
+  if (isLoading) {
+    return (
+      <Container
+        sx={{
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Lottie animationData={loading} />
+      </Container>
+    );
+  }
 
-
-
-
-const handleClassUpdating = async (e) => {
+  const handleClassUpdating = async (e) => {
     e.preventDefault();
-  
+
     try {
       const formData = new FormData(e.target);
-  
+
       const updatedData = {
-        courseTitle: formData.get('courseTitle'),
-        price: formData.get('price'),
-        image: formData.get('image'),
-        shortDesc: formData.get('shortDesc'),
-        courseOutline: formData.get('courseOutline'),
+        courseTitle: formData.get("courseTitle"),
+        price: formData.get("price"),
+        image: formData.get("image"),
+        shortDesc: formData.get("shortDesc"),
+        courseOutline: formData.get("courseOutline"),
       };
       // Make a PATCH request
       const res = await axiosSecure.patch(`/classreq/${id}`, updatedData);
-   if(res.data.modifiedCount > 0){
-    swal("Your Class has been Added!", "Please Wait For the admin response!", "success");
-    router.push('/dashboard/teacher/addclass')
-   }
-
+      if (res.data.modifiedCount > 0) {
+        swal(
+          "Your Class has been Added!",
+          "Please Wait For the admin response!",
+          "success"
+        );
+        router.push("/dashboard/teacher/addclass");
+      }
     } catch (error) {
       console.error("Error updating class:", error);
     }
   };
-  
-  
-
 
   return (
     <DashboardLayout>
@@ -92,33 +95,36 @@ const handleClassUpdating = async (e) => {
       <Toolbar />
       <Title title={"Update"} titleColor={"Class"} />
 
-      <Container component='form' onSubmit={handleClassUpdating}>
+      <Container component="form" onSubmit={handleClassUpdating}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
-          <TextField
-  required
-  id="title"
-  name="courseTitle" // Make sure to include name attribute
-  label="Course Title"
-  fullWidth
-  variant="standard"
-  value={updateClassReq?.courseTitle}
-  onChange={(e)=> {e.target.value}}
-/>
+            <TextField
+              required
+              id="title"
+              name="courseTitle" // Make sure to include name attribute
+              label="Course Title"
+              fullWidth
+              variant="standard"
+              defaultValue={updateClassReq?.courseTitle}
+              onChange={(e) => {
+                e.target.value;
+              }}
+            />
           </Grid>
           <Grid item xs={12} md={6}>
-          <TextField
-  required
-  type="number"
-  id="price"
-  name="price" // Make sure to include name attribute
-  label="Course Price"
-  fullWidth
-  variant="standard"
-  value={updateClassReq?.price}
-  onChange={(e)=> {e.target.value}}
-/>
-
+            <TextField
+              required
+              type="number"
+              id="price"
+              name="price" // Make sure to include name attribute
+              label="Course Price"
+              fullWidth
+              variant="standard"
+              value={updateClassReq?.price}
+              onChange={(e) => {
+                e.target.value;
+              }}
+            />
           </Grid>
           <Grid item xs={12} sm={6}>
             <label htmlFor="image">Thumbnall</label>
@@ -126,10 +132,8 @@ const handleClassUpdating = async (e) => {
               required
               fullWidth
               id="image"
-              defaultValue={updateClassReq?.image}
-              type="file"
+              value={updateClassReq?.image}
               name="image"
-              disabled
               variant="standard"
             />
           </Grid>
@@ -156,24 +160,24 @@ const handleClassUpdating = async (e) => {
             />
           </Grid>
           <Grid item sm={12} md={4}>
-      <Button
-        type="submit"
-        sx={{
-          backgroundColor: '#800000',
-          color: 'white',
-          fontWeight: 'bold',
-          '&:hover': {
-            backgroundColor: 'gray'
-          },
-        }}
-      >
-        Update Course
-      </Button>
-    </Grid>
+            <Button
+              type="submit"
+              sx={{
+                backgroundColor: "#800000",
+                color: "white",
+                fontWeight: "bold",
+                "&:hover": {
+                  backgroundColor: "gray",
+                },
+              }}
+            >
+              Update Course
+            </Button>
+          </Grid>
         </Grid>
       </Container>
     </DashboardLayout>
-  )
-}
+  );
+};
 
-export default Update
+export default Update;
