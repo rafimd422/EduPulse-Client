@@ -44,7 +44,6 @@ const {
  </Container>
  )
  }
- console.log(updateClass)
  
 
 if(user === null){

@@ -1,38 +1,91 @@
-import { Button } from '@mui/material';
+import useAxiosSecure from '@/hooks/useAxiosSecure';
+import { Button, Container } from '@mui/material';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
+ import { useRouter } from 'next/router';
+import { useContext, useEffect, useState } from 'react';
+import loading from '../../assets/Loading/loading.json';
 import swal from 'sweetalert';
+import Lottie from 'lottie-react';
+import useCourseData from '@/hooks/useCourseData';
+import { AuthContext } from '@/Provider/AuthProvider';
 
 const PaymentForm = () => {
     const stripe = useStripe();
     const elements = useElements();
-  
-    const handleSubmit = async (event) => {
-      event.preventDefault();
-  
-      if (!stripe || !elements) {
+    const axiosSecure = useAxiosSecure()
+     const router = useRouter()
+const [transeciton, setTranseciton] = useState(null)
+const  { dataForPayment, isLoading } = useCourseData(router)
+const {user} = useContext(AuthContext)
 
-        return;
-      }
-  
-      const card = elements.getElement(CardElement);
+if(dataForPayment === undefined){
+    return <Container sx={{height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}>
+    <Lottie animationData={loading} />
+    </Container>
+ }
 
-      if (card === null) {
-        return;
-      }
-  
-      const {error, paymentMethod} = await stripe.createPaymentMethod({
-        type: 'card',
-        card,
-      });
-  
-      if (error) {
-        console.log('[error]', error);
-        swal(`${error.type}`, `${error.message}`, "error");
-      } else {
-        console.log('[PaymentMethod]', paymentMethod);
-      }
-    };
-  
+if(isLoading){
+        return  (
+          <Container sx={{height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}>
+        <Lottie animationData={loading} />
+        </Container>
+        )
+        }
+
+
+       
+          
+        const handleSubmit = async (event) => {
+            event.preventDefault();
+          
+            if (!stripe || !elements) {
+              return;
+            }
+          
+            const card = elements.getElement(CardElement);
+          
+            if (card === null) {
+              return;
+            }
+          
+            try {
+              const { error, paymentMethod } = await stripe.createPaymentMethod({
+                type: 'card',
+                card,
+              });
+          
+              if (error) {
+                console.log('[error]', error);
+                swal(`${error.type}`, `${error.message}`, 'error');
+              } else {
+                console.log('[PaymentMethod]', paymentMethod);
+              }
+          
+              const response = await axiosSecure.post('/create-payment-intent', { price: dataForPayment?.price });
+          
+              const { paymentIntent, error: newError } = await stripe.confirmCardPayment(response.data?.clientSecret, {
+                payment_method: {
+                  card: card,
+                  billing_details: {
+                    email: user?.email,
+                    name: user?.displayName,
+                  },
+                },
+              });
+          
+              if (newError) {
+                console.log('confirm', newError);
+              } else {
+                console.log('paymentIntent', paymentIntent);
+                setTranseciton(paymentIntent?.id)
+                swal('success', `Your Transection id ${transeciton}`, 'success');
+              }
+            } catch (error) {
+              console.error('An error occurred:', error);
+              swal('Error', 'An error occurred during payment processing.', 'error');
+            }
+          };
+          
   return (
     <form onSubmit={handleSubmit}>
     <CardElement
