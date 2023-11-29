@@ -4,50 +4,51 @@ import SignIn from "../auth/signin"
 import PageTitle from "@/components/PageTitle/PageTitle"
 import { Button, Container, Toolbar, Typography } from "@mui/material"
 import Title from './../../components/Title/Title';
-import useAxiosPublic from "@/hooks/useAxiosPublic"
 import Lottie from "lottie-react"
 import loading from "../../assets/Loading/loading.json"
 import { useQuery } from "@tanstack/react-query"
 import { useRouter } from "next/router"
   import Image from "next/image"
+import useAxiosSecure from "@/hooks/useAxiosSecure"
+import Link from 'next/link';
 
 
 const ClassDetails = () => {
 const router = useRouter()
-console.log()
 const {user} = useContext(AuthContext)
-const axiosPublic = useAxiosPublic()
+const axiosSecure = useAxiosSecure()
 const {
   data: updateClass,
   refetch,
-  isLoading,
+  isLoading
 } = useQuery({
   queryKey: ["courses"],
   queryFn: async () => {
-      const res = await axiosPublic.get(`/classreq/${router?.query?.id}`);
+      const res = await axiosSecure.get(`/classreq/${router?.query?.id}`);
       return res.data;
   },
+  enabled: !!router?.query?.id
 });
 
 
-if(updateClass === undefined){
-  return <Container sx={{height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}>
-  <Lottie animationData={loading} />
-  </Container>
-}
+//  if(updateClass === undefined){
+//    return <Container sx={{height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}>
+//    <Lottie animationData={loading} />
+//    </Container>
+//  }
 
-if(isLoading){
-return  (
-  <Container sx={{height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}>
-<Lottie animationData={loading} />
-</Container>
-)
-}
-console.log(updateClass)
+ if(isLoading){
+ return  (
+   <Container sx={{height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}>
+ <Lottie animationData={loading} />
+ </Container>
+ )
+ }
+ console.log(updateClass)
  
 
 if(user === null){
-  return <SignIn />
+  return (<SignIn />)
 }
   return (
     <>
@@ -69,11 +70,11 @@ if(user === null){
   />
 )}
 
-<div style={{display:'flex', width:'800', justifyContent:'space-between'}}><p></p> <Button variant="contained" color='success' >Continue to Pay</Button>
+<div style={{display:'flex', width:'800', justifyContent:'space-between'}}><p></p> 
+<Link href={`/allclasses/payment/${updateClass._id}`}>
+<Button variant="contained" color='success' >Continue to Pay</Button>
+</Link>
 </div>
-
-
-
 <Typography sx={{fontSize:'1.8rem',textAlign:'center', lineHeight:'18px',color: 'black', mt:'3rem',mb:'1.2rem', fontWeight:'bold' }}>Course Overview</Typography>
 
 <Typography sx={{fontSize:'1rem',textAlign:'center', lineHeight:'20px', mb:'2rem' }}>{updateClass.shortDesc}</Typography>

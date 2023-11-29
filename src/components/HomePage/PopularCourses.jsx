@@ -11,6 +11,7 @@ const PopularCourses = () => {
       shortDescription:
         "Unleash your creativity with advanced graphic design techniques and tools.",
       img: "https://wemakepro.com/wp-content/uploads/2022/05/Graphics-Design-Mastery-1-1024x576.jpg",
+      route: '/allclasses/65663f0fb75a711bc1fba2e8'
     },
     {
       id: 2,
@@ -18,6 +19,7 @@ const PopularCourses = () => {
       shortDescription:
         "Explore the world of data science and analytics to make informed decisions.",
       img: "https://miro.medium.com/v2/resize:fit:2000/1*Cknaaw2CUy8g1YpT0eVHEg.jpeg",
+      route: '/allclasses/65663d61b75a711bc1fba2e6'
     },
     {
       id: 3,
@@ -25,6 +27,7 @@ const PopularCourses = () => {
       shortDescription:
         "Master the basics of web development with HTML, CSS, and JavaScript.",
       img: "https://res.cloudinary.com/boardinfinity/image/upload/t_blog_img/bi-websites/blog/11/62.png",
+      route: '/allclasses/65656d80407d968934e1498e'
     },
     // Add more courses as needed
   ];
@@ -65,7 +68,7 @@ const PopularCourses = () => {
           indicatorContainerProps={{
             style: {
               marginTop: "10px",
-              textAlign: "center", // Center the indicators
+              textAlign: "center", 
             },
             indicators: {
               width: "100%",
