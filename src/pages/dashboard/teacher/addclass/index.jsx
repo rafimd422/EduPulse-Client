@@ -57,7 +57,8 @@ const AddClass = () => {
           teacherMail: user?.email,
           userImage: user?.photoURL,
           status: "pending",
-        };
+          enrollCount: 0
+                };
         axiosPublic.post("/classreq", courseData).then((res) => {
           swal("Your Class has been Added!", "Please Wait For the admin response!", "success");
           router.push('/dashboard/teacher/myclass')

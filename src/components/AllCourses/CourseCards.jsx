@@ -24,7 +24,7 @@ const CourseCards = ({course}) => {
 
         <br />
         <Typography variant='body2' marginBottom='.4rem' color="text.secondary">
-          <strong>Overview:</strong> {course.shortDesc.slice(0,180)}...
+          <strong>Overview:</strong> {course.shortDesc?.slice(0,180)}...
         </Typography> 
         
         <Chip label={`${200} Students Enrolled`} color="success" variant="outlined" />
