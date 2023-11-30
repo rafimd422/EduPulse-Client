@@ -19,7 +19,6 @@ const {user} = useContext(AuthContext)
 const axiosSecure = useAxiosSecure()
 const {
   data: updateClass,
-  refetch,
   isLoading
 } = useQuery({
   queryKey: ["courses"],

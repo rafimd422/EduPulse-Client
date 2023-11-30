@@ -69,7 +69,7 @@ const axiosPublic = useAxiosPublic()
           }
         });
         return unSubscribe;
-      }, []);
+      }, [axiosPublic]);
 
 
       const authInfo = {

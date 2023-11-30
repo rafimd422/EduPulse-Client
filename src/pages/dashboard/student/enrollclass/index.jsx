@@ -2,9 +2,33 @@ import DashboardLayout from "@/DashboardLayout"
 import { Toolbar } from '@mui/material';
 import Head from "next/head";
 import Title from './../../../../components/Title/Title';
-import { Margin } from "@mui/icons-material";
+import { useContext } from "react";
+import { AuthContext } from "@/Provider/AuthProvider";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "@/hooks/useAxiosSecure";
+import EnrollCards from './../../../../components/EnrollCard/EnrollCards';
 
 const EnrollClass = () => {
+
+const {user} = useContext(AuthContext)
+const axiosSecure = useAxiosSecure()
+  const {
+    data: enrolledCourses,
+    isLoading,
+  } = useQuery({
+    queryKey: [user?.email],
+    queryFn: async () => {
+        const res = await axiosSecure.get(`/enrolled?email=${user?.email}`);
+        return res.data;
+
+    },
+    enabled: !!user?.email,
+  });
+if(isLoading){
+  return <p>Loading...</p>
+}
+
+  // 
   return (
     <DashboardLayout>
         <Head>
@@ -15,11 +39,11 @@ const EnrollClass = () => {
   </Head>
       <Toolbar />
       <Title title={'My Enrolled'} titleColor={' Class'}/>
+      <Toolbar />
+      <Toolbar sx={{ align: 'center', display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center'}} >
+  {enrolledCourses?.map(course => <EnrollCards key={course._id} courses={course}  />)}
+</Toolbar>
 
-
-      <div style={{margin:'6rem'}}>
-        This page is under construction
-      </div>
     </DashboardLayout>
   )
 }

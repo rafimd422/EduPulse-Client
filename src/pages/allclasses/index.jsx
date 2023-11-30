@@ -33,7 +33,6 @@ if(isLoading){
 }
 
 const courses = approvedClass?.filter(ele => ele.status === 'approved')
-console.log(courses)
 
   return (
     <>
