@@ -79,40 +79,38 @@ if(user === null){
     { field: "category", headerName: "Category", width: 130 },
     { field: "status", headerName: "Status", width: 130 },
     { field: "experience", headerName: "Experience", width: 130 },
-  {
+    {
       field: "actions",
       headerName: "Actions",
       width: 180,
       renderCell: (params) => (
-        <div style={{ display: "flex", gap: "4px" }}>
-          <Button
-            variant="contained"
-            color="primary"
-            size="small"
-            onClick={() => handleApprove(params.row._id)}
-          >
-            Approve
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            size="small"
-            onClick={() => handleReject(params.row._id)}
-          >
-            Reject
-          </Button>
-        </div>
+        params.row.status !== 'approved' && params.row.status !== 'rejected' && (
+          <div style={{ display: "flex", gap: "4px" }}>
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              onClick={() => handleApprove(params.row._id)}
+            >
+              Approve
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              size="small"
+              onClick={() => handleReject(params.row._id)}
+            >
+              Reject
+            </Button>
+          </div>
+        )
       ),
     },
+    
   ];
 
 
-  teacherRequest.forEach(ele => {
-    if(ele.status === 'approved' || ele.status === 'rejected'){
-    return columns.pop()
-      
-  }
-  })
+
 
   //handle approve
 

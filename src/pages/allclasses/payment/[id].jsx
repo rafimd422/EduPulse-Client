@@ -5,6 +5,8 @@ import { Toolbar } from "@mui/material";
 import PaymentForm from "@/components/PaymentForm/PaymentForm";
 import { Elements } from "@stripe/react-stripe-js";
 
+
+
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_Payment_Gateway_Stripe);
 const Payment = () => {
   return (
