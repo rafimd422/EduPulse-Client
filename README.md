@@ -3,7 +3,7 @@
 
 ## Live Site
 
-Check out the live version of Edupulse at https://edupulse-29oi7t2zc-rafimd422.vercel.app/
+Check out the live version of Edupulse at https://edupulse.vercel.app/
 
 - **Frontend**:
   - Javascript
