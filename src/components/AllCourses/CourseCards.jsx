@@ -4,13 +4,13 @@ import Link from 'next/link';
 
 
 const CourseCards = ({course}) => {
-
+console.log(course)
 // To DO: Dynamic Enrollment status
   return (
     <Card sx={{ maxWidth: 360, height: '500px' }}>
       <CardMedia
         component="img"
-        height="194"
+        height="200"
         image={course.image}
         alt={course.title}
       />
@@ -23,8 +23,8 @@ const CourseCards = ({course}) => {
 </Typography>
 
         <br />
-        <Typography variant='body2' marginBottom='.4rem' color="text.secondary">
-          <strong>Overview:</strong> {course.shortDesc?.slice(0,180)}...
+        <Typography variant='body2' height={80} marginBottom='.4rem' color="text.secondary">
+          <strong>Overview:</strong> {course.shortDesc?.slice(0,167)}...
         </Typography> 
         
         <Chip label={`${200} Students Enrolled`} color="success" variant="outlined" />
