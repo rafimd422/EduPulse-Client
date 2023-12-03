@@ -122,6 +122,7 @@ if(user === null){
             <TextField
               value={user?.displayName}
               variant="outlined"
+              name='name'
               margin="normal"
               required
               InputProps={{

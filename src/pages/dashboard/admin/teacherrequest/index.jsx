@@ -74,7 +74,6 @@ if(user === null){
       ),
     },
     { field: "name", headerName: "Name", width: 130 },
-  
     { field: "title", headerName: "Title", width: 130 },
     { field: "category", headerName: "Category", width: 130 },
     { field: "status", headerName: "Status", width: 130 },
