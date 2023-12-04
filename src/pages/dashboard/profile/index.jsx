@@ -47,7 +47,6 @@ if(currentUser === null || currentUser?.length === 0){
   refetch()
 }
 const user = currentUser[0]
-console.log(user)
   return (
     <DashboardLayout>
         <Head>

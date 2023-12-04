@@ -68,19 +68,23 @@ export default function Sidebar() {
 
   const StudentMenu = [
     { name: "Profile", route: "/dashboard/profile" },
-    { name: "My Enroll Class", route: "/dashboard/student/enrollclass" }
+    { name: "My Enroll Class", route: "/dashboard/student/enrollclass" },
+    { name: "Back to Home", route: "/" }
   ];
 
   const TeacherMenu = [
     { name: "Profile", route: "/dashboard/profile" },
+
     { name: "Add class", route: "/dashboard/teacher/addclass" },
-    { name: "My class", route: "/dashboard/teacher/myclass" }
+    { name: "My class", route: "/dashboard/teacher/myclass" },
+    { name: "Back to Home", route: "/" }
   ];
   const AdminMenu = [
     { name: "Profile", route: "/dashboard/profile" },
     { name: "Teacher Request", route: "/dashboard/admin/teacherrequest" },
     { name: "Users", route: "/dashboard/admin/users" },
-    { name: "All Classes", route: "/dashboard/admin/allclasses" }
+    { name: "All Classes", route: "/dashboard/admin/allclasses" },
+    { name: "Back to Home", route: "/" },
   ]
 
 const {currentUser, refetch,isLoading} = useCurrentUser()
@@ -176,7 +180,6 @@ if(isLoading){
   </Link>
 ))}
         </List>
-        <Divider />
       </Drawer>
     </Box>
   );

@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { useContext } from 'react';
 
 const axiosSecure = axios.create({
-    baseURL: 'https://eduserver-three.vercel.app/'
+    baseURL: 'http://localhost:5000'
 })
 const useAxiosSecure = () => {
   const router = useRouter()
