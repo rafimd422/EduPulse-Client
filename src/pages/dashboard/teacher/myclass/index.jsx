@@ -116,8 +116,8 @@ const MyClass = () => {
                 alt={classItem.title}
               />
               <CardContent>
-                <Typography variant="body2" color="text.secondary">
-                  {classItem.shortDesc}
+                <Typography height={160} variant="body2" color="text.secondary">
+                {classItem.shortDesc.slice(0, 211)}...
                 </Typography>
                 <div
                   style={{ display: "flex", justifyContent: "space-between" }}
@@ -164,8 +164,7 @@ const MyClass = () => {
                   <Button disabled variant="outlined" color="error" size="md">
                     See Details
                   </Button>
-               :                 <Link href={`/dashboard/teacher/myclass/${classItem._id}`}>
-                  {" "}
+               : <Link href={`/dashboard/teacher/myclass/${classItem._id}`}>
                   <Button variant="outlined" color="error" size="md">
                     See Details
                   </Button>
