@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
 
-function Banner() {
+const Banner = () => {
 
   return (
     <Paper
@@ -16,11 +16,10 @@ function Banner() {
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
-         backgroundImage: `url(https://i.ibb.co/rZ6JJpV/element5-digital-Oy-Cl7-Y4y0-Bk-unsplash.jpg)`,
+        backgroundImage: `url(https://i.ibb.co/Rj3dx8k/course-Banner.jpg)`,
+        height:{xl:'90vh', lg:'80vh', md:'60vh',sm:'45vh'}
       }}
     >
-      {/* Increase the priority of the hero background image */}
-       {/* <img style={{ display: 'none' }} src='{}' alt={} /> */}
       <Box
         sx={{
           position: 'absolute',
@@ -28,23 +27,24 @@ function Banner() {
           bottom: 0,
           right: 0,
           left: 0,
-          backgroundColor: 'rgba(0,0,0,.4)'
+          backgroundColor: 'rgba(0,0,0,.4)',
         }}
       />
       <Grid container maxWidth={'lg'}>
-        <Grid item md={6} sx={{my:'28px', mx:"auto"}}>
+        <Grid item md={6} sx={{mx:'auto',my:'auto'}}>
           <Box
             sx={{
               position: 'relative',
-              p: { xs: 3, md: 6 },
-              pr: { md: 0 },
+              px:{md:'0', sm:'100px'},
+              pt: {lg:'400px', md:'200px',sm:'120px', xs:'80px'},
+    pb: {md:"250px"}
             }}
           >
-            <Typography component="p" variant="h3" color="black" fontWeight={'800'} sx={{lineHeight:"4rem", mb:'4px',  fontFamily:'EB Garamond'
+            <Typography component="p" variant="h3" color="white" fontWeight={'800'} sx={{lineHeight:"4rem", fontSize:{xl:'3.5rem',sm:'2.85rem', xs:'2.3rem'}, mb:{md:'4px', xs:'8px'}, fontFamily:'EB Garamond'
 }}> 
             Elevate Your Expertise with Edupalse
             </Typography>
-            <Typography variant="p" color="inherit" paragraph>
+            <Typography fontSize={{lg:'1.4rem', xs:'1rem'}} variant="p" color="inherit" paragraph>
             Explore a world of knowledge and skills at Edupalse. Our platform offers a diverse range of courses, expert instructors, and flexible learning options to help you achieve your goals. Start your journey to success today!
             </Typography>
             <Link variant="subtitle1" href="#">
