@@ -116,7 +116,7 @@ const MyClass = () => {
                 alt={classItem.title}
               />
               <CardContent>
-                <Typography height={160} variant="body2" color="text.secondary">
+                <Typography height={130} variant="body2" color="text.secondary">
                 {classItem.shortDesc.slice(0, 211)}...
                 </Typography>
                 <div
@@ -143,7 +143,8 @@ const MyClass = () => {
                   </Typography>
                 </div>
               </CardContent>
-              <CardActions>
+              {classItem.status === 'approved' &&
+              <CardActions sx={{display:'flex', justifyContent:'space-between', mx:'1rem', mb:'4px'}}>
                 <Link
                   href={`/dashboard/teacher/myclass/update/${classItem._id}`}
                 >
@@ -160,16 +161,9 @@ const MyClass = () => {
                 >
                   Delete
                 </Button>
-{classItem.status !== 'approved' ? 
-                  <Button disabled variant="outlined" color="error" size="md">
-                    See Details
-                  </Button>
-               : <Link href={`/dashboard/teacher/myclass/${classItem._id}`}>
-                  <Button variant="outlined" color="error" size="md">
-                    See Details
-                  </Button>
-                </Link>}
+
               </CardActions>
+            }
             </Card>
           ))}
       </Container>

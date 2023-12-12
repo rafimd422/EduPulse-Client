@@ -8,7 +8,7 @@ import Link from 'next/link';
 const EnrollCards = ({ courses }) => {
 
   return (
-    <Card sx={{ maxWidth: 360, height: '500px' }}>
+    <Card sx={{ maxWidth: 360, height: '450px' }}>
       <CardMedia
         component="img"
         height="194"
@@ -29,18 +29,10 @@ const EnrollCards = ({ courses }) => {
           Amount: ${courses?.paidAmount}  
         </Typography>
         <Chip label="Paid" sx={{marginLeft:'8px'}} color="success" />
-        <Typography variant="h6" sx={{ fontSize: '.8rem', fontWeight: 'bold' }} color="text.secondary">
+        <Typography variant="h6" sx={{ fontSize: '.8rem', fontWeight: 'bold',mt:'8px' }} color="text.secondary">
           Transaction Id: {courses?.transecitonId}
         </Typography> 
       </CardContent>
-      
-      <CardActions sx={{ justifyContent: 'flex-end', width: '100%' }} disableSpacing>
-        <Link href={`/dashboard/student/enrollclass/${courses?._id}`}>
-          <Button sx={{ backgroundColor: 'rgb(128, 0, 0)', color: 'white', p: 2, textAlign: 'end' }} className="CheckButton">
-            Continue!
-          </Button>
-        </Link> 
-      </CardActions>
     </Card>
   );
 }
