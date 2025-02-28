@@ -5,12 +5,12 @@ import { useRouter } from 'next/router';
 import { useContext } from 'react';
 
 const axiosSecure = axios.create({
-    baseURL: 'http://localhost:5000'
+    baseURL: 'https://eduserver-three.vercel.app'
 })
 const useAxiosSecure = () => {
   const router = useRouter()
   const { logOut, setLoading } = useContext(AuthContext) 
-
+  
 
   axiosSecure.interceptors.request.use(function (config) {
     const token = localStorage.getItem('token')
