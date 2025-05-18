@@ -5,9 +5,11 @@ import { useRouter } from "next/router";
 import { useContext } from "react";
 import loading from "../../assets/Loading/loading.json";
 import swal from "sweetalert";
-import Lottie from "lottie-react";
 import useCourseData from "@/hooks/useCourseData";
 import { AuthContext } from "@/Provider/AuthProvider";
+import dynamic from "next/dynamic";
+
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 const PaymentForm = () => {
   const stripe = useStripe();

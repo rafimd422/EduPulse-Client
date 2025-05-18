@@ -2,9 +2,10 @@ import { useContext } from "react";
 import { AuthContext } from "./AuthProvider";
 import { useRouter } from "next/router";
 import { Container } from "@mui/material";
-import Lottie from "lottie-react";
 import Loading from "../assets/Loading/loading.json";
+import dynamic from "next/dynamic";
 
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);

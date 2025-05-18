@@ -19,9 +19,8 @@ import { Container } from "@mui/material";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import useCurrentUser from "@/hooks/useCurrentUser";
-import Lottie from "lottie-react";
-import loading from '../.././assets/Loading/loading.json'
-
+import loading from "../.././assets/Loading/loading.json";
+import dynamic from "next/dynamic";
 
 const drawerWidth = 240;
 
@@ -46,10 +45,11 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
   ...theme.mixins.toolbar,
   justifyContent: "flex-end",
 }));
+
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 export default function Sidebar() {
   const theme = useTheme();
@@ -69,7 +69,7 @@ export default function Sidebar() {
   const StudentMenu = [
     { name: "Profile", route: "/dashboard/profile" },
     { name: "My Enroll Class", route: "/dashboard/student/enrollclass" },
-    { name: "Back to Home", route: "/" }
+    { name: "Back to Home", route: "/" },
   ];
 
   const TeacherMenu = [
@@ -77,7 +77,7 @@ export default function Sidebar() {
 
     { name: "Add class", route: "/dashboard/teacher/addclass" },
     { name: "My class", route: "/dashboard/teacher/myclass" },
-    { name: "Back to Home", route: "/" }
+    { name: "Back to Home", route: "/" },
   ];
   const AdminMenu = [
     { name: "Profile", route: "/dashboard/profile" },
@@ -85,17 +85,23 @@ export default function Sidebar() {
     { name: "Users", route: "/dashboard/admin/users" },
     { name: "All Classes", route: "/dashboard/admin/allclasses" },
     { name: "Back to Home", route: "/" },
-  ]
+  ];
 
-const {currentUser, refetch,isLoading} = useCurrentUser()
+  const { currentUser, refetch, isLoading } = useCurrentUser();
 
-
-if(isLoading){
-  return (
-    <Container sx={{height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}>
-      <Lottie animationData={loading} />
-    </Container>
-  )
+  if (isLoading) {
+    return (
+      <Container
+        sx={{
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Lottie animationData={loading} />
+      </Container>
+    );
   }
 
   const userRole = currentUser?.[0]?.role;
@@ -144,41 +150,90 @@ if(isLoading){
         <Divider />
         {/* Student */}
         <List>
-    {userRole === 'student' && StudentMenu.map((item, index) => (
-  <Link style={{textDecoration:'none', color:'black', fontWeight:'bold'}} href={item?.route || ''} key={index}>
-    <ListItem disablePadding sx={{ ...(isActiveRoute === item?.route && { backgroundColor: 'red', color:'white' }) }}>
-      <ListItemButton>
-        <ListItemText primary={item.name} />
-      </ListItemButton>
-    </ListItem>
-  </Link>
-))}
-
+          {userRole === "student" &&
+            StudentMenu.map((item, index) => (
+              <Link
+                style={{
+                  textDecoration: "none",
+                  color: "black",
+                  fontWeight: "bold",
+                }}
+                href={item?.route || ""}
+                key={index}
+              >
+                <ListItem
+                  disablePadding
+                  sx={{
+                    ...(isActiveRoute === item?.route && {
+                      backgroundColor: "red",
+                      color: "white",
+                    }),
+                  }}
+                >
+                  <ListItemButton>
+                    <ListItemText primary={item.name} />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+            ))}
         </List>
         <List>
-        {userRole === 'Teacher' && TeacherMenu.map((item, index) => (
-  <Link style={{textDecoration:'none', color:'black', fontWeight:'bold'}} href={item?.route || ''} key={index}>
-    <ListItem disablePadding sx={{ ...(isActiveRoute === item?.route && { backgroundColor: 'red', color:'white' }) }}>
-      <ListItemButton>
-        <ListItemText primary={item.name} />
-      </ListItemButton>
-    </ListItem>
-  </Link>
-))}
-
+          {userRole === "Teacher" &&
+            TeacherMenu.map((item, index) => (
+              <Link
+                style={{
+                  textDecoration: "none",
+                  color: "black",
+                  fontWeight: "bold",
+                }}
+                href={item?.route || ""}
+                key={index}
+              >
+                <ListItem
+                  disablePadding
+                  sx={{
+                    ...(isActiveRoute === item?.route && {
+                      backgroundColor: "red",
+                      color: "white",
+                    }),
+                  }}
+                >
+                  <ListItemButton>
+                    <ListItemText primary={item.name} />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+            ))}
         </List>
         <Divider />
         {/* Admin */}
         <List>
-        {userRole === 'admin' && AdminMenu.map((item, index) => (
-  <Link style={{textDecoration:'none', color:'black', fontWeight:'bold'}} href={item?.route || ''} key={index}>
-    <ListItem disablePadding sx={{ ...(isActiveRoute === item?.route && { backgroundColor: 'red', color:'white' }) }}>
-      <ListItemButton>
-        <ListItemText primary={item.name} />
-      </ListItemButton>
-    </ListItem>
-  </Link>
-))}
+          {userRole === "admin" &&
+            AdminMenu.map((item, index) => (
+              <Link
+                style={{
+                  textDecoration: "none",
+                  color: "black",
+                  fontWeight: "bold",
+                }}
+                href={item?.route || ""}
+                key={index}
+              >
+                <ListItem
+                  disablePadding
+                  sx={{
+                    ...(isActiveRoute === item?.route && {
+                      backgroundColor: "red",
+                      color: "white",
+                    }),
+                  }}
+                >
+                  <ListItemButton>
+                    <ListItemText primary={item.name} />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+            ))}
         </List>
       </Drawer>
     </Box>

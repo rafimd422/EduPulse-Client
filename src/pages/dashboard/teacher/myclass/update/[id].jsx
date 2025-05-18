@@ -10,13 +10,15 @@ import {
 import Head from "next/head";
 import { Container } from "@mui/material";
 import Title from "@/components/Title/Title";
-import Lottie from "lottie-react";
 import loading from "../../../../../assets/Loading/loading.json";
 import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
 import { AuthContext } from "@/Provider/AuthProvider";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import swal from "sweetalert";
+import dynamic from "next/dynamic";
+
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 const Update = () => {
   const router = useRouter();

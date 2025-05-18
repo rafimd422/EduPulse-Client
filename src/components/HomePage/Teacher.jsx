@@ -2,14 +2,15 @@ import * as React from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { Box, Button, Container } from "@mui/material";
-import Lottie from "lottie-react";
 import teacher from "../../assets/teacher/teacher.json";
 import Title from "../Title/Title";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
+
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 export default function Teacher() {
-
-const router = useRouter()
+  const router = useRouter();
 
   return (
     <Box>
@@ -43,16 +44,16 @@ const router = useRouter()
               fontFamily: "EB Garamond",
             }}
           >
-<Typography
-  variant="h2"
-  sx={{
-    fontWeight: 700,
-    fontSize: "2.2rem",
-    color: "#414048",
-  }}
->
-  Become an Instructor
-</Typography>
+            <Typography
+              variant="h2"
+              sx={{
+                fontWeight: 700,
+                fontSize: "2.2rem",
+                color: "#414048",
+              }}
+            >
+              Become an Instructor
+            </Typography>
 
             <Typography
               align="center"
@@ -72,8 +73,8 @@ const router = useRouter()
               mission to empower others through education and shape the future
               as a dedicated instructor.
             </Typography>
-<Button
-        onClick={()=> router.push('/teachonedupulse')}
+            <Button
+              onClick={() => router.push("/teachonedupulse")}
               sx={{
                 backgroundColor: "rgb(128, 0, 0)",
                 color: "#fff",

@@ -6,18 +6,20 @@ import Head from "next/head";
 import Image from "next/image";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
-import Lottie from "lottie-react";
 import loading from "../../../../assets/Loading/loading.json";
 import useAxiosPublic from "@/hooks/useAxiosPublic";
 import swal from "sweetalert";
 import { useContext } from "react";
 import { AuthContext } from "@/Provider/AuthProvider";
 import SignIn from "@/pages/auth/signin";
+import dynamic from "next/dynamic";
+
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 const TeacherRequest = () => {
   const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure();
-  const {user} = useContext(AuthContext)
+  const { user } = useContext(AuthContext);
   const {
     data: teacherRequest = [],
     refetch,
@@ -33,10 +35,9 @@ const TeacherRequest = () => {
     },
   });
 
-
-if(user === null){
-  return <SignIn />
-}
+  if (user === null) {
+    return <SignIn />;
+  }
 
   if (isLoading) {
     return (
@@ -82,8 +83,9 @@ if(user === null){
       field: "actions",
       headerName: "Actions",
       width: 180,
-      renderCell: (params) => (
-        params.row.status !== 'approved' && params.row.status !== 'rejected' && (
+      renderCell: (params) =>
+        params.row.status !== "approved" &&
+        params.row.status !== "rejected" && (
           <div style={{ display: "flex", gap: "4px" }}>
             <Button
               variant="contained"
@@ -102,14 +104,9 @@ if(user === null){
               Reject
             </Button>
           </div>
-        )
-      ),
+        ),
     },
-    
   ];
-
-
-
 
   //handle approve
 
@@ -123,13 +120,16 @@ if(user === null){
     }).then((willDelete) => {
       if (willDelete) {
         axiosPublic.patch(`/teacherRequest/${id}`).then((res) => {
-          if (res.data?.TeacherRequest?.modifiedCount > 0 || res.data?.userCollection?.modifiedCount > 0 ) {
+          if (
+            res.data?.TeacherRequest?.modifiedCount > 0 ||
+            res.data?.userCollection?.modifiedCount > 0
+          ) {
             refetch();
             swal("Teacher Approved Successfully!", {
               icon: "success",
             });
           } else {
-            swal("User role is not changed"); 
+            swal("User role is not changed");
           }
         });
       }
@@ -139,7 +139,6 @@ if(user === null){
   //handle reject
 
   const handleReject = (id) => {
-
     swal({
       title: "Are you sure?",
       text: "Do you want to reject this request?",
@@ -149,7 +148,7 @@ if(user === null){
     }).then((willDelete) => {
       if (willDelete) {
         axiosPublic.patch(`/teacherRequest/reject/${id}`).then((res) => {
-          if (res.data?.modifiedCount > 0 ) {
+          if (res.data?.modifiedCount > 0) {
             refetch();
             swal("Teacher Rejected Successfully!", {
               icon: "success",
@@ -160,7 +159,6 @@ if(user === null){
     });
   };
   refetch();
-
 
   return (
     <DashboardLayout>

@@ -14,15 +14,16 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { useContext } from "react";
 import { AuthContext } from "@/Provider/AuthProvider";
-import Lottie from "lottie-react";
 import loading from "../../../../assets/Loading/loading.json";
 import Link from "next/link";
 import swal from "sweetalert";
+import dynamic from "next/dynamic";
+
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 const MyClass = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useContext(AuthContext);
-  //
   const {
     data: classRequests,
     refetch,
@@ -117,7 +118,7 @@ const MyClass = () => {
               />
               <CardContent>
                 <Typography height={130} variant="body2" color="text.secondary">
-                {classItem.shortDesc.slice(0, 211)}...
+                  {classItem.shortDesc.slice(0, 211)}...
                 </Typography>
                 <div
                   style={{ display: "flex", justifyContent: "space-between" }}
@@ -143,27 +144,33 @@ const MyClass = () => {
                   </Typography>
                 </div>
               </CardContent>
-              {classItem.status === 'approved' &&
-              <CardActions sx={{display:'flex', justifyContent:'space-between', mx:'1rem', mb:'4px'}}>
-                <Link
-                  href={`/dashboard/teacher/myclass/update/${classItem._id}`}
+              {classItem.status === "approved" && (
+                <CardActions
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    mx: "1rem",
+                    mb: "4px",
+                  }}
                 >
-                  {" "}
-                  <Button size="md" variant="contained" color="success">
-                    Update
+                  <Link
+                    href={`/dashboard/teacher/myclass/update/${classItem._id}`}
+                  >
+                    {" "}
+                    <Button size="md" variant="contained" color="success">
+                      Update
+                    </Button>
+                  </Link>
+                  <Button
+                    onClick={() => handleDelete(classItem._id)}
+                    size="md"
+                    variant="contained"
+                    color="error"
+                  >
+                    Delete
                   </Button>
-                </Link>
-                <Button
-                  onClick={() => handleDelete(classItem._id)}
-                  size="md"
-                  variant="contained"
-                  color="error"
-                >
-                  Delete
-                </Button>
-
-              </CardActions>
-            }
+                </CardActions>
+              )}
             </Card>
           ))}
       </Container>

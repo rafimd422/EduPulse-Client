@@ -1,14 +1,13 @@
 import Head from "next/head";
 import { Toolbar } from "@mui/material";
-import Banner from '@/components/HomePage/Banner';
-import Trusted from '@/components/HomePage/Trusted';
+import Banner from "@/components/HomePage/Banner";
+import Trusted from "@/components/HomePage/Trusted";
 import PopularCourses from "@/components/HomePage/PopularCourses";
 import FeedBack from "@/components/HomePage/FeedBack";
 import TotalUserSection from "@/components/HomePage/TotalUserSection";
 import WhyChooseUs from "@/components/HomePage/WhyChooseUs/WhyChooseUs";
-import Faq from '@/components/HomePage/Faq';
-import Teacher from '@/components/HomePage/Teacher';
-
+import Faq from "@/components/HomePage/Faq";
+import Teacher from "@/components/HomePage/Teacher";
 
 export default function Home() {
   return (
@@ -22,8 +21,8 @@ export default function Home() {
       <Toolbar />
       <Banner />
       <div style={{ marginTop: "4rem", marginBottom: "4rem" }}>
-  <Trusted />
-</div>
+        <Trusted />
+      </div>
       <PopularCourses />
       <FeedBack />
       <TotalUserSection />

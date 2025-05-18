@@ -11,13 +11,14 @@ import Title from "./../../components/Title/Title";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
-import Lottie from "lottie-react";
 import Loading from "../../assets/Loading/loading.json";
 import { useContext } from "react";
 import { AuthContext } from "@/Provider/AuthProvider";
 import swal from "sweetalert";
 import PrivateRoute from "@/Provider/PrivateRoute";
 import SignIn from "../auth/signin";
+
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 const TeachOnEduPulse = () => {
   const { user } = useContext(AuthContext);
@@ -80,117 +81,114 @@ const TeachOnEduPulse = () => {
 
   const ExperienceOptions = ["Beginner", "Experienced", "Some Idea"];
 
-if(user === null){
-  return <SignIn />
-}
-
+  if (user === null) {
+    return <SignIn />;
+  }
 
   return (
-      <Box sx={{ my: "2rem" }}>
+    <Box sx={{ my: "2rem" }}>
+      <Toolbar />
+      <Container maxWidth={"lg"} align="center">
         <Toolbar />
-  <Container maxWidth={"lg"} align="center">
-          <Toolbar />
-          <Title title={"Teach On"} titleColor={"Edupulse"} />
-          <Typography
-            maxWidth={"sm"}
-            align="center"
-            sx={{
-              fontFamily: "'EB Garamond', serif",
-              fontWeight: 700,
-              fontSize: "1rem",
-              my: "1rem",
-              color: "#404440",
-              transition: "all 0.4s ease 0s",
+        <Title title={"Teach On"} titleColor={"Edupulse"} />
+        <Typography
+          maxWidth={"sm"}
+          align="center"
+          sx={{
+            fontFamily: "'EB Garamond', serif",
+            fontWeight: 700,
+            fontSize: "1rem",
+            my: "1rem",
+            color: "#404440",
+            transition: "all 0.4s ease 0s",
+          }}
+          variant="h3"
+        >
+          Join our community of educators and share your knowledge with learners
+          around the world! We believe in providing opportunities for passionate
+          individuals like you to make a difference through teaching.
+        </Typography>
+
+        <form
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            maxWidth: "400px",
+            marginTop: "2rem",
+          }}
+          onSubmit={mutation.mutate}
+        >
+          <TextField
+            value={user?.displayName}
+            variant="outlined"
+            name="name"
+            margin="normal"
+            required
+            InputProps={{
+              style: {
+                color: "black",
+              },
             }}
-            variant="h3"
+          />
+
+          <TextField
+            type="file"
+            variant="outlined"
+            margin="normal"
+            name="image"
+            id="image"
+            required
+          />
+
+          <TextField
+            select
+            label="Experience"
+            variant="outlined"
+            margin="normal"
+            required
+            name="experience"
           >
-            Join our community of educators and share your knowledge with
-            learners around the world! We believe in providing opportunities for
-            passionate individuals like you to make a difference through
-            teaching.
-          </Typography>
+            {ExperienceOptions.map((option, index) => (
+              <MenuItem key={index} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </TextField>
 
-          <form
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              maxWidth: "400px",
-              marginTop: "2rem",
-            }}
-            onSubmit={mutation.mutate}
+          <TextField
+            label="Title"
+            variant="outlined"
+            margin="normal"
+            name="courseTitle"
+            required
+          />
+
+          <TextField
+            select
+            label="Category"
+            variant="outlined"
+            margin="normal"
+            name="category"
+            required
           >
-            <TextField
-              value={user?.displayName}
-              variant="outlined"
-              name='name'
-              margin="normal"
-              required
-              InputProps={{
-                style: {
-                  color: "black",
-                },
-              }}
-            />
+            {categories.map((category) => (
+              <MenuItem key={category} value={category}>
+                {category}
+              </MenuItem>
+            ))}
+          </TextField>
 
-            <TextField
-              type="file"
-              variant="outlined"
-              margin="normal"
-              name="image"
-              id="image"
-              required
-            />
-
-            <TextField
-              select
-              label="Experience"
-              variant="outlined"
-              margin="normal"
-              required
-              name="experience"
-            >
-              {ExperienceOptions.map((option, index) => (
-                <MenuItem key={index} value={option}>
-                  {option}
-                </MenuItem>
-              ))}
-            </TextField>
-
-            <TextField
-              label="Title"
-              variant="outlined"
-              margin="normal"
-              name="courseTitle"
-              required
-            />
-
-            <TextField
-              select
-              label="Category"
-              variant="outlined"
-              margin="normal"
-              name="category"
-              required
-            >
-              {categories.map((category) => (
-                <MenuItem key={category} value={category}>
-                  {category}
-                </MenuItem>
-              ))}
-            </TextField>
-
-            <Button
-              type="submit"
-              variant="contained"
-              disabled={mutation.isLoading}
-            >
-              {mutation.isLoading ? "Submitting..." : "Submit"}
-            </Button>
-          </form>
-        </Container>
-        <Toolbar />
-      </Box>
-
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={mutation.isLoading}
+          >
+            {mutation.isLoading ? "Submitting..." : "Submit"}
+          </Button>
+        </form>
+      </Container>
+      <Toolbar />
+    </Box>
   );
 };
 

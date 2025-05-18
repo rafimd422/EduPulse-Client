@@ -14,13 +14,14 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useContext, useState } from "react";
 import Toolbar from "@mui/material/Toolbar";
 import lottieFile from "../../../assets/login/login.json";
-import Lottie from "lottie-react";
 import Head from "next/head";
 import { AuthContext } from "@/Provider/AuthProvider";
 import { useRouter } from "next/router";
 import swal from "sweetalert";
-import SocialLogin from './../../../components/SocialLogin/SocialLogin';
+import SocialLogin from "./../../../components/SocialLogin/SocialLogin";
+import dynamic from "next/dynamic";
 
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
@@ -35,22 +36,21 @@ export default function SignIn() {
     const email = data.get("email");
     const password = data.get("password");
 
-
     signIn(email, password)
       .then((result) => {
         swal("Log In Successfull", {
           icon: "success",
         });
-        if (router.pathname !== '/auth/signin') {
+        if (router.pathname !== "/auth/signin") {
           router.push(router.pathname);
         } else {
-          router.push('/');
+          router.push("/");
         }
       })
       .catch((error) => {
         swal({
           title: "Error!",
-          text: error.message.replace("Firebase: Error ", ''),
+          text: error.message.replace("Firebase: Error ", ""),
           icon: "error",
         });
       });
@@ -72,7 +72,6 @@ export default function SignIn() {
         justifyContent="center"
         sx={{ height: "100vh" }}
       >
-
         <CssBaseline />
         <Grid
           item
@@ -93,7 +92,7 @@ export default function SignIn() {
           xl={6}
           elevation={6}
           marginTop="3rem"
-          square='true'
+          square="true"
         >
           <Box
             sx={{
@@ -120,40 +119,39 @@ export default function SignIn() {
               onSubmit={handleLogin}
               sx={{ mt: 1 }}
             >
-<TextField
-  margin="normal"
-  required
-  fullWidth
-  id="email"
-  label="Email Address"
-  name="email"
-  autoComplete="email" // Enable email autocomplete
-  autoFocus
-/>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email" // Enable email autocomplete
+                autoFocus
+              />
 
-<FormControl variant="outlined" fullWidth>
-  <InputLabel htmlFor="password">Password</InputLabel>
-  <OutlinedInput
-    name="password"
-    id="password"
-    type={showPassword ? "text" : "password"}
-    endAdornment={
-      <InputAdornment position="end">
-        <IconButton
-          aria-label="toggle password visibility"
-          onClick={handleClickShowPassword}
-          onMouseDown={handleMouseDownPassword}
-          edge="end"
-        >
-          {showPassword ? <VisibilityOff /> : <Visibility />}
-        </IconButton>
-      </InputAdornment>
-    }
-    label="Password"
-    autoComplete="current-password" 
-  />
-</FormControl>
-
+              <FormControl variant="outlined" fullWidth>
+                <InputLabel htmlFor="password">Password</InputLabel>
+                <OutlinedInput
+                  name="password"
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  label="Password"
+                  autoComplete="current-password"
+                />
+              </FormControl>
 
               <Button
                 type="submit"
@@ -163,7 +161,7 @@ export default function SignIn() {
               >
                 Sign In
               </Button>
-<SocialLogin />
+              <SocialLogin />
               <Grid container>
                 <Grid item>
                   {"Don't have an account?"}
