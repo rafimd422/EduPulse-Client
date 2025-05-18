@@ -17,6 +17,7 @@ import { AuthContext } from "@/Provider/AuthProvider";
 import swal from "sweetalert";
 import PrivateRoute from "@/Provider/PrivateRoute";
 import SignIn from "../auth/signin";
+import dynamic from "next/dynamic";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 

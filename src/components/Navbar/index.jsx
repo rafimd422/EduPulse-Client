@@ -1,37 +1,35 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import MenuIcon from "@mui/icons-material/Menu";
-import Link from "next/link";
+import React, { useState, useCallback, useContext, useMemo } from "react";
 import {
-  CssBaseline,
-  Box,
   AppBar,
-  List,
-  IconButton,
-  Drawer,
+  Avatar,
+  Box,
+  Button,
+  Container,
+  CssBaseline,
   Divider,
+  Drawer,
+  IconButton,
+  List,
   ListItem,
   ListItemButton,
   ListItemText,
-  Toolbar,
-  Typography,
-  Avatar,
-  Container,
   Menu,
   MenuItem,
+  Toolbar,
   Tooltip,
+  Typography,
 } from "@mui/material";
-import { useRouter } from "next/router";
-import logo from "./../../assets/logo.png";
-import Image from "next/legacy/image";
-import Button from "@mui/material/Button";
-import { AuthContext } from "@/Provider/AuthProvider";
+import MenuIcon from "@mui/icons-material/Menu";
+import Link from "next/link";
+import Image from "next/image";
+import { useRouter } from "next/navigation"; // Page router uses next/navigation
 import swal from "sweetalert";
-import { useCallback } from "react";
-import { useState } from "react";
-import { useContext } from "react";
+
+import { AuthContext } from "@/Provider/AuthProvider";
+import logo from "./../../assets/logo.png";
 
 const drawerWidth = 260;
+
 const navItems = [
   { name: "Home", route: "/" },
   { name: "All Classes", route: "/allclasses" },
@@ -40,21 +38,22 @@ const navItems = [
 
 const Navbar = ({ window }) => {
   const router = useRouter();
+  const { user, logOut, setLoading } = useContext(AuthContext);
+
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const { user, logOut, setLoading } = useContext(AuthContext);
-  
+
   const handleDrawerToggle = useCallback(() => {
-    setMobileOpen((prevState) => !prevState);
-  });
+    setMobileOpen((prev) => !prev);
+  }, []);
 
-  const handleMenu = (event) => {
+  const handleMenuOpen = useCallback((event) => {
     setAnchorEl(event.currentTarget);
-  };
+  }, []);
 
-  const handleClose = useCallback(()=>{
-    setAnchorEl(null)
-  })
+  const handleMenuClose = useCallback(() => {
+    setAnchorEl(null);
+  }, []);
 
   const handleLogout = useCallback(() => {
     swal({
@@ -62,65 +61,68 @@ const Navbar = ({ window }) => {
       icon: "warning",
       buttons: true,
       dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        logOut().then(() => {
-          setLoading(false);
-        });
-        swal("Log Out Successfull", {
-          icon: "success",
-        });
+    }).then((confirmed) => {
+      if (confirmed) {
+        logOut().then(() => setLoading(false));
+        swal("Log Out Successful", { icon: "success" });
       }
     });
-  });
-
-  const drawer = (
-    <Box
-      onClick={handleDrawerToggle}
-      sx={{ textAlign: "center", backgroundColor: "black", height: "100vh" }}
-    >
-      <Image src={logo} width={"100%"} height={100} alt="logo" />
-      <Divider />
-      <List>
-        {navItems.map((item) => (
-          <ListItem key={item.name} disablePadding>
-            <ListItemButton sx={{ textAlign: "center", display: "inline" }}>
-              {router.pathname === item.route ? (
-                <Link href={item.route} className="nav-link active">
-                  <ListItemText
-                    primary={item.name}
-                    sx={{
-                      color: "whitesmoke",
-                      backgroundColor: "red",
-                      textDecoration: "none",
-                      padding: ".4rem",
-                      borderRadius: ".3rem",
-                    }}
-                  />
-                </Link>
-              ) : (
-                <Link href={item.route} className="nav-link">
-                  <ListItemText
-                    primary={item.name}
-                    sx={{ color: "whitesmoke", textDecoration: "none" }}
-                  />
-                </Link>
-              )}
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Link href={"/auth/signin"}>
-        {" "}
-        <Button variant="outlined" color="error">
-          Sign In
-        </Button>
-      </Link>
-    </Box>
-  );
+    handleMenuClose();
+  }, [logOut, setLoading, handleMenuClose]);
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
+
+  // Memoized Drawer content
+  const drawer = useMemo(
+    () => (
+      <Box
+        onClick={handleDrawerToggle}
+        sx={{ textAlign: "center", bgcolor: "black", height: "100vh" }}
+      >
+        <Box sx={{ py: 2 }}>
+          <Image src={logo} alt="logo" width={200} height={80} priority />
+        </Box>
+        <Divider />
+        <List>
+          {navItems.map(({ name, route }) => (
+            <ListItem key={name} disablePadding>
+              <ListItemButton sx={{ textAlign: "center" }}>
+                <Link
+                  href={route}
+                  className={router.pathname === route ? "active" : ""}
+                  passHref
+                  legacyBehavior
+                >
+                  <ListItemText
+                    primary={name}
+                    sx={{
+                      color: "whitesmoke",
+                      ...(router.pathname === route && {
+                        bgcolor: "red",
+                        borderRadius: 1,
+                        px: 1,
+                        py: 0.5,
+                        textDecoration: "none",
+                      }),
+                    }}
+                  />
+                </Link>
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+        <Box sx={{ mt: 2 }}>
+          <Link href="/auth/signin" passHref legacyBehavior>
+            <Button variant="outlined" color="error" fullWidth>
+              Sign In
+            </Button>
+          </Link>
+        </Box>
+      </Box>
+    ),
+    [handleDrawerToggle, router.pathname]
+  );
 
   return (
     <Box sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -128,13 +130,12 @@ const Navbar = ({ window }) => {
       <AppBar
         component="nav"
         sx={{
-          bgColor: "#0d0c0c",
           fontFamily: "monospace",
-          boxShadow: "alice 1px 1px 1px 1px",
+          boxShadow: "0 1px 3px rgb(0 0 0 / 0.2)",
         }}
       >
-        <Container maxWidth="lg">
-          <Toolbar>
+        <Container maxWidth="xl">
+          <Toolbar disableGutters>
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -144,122 +145,118 @@ const Navbar = ({ window }) => {
             >
               <MenuIcon />
             </IconButton>
-            <Typography
-              component="div"
-              sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-            >
-              <Image src={logo} width={230} height={100} alt="logo" />
-            </Typography>
-            <Container
+
+            {/* Logo */}
+            <Box sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}>
+              <Link href="/" passHref legacyBehavior>
+                <a>
+                  <Image
+                    src={logo}
+                    alt="logo"
+                    width={230}
+                    height={100}
+                    priority
+                  />
+                </a>
+              </Link>
+            </Box>
+
+            {/* Navigation & User controls */}
+            <Box
               sx={{
                 display: "flex",
-                flexDirection: { sm: "row", xs: "row-reverse" },
-                justifyContent: { sm: "space-evenly", xs: "space-between" },
+                flexDirection: { xs: "row-reverse", sm: "row" },
+                justifyContent: { xs: "space-between", sm: "space-evenly" },
                 alignItems: "center",
+                width: "100%",
               }}
-              width={"100%"}
             >
+              {/* Desktop nav */}
               <Box
                 sx={{
                   display: { xs: "none", sm: "flex" },
                   justifyContent: "center",
+                  gap: 2,
                 }}
               >
-                {navItems.map((item) => (
-                  <ListItem
-                    key={item.name}
-                    disablePadding
-                    sx={{ width: "fit-content" }}
-                  >
-                    <ListItemButton
-                      sx={{ textAlign: "center", display: "inline" }}
+                {navItems.map(({ name, route }) => (
+                  <Link key={name} href={route} passHref legacyBehavior>
+                    <a
+                      className={router.pathname === route ? "active" : ""}
+                      style={{
+                        color: "whitesmoke",
+                        backgroundColor:
+                          router.pathname === route ? "red" : "transparent",
+                        borderRadius: 4,
+                        padding: "6px 12px",
+                        textDecoration: "none",
+                      }}
                     >
-                      {router.pathname === item.route ? (
-                        <Link href={item.route} className="nav-link active">
-                          <ListItemText
-                            primary={item.name}
-                            sx={{
-                              color: "whitesmoke",
-                              backgroundColor: "red",
-                              textDecoration: "none",
-                              padding: ".4rem",
-                              borderRadius: ".3rem",
-                            }}
-                          />
-                        </Link>
-                      ) : (
-                        <Link
-                          href={item.route}
-                          className="nav-link"
-                          sx={{ textDecoration: "none" }}
-                        >
-                          <ListItemText
-                            primary={item.name}
-                            sx={{ color: "whitesmoke", textDecoration: "none" }}
-                          />
-                        </Link>
-                      )}
-                    </ListItemButton>
-                  </ListItem>
+                      {name}
+                    </a>
+                  </Link>
                 ))}
               </Box>
 
-              <div>
-                {user !== null ? (
-                  <Tooltip title="Open settings">
-                    <IconButton onClick={handleMenu} sx={{ p: 0 }}>
-                      <Avatar alt={user?.displayName} src={user?.photoURL} />
-                    </IconButton>
-                  </Tooltip>
+              {/* User login/avatar */}
+              <Box>
+                {user ? (
+                  <>
+                    <Tooltip title="Open settings">
+                      <IconButton onClick={handleMenuOpen} sx={{ p: 0 }}>
+                        <Avatar
+                          alt={user.displayName || ""}
+                          src={user.photoURL || ""}
+                        />
+                      </IconButton>
+                    </Tooltip>
+
+                    <Menu
+                      anchorEl={anchorEl}
+                      open={Boolean(anchorEl)}
+                      onClose={handleMenuClose}
+                      anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                      transformOrigin={{
+                        vertical: "bottom",
+                        horizontal: "left",
+                      }}
+                      keepMounted
+                    >
+                      <MenuItem disabled sx={{ fontSize: 12 }}>
+                        {user.displayName}
+                      </MenuItem>
+                      <MenuItem
+                        onClick={() => {
+                          router.push("/dashboard/profile");
+                          handleMenuClose();
+                        }}
+                      >
+                        Dashboard
+                      </MenuItem>
+                      <MenuItem onClick={handleLogout}>Log Out</MenuItem>
+                    </Menu>
+                  </>
                 ) : (
-                  <Link href={"/auth/signin"}>
-                    {" "}
+                  <Link href="/auth/signin" passHref legacyBehavior>
                     <Button variant="outlined" color="error">
                       Sign In
                     </Button>
                   </Link>
                 )}
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "bottom",
-                    horizontal: "left",
-                  }}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem disabled sx={{ fontSize: ".8rem" }}>
-                    {user?.displayName}
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => {
-                      router.push("/dashboard/profile");
-                    }}
-                  >
-                    Dashboard
-                  </MenuItem>
-                  <MenuItem onClick={handleLogout}>Log Out</MenuItem>
-                </Menu>
-              </div>
-            </Container>
+              </Box>
+            </Box>
           </Toolbar>
         </Container>
       </AppBar>
-      <nav>
+
+      {/* Mobile Drawer */}
+      <Box component="nav">
         <Drawer
           container={container}
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
+          ModalProps={{ keepMounted: true }}
           sx={{
             display: { xs: "block", sm: "none" },
             "& .MuiDrawer-paper": {
@@ -270,7 +267,7 @@ const Navbar = ({ window }) => {
         >
           {drawer}
         </Drawer>
-      </nav>
+      </Box>
     </Box>
   );
 };
