@@ -22,7 +22,7 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation"; // Page router uses next/navigation
+import { useRouter } from "next/navigation";
 import swal from "sweetalert";
 
 import { AuthContext } from "@/Provider/AuthProvider";
@@ -73,7 +73,6 @@ const Navbar = ({ window }) => {
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
-  // Memoized Drawer content
   const drawer = useMemo(
     () => (
       <Box

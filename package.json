@@ -32,7 +32,24 @@
     "sweetalert": "^2.1.2"
   },
   "devDependencies": {
+    "@types/node": "^22.15.18",
+    "@types/react": "^19.1.4",
+    "@types/react-dom": "^19.1.5",
     "eslint": "^8",
-    "eslint-config-next": "^14.0.3"
-  }
+    "eslint-config-next": "^14.0.3",
+    "typescript": "^5.8.3"
+  },
+  "description": "## Overview",
+  "main": "next.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rafimd422/EduPulse-Client.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rafimd422/EduPulse-Client/issues"
+  },
+  "homepage": "https://github.com/rafimd422/EduPulse-Client#readme"
 }
