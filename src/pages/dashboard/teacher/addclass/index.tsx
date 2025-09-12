@@ -5,37 +5,42 @@ import {
   TextField,
   TextareaAutosize,
   Toolbar,
+  Container,
 } from "@mui/material";
 import Head from "next/head";
-import Title from "./../../../../components/Title/Title";
-import { Container } from "@mui/material";
+import Title from "../../../../components/Title/Title";
 import axios from "axios";
-import { useContext } from "react";
-import { AuthContext } from "@/Provider/AuthProvider";
+import { useContext, FormEvent } from "react";
+import { AuthContext } from "@/Provider/auth-provider";
 import useAxiosPublic from "@/hooks/useAxiosPublic";
 import { useRouter } from "next/router";
+import swal from "sweetalert";
 
-const AddClass = () => {
-  const { user } = useContext(AuthContext);
+const AddClass: React.FC = () => {
+  const { user }: any = useContext(AuthContext);
   const axiosPublic = useAxiosPublic();
-  const router = useRouter()
+  const router = useRouter();
 
-
-
-  
-  const handleClassAdding = (e) => {
+  const handleClassAdding = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = new FormData(e.target);
-    
-    const title = data.get("courseTitle");
-    const price = data.get("price");
-    const photo = data.get("image");
-    const shortDesc = data.get("shortDesc");
-    const courseOutline = data.get("courseOutline");
+    const data = new FormData(e.currentTarget);
+
+    const title = data.get("courseTitle") as string | null;
+    const price = data.get("price") as string | null;
+    const photo = data.get("image") as File | null;
+    const shortDesc = data.get("shortDesc") as string | null;
+    const courseOutline = data.get("courseOutline") as string | null;
+
+    if (!photo) {
+      swal("Error", "Image file is required", "error");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("image", photo);
-    axios
-      .post(
+
+    try {
+      const res = await axios.post(
         `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`,
         formData,
         {
@@ -43,27 +48,32 @@ const AddClass = () => {
             "Content-Type": "multipart/form-data",
           },
         }
-      )
-      .then((res) => {
-        console.log(res.data);
+      );
 
-        const courseData = {
-          title,
-          price,
-          shortDesc,
-          courseOutline,
-          image: res.data?.data?.display_url,
-          teacher: user?.displayName,
-          teacherMail: user?.email,
-          userImage: user?.photoURL,
-          status: "pending",
-          enrollCount: 0
-                };
-        axiosPublic.post("/classreq", courseData).then((res) => {
-          swal("Your Class has been Added!", "Please Wait For the admin response!", "success");
-          router.push('/dashboard/teacher/myclass')
-        });
-      });
+      const courseData = {
+        title,
+        price,
+        shortDesc,
+        courseOutline,
+        image: res.data?.data?.display_url,
+        teacher: user?.displayName,
+        teacherMail: user?.email,
+        userImage: user?.photoURL,
+        status: "pending",
+        enrollCount: 0,
+      };
+
+      await axiosPublic.post("/classreq", courseData);
+
+      swal(
+        "Your Class has been Added!",
+        "Please Wait For the admin response!",
+        "success"
+      );
+      router.push("/dashboard/teacher/myclass");
+    } catch (error: any) {
+      swal("Error", error.message || "Something went wrong", "error");
+    }
   };
 
   return (
@@ -101,7 +111,7 @@ const AddClass = () => {
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <label htmlFor="image">Thumbnall</label>
+            <label htmlFor="image">Thumbnail</label>
             <TextField
               required
               fullWidth
@@ -109,6 +119,7 @@ const AddClass = () => {
               type="file"
               name="image"
               variant="standard"
+              inputProps={{ accept: "image/*" }}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -127,7 +138,7 @@ const AddClass = () => {
               aria-label="max width"
               required
               minRows={4}
-              placeholder="Write the course Ourline Here"
+              placeholder="Write the course Outline Here"
               style={{ width: "100%" }}
             />
           </Grid>
@@ -151,6 +162,5 @@ const AddClass = () => {
     </DashboardLayout>
   );
 };
-//
 
 export default AddClass;

@@ -1,7 +1,7 @@
 import DashboardLayout from "@/DashboardLayout";
 import { Container, Toolbar, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import Title from "./../../../../components/Title/Title";
+import Title from "../../../../components/Title/Title";
 import Head from "next/head";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "@/hooks/useAxiosSecure";

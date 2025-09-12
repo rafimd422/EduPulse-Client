@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "./useAxiosSecure";
 import { useContext } from "react";
-import { AuthContext } from "@/Provider/AuthProvider";
+import { AuthContext } from "@/Provider/auth-provider";
 
 const useCourseData = (router) => {
   const axiosSecure = useAxiosSecure();

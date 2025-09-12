@@ -1,19 +1,24 @@
 import DashboardLayout from "@/DashboardLayout";
-import { Button, Chip, Container, Toolbar } from "@mui/material";
+import {
+  Button,
+  Chip,
+  Container,
+  Toolbar,
+  Card,
+  CardHeader,
+  CardMedia,
+  CardContent,
+  CardActions,
+  Avatar,
+  Typography,
+} from "@mui/material";
 import Head from "next/head";
-import Title from "./../../../../components/Title/Title";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-import Avatar from "@mui/material/Avatar";
-import Typography from "@mui/material/Typography";
+import Title from "../../../../components/Title/Title";
 import { red } from "@mui/material/colors";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { useContext } from "react";
-import { AuthContext } from "@/Provider/AuthProvider";
+import { AuthContext } from "@/Provider/auth-provider";
 import loading from "../../../../assets/Loading/loading.json";
 import Link from "next/link";
 import swal from "sweetalert";
@@ -21,14 +26,29 @@ import dynamic from "next/dynamic";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
-const MyClass = () => {
+// Define a type for your class request items
+interface ClassRequestType {
+  _id: string;
+  teacher: string;
+  teacherMail: string;
+  teacherName?: string;
+  userImage?: string;
+  image: string;
+  title: string;
+  shortDesc: string;
+  price: number | string;
+  status: "approved" | "pending" | "rejected" | string;
+}
+
+const MyClass: React.FC = () => {
   const axiosSecure = useAxiosSecure();
-  const { user } = useContext(AuthContext);
+  const { user }: any = useContext(AuthContext);
+
   const {
     data: classRequests,
     refetch,
     isLoading,
-  } = useQuery({
+  } = useQuery<ClassRequestType[] | null>({
     queryKey: ["classRequests"],
     queryFn: async () => {
       if (user?.email) {
@@ -54,9 +74,10 @@ const MyClass = () => {
       </Container>
     );
   }
+
   refetch();
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: string) => {
     const willDelete = await swal({
       title: "Are you sure?",
       text: "Are you sure that you want to delete this file?",
@@ -68,6 +89,7 @@ const MyClass = () => {
       axiosSecure.delete(`/classreq/${id}`).then((res) => {
         if (res.data.deletedCount > 0) {
           swal("Deleted!", "Your imaginary file has been deleted!", "success");
+          refetch();
         }
       });
     }
@@ -96,7 +118,7 @@ const MyClass = () => {
       >
         {classRequests &&
           classRequests.map((classItem) => (
-            <Card key={classItem?._id} sx={{ maxWidth: 345 }}>
+            <Card key={classItem._id} sx={{ maxWidth: 345 }}>
               <CardHeader
                 avatar={
                   <Avatar
@@ -104,7 +126,7 @@ const MyClass = () => {
                     src={classItem.userImage}
                     aria-label="teacher"
                   >
-                    {classItem.teacherName}
+                    {classItem.teacherName?.[0]}
                   </Avatar>
                 }
                 title={classItem.teacher}
@@ -118,30 +140,26 @@ const MyClass = () => {
               />
               <CardContent>
                 <Typography height={130} variant="body2" color="text.secondary">
-                  {classItem.shortDesc.slice(0, 211)}...
+                  {classItem.shortDesc.length > 211
+                    ? `${classItem.shortDesc.slice(0, 211)}...`
+                    : classItem.shortDesc}
                 </Typography>
                 <div
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >
                   <Typography
-                    variant="p"
+                    variant="body2"
                     fontWeight="bold"
                     color="text.secondary"
                   >
                     price: ${classItem.price}
                   </Typography>
-                  <Typography
-                    variant="p"
-                    fontWeight="bold"
-                    color="text.secondary"
-                  >
-                    <Chip
-                      label={classItem.status.toUpperCase()}
-                      color={
-                        classItem.status === "approved" ? "success" : "error"
-                      }
-                    />
-                  </Typography>
+                  <Chip
+                    label={classItem.status.toUpperCase()}
+                    color={
+                      classItem.status === "approved" ? "success" : "error"
+                    }
+                  />
                 </div>
               </CardContent>
               {classItem.status === "approved" && (
@@ -155,15 +173,16 @@ const MyClass = () => {
                 >
                   <Link
                     href={`/dashboard/teacher/myclass/update/${classItem._id}`}
+                    passHref
+                    legacyBehavior
                   >
-                    {" "}
-                    <Button size="md" variant="contained" color="success">
+                    <Button size="medium" variant="contained" color="success">
                       Update
                     </Button>
                   </Link>
                   <Button
                     onClick={() => handleDelete(classItem._id)}
-                    size="md"
+                    size="medium"
                     variant="contained"
                     color="error"
                   >

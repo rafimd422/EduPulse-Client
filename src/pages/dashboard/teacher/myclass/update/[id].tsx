@@ -13,7 +13,7 @@ import Title from "@/components/Title/Title";
 import loading from "../../../../../assets/Loading/loading.json";
 import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
-import { AuthContext } from "@/Provider/AuthProvider";
+import { AuthContext } from "@/Provider/auth-provider";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import swal from "sweetalert";
 import dynamic from "next/dynamic";
@@ -23,7 +23,8 @@ const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 const Update = () => {
   const router = useRouter();
   const { id } = router.query;
-  const { user } = useContext(AuthContext);
+  const authContext = useContext(AuthContext);
+  const user = authContext?.user;
   const axiosSecure = useAxiosSecure();
   const {
     data: updateClassReq,
@@ -58,11 +59,11 @@ const Update = () => {
     );
   }
 
-  const handleClassUpdating = async (e) => {
+  const handleClassUpdating = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      const formData = new FormData(e.target);
+      const formData = new FormData(e.target as HTMLFormElement);
 
       const updatedData = {
         courseTitle: formData.get("courseTitle"),
@@ -71,7 +72,6 @@ const Update = () => {
         shortDesc: formData.get("shortDesc"),
         courseOutline: formData.get("courseOutline"),
       };
-      // Make a PATCH request
       const res = await axiosSecure.patch(`/classreq/${id}`, updatedData);
       if (res.data.modifiedCount > 0) {
         swal(
@@ -103,7 +103,7 @@ const Update = () => {
             <TextField
               required
               id="title"
-              name="courseTitle" // Make sure to include name attribute
+              name="courseTitle"
               label="Course Title"
               fullWidth
               variant="standard"
@@ -118,7 +118,7 @@ const Update = () => {
               required
               type="number"
               id="price"
-              name="price" // Make sure to include name attribute
+              name="price"
               label="Course Price"
               fullWidth
               variant="standard"

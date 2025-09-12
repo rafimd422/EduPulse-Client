@@ -19,14 +19,23 @@ import { Container } from "@mui/material";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import useCurrentUser from "@/hooks/useCurrentUser";
-import loading from "../.././assets/Loading/loading.json";
+import loading from "../../assets/Loading/loading.json";
 import dynamic from "next/dynamic";
 
 const drawerWidth = 240;
 
+interface AppBarProps extends MuiAppBarProps {
+  open?: boolean;
+}
+
+interface NavItem {
+  name: string;
+  route: string;
+}
+
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
+})<AppBarProps>(({ theme, open }) => ({
   transition: theme.transitions.create(["margin", "width"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -51,7 +60,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
-export default function Sidebar() {
+export default function Sidebar(): React.JSX.Element {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
   const router = useRouter();
@@ -66,20 +75,20 @@ export default function Sidebar() {
     setOpen(false);
   };
 
-  const StudentMenu = [
+  const StudentMenu: NavItem[] = [
     { name: "Profile", route: "/dashboard/profile" },
     { name: "My Enroll Class", route: "/dashboard/student/enrollclass" },
     { name: "Back to Home", route: "/" },
   ];
 
-  const TeacherMenu = [
+  const TeacherMenu: NavItem[] = [
     { name: "Profile", route: "/dashboard/profile" },
 
     { name: "Add class", route: "/dashboard/teacher/addclass" },
     { name: "My class", route: "/dashboard/teacher/myclass" },
     { name: "Back to Home", route: "/" },
   ];
-  const AdminMenu = [
+  const AdminMenu: NavItem[] = [
     { name: "Profile", route: "/dashboard/profile" },
     { name: "Teacher Request", route: "/dashboard/admin/teacherrequest" },
     { name: "Users", route: "/dashboard/admin/users" },
@@ -104,7 +113,7 @@ export default function Sidebar() {
     );
   }
 
-  const userRole = currentUser?.[0]?.role;
+  const userRole: string | undefined = currentUser?.[0]?.role;
 
   return (
     <Box sx={{ display: "flex" }}>

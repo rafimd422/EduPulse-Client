@@ -1,6 +1,7 @@
+import React from "react";
 import DashboardLayout from "@/DashboardLayout";
 import { Container, Toolbar, Button, Avatar } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import Title from "./../../../../components/Title/Title";
 import Head from "next/head";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
@@ -11,10 +12,20 @@ import dynamic from "next/dynamic";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
-const AllClasses = () => {
+interface Course {
+  _id: string;
+  teacher: string;
+  title: string;
+  teacherMail: string;
+  shortDesc: string;
+  userImage: string;
+  status: string;
+}
+
+const AllClasses: React.FC = () => {
   const axiosSecure = useAxiosSecure();
 
-  const handleAddCourse = async () => {
+  const handleAddCourse = async (): Promise<Course[]> => {
     const res = await axiosSecure.get("/classreq");
     return res.data;
   };
@@ -23,7 +34,10 @@ const AllClasses = () => {
     data: courses,
     isLoading,
     refetch,
-  } = useQuery({ queryKey: ["AllCourses"], queryFn: handleAddCourse });
+  } = useQuery<Course[]>({
+    queryKey: ["AllCourses"],
+    queryFn: handleAddCourse,
+  });
 
   if (isLoading) {
     return (
@@ -40,17 +54,17 @@ const AllClasses = () => {
     );
   }
 
-  const handleApprove = (id) => {
+  const handleApprove = (id: string) => {
     swal({
       title: "Are you sure?",
       text: "Do you want to accept This course?",
       icon: "warning",
-      buttons: true,
+      buttons: ["Cancel", "OK"],
       dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
+    }).then((willApprove) => {
+      if (willApprove) {
         axiosSecure.patch(`/classreq/accept/${id}`).then((res) => {
-          if (res.data?.modifiedCount > 0 || res.data?.modifiedCount > 0) {
+          if (res.data?.modifiedCount > 0) {
             refetch();
             swal("Course Approved Successfully!", {
               icon: "success",
@@ -63,17 +77,15 @@ const AllClasses = () => {
     });
   };
 
-  //handle reject
-
-  const handleReject = (id) => {
+  const handleReject = (id: string) => {
     swal({
       title: "Are you sure?",
       text: "Do you want to reject this Course?",
       icon: "warning",
-      buttons: true,
+      buttons: ["Cancel", "OK"],
       dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
+    }).then((willReject) => {
+      if (willReject) {
         axiosSecure.patch(`/classreq/reject/${id}`).then((res) => {
           if (res.data?.modifiedCount > 0) {
             refetch();
@@ -86,13 +98,13 @@ const AllClasses = () => {
     });
   };
 
-  const columns = [
+  const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 80 },
     {
       field: "image",
       headerName: "Image",
       width: 60,
-      renderCell: (params) => (
+      renderCell: (params: GridRenderCellParams) => (
         <div
           style={{
             width: 60,
@@ -112,14 +124,13 @@ const AllClasses = () => {
     { field: "name", headerName: "Name", width: 150 },
     { field: "email", headerName: "Email", width: 180 },
     { field: "title", headerName: "Title", width: 150 },
-
     { field: "description", headerName: "Description", width: 130 },
     { field: "status", headerName: "Status", width: 130 },
     {
       field: "actions",
       headerName: "Actions",
       width: 180,
-      renderCell: (params) => (
+      renderCell: (params: GridRenderCellParams) => (
         <div style={{ display: "flex", gap: "4px" }}>
           {params.row.status === "approved" ? (
             <Button variant="contained" color="success" size="small">
@@ -153,6 +164,7 @@ const AllClasses = () => {
       ),
     },
   ];
+
   const rows = courses?.map((course, index) => ({
     id: index + 1,
     name: course.teacher,
@@ -189,7 +201,7 @@ const AllClasses = () => {
       >
         <Title title={"All Classes"} />
         <DataGrid
-          rows={rows}
+          rows={rows || []}
           columns={columns}
           initialState={{
             pagination: {
@@ -198,6 +210,7 @@ const AllClasses = () => {
           }}
           pageSizeOptions={[5, 10]}
           style={{ width: "fit-content" }}
+          autoHeight
         />
       </Container>
     </DashboardLayout>

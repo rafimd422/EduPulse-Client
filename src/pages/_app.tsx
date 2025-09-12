@@ -1,27 +1,31 @@
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import React from "react";
+import type { AppProps } from "next/app";
+import { createTheme } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
-import Navbar from "./../components/Navbar/index";
+import Navbar from "../components/Navbar/index";
 import "@/styles/globals.css";
 import Footer from "@/components/Footer/Footer";
-import AuthProvider from "@/Provider/AuthProvider";
+import AuthProvider from "@/Provider/auth-provider";
 import { useRouter } from "next/router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-function MyApp({ Component, pageProps }) {
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: "#000",
-      },
-      secondary: {
-        main: "#fff",
-        contrastText: "#47008F",
-      },
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#000",
     },
-  });
-  const router = useRouter();
-  const queryClient = new QueryClient();
+    secondary: {
+      main: "#fff",
+      contrastText: "#47008F",
+    },
+  },
+});
 
+const queryClient = new QueryClient();
+
+function MyApp({ Component, pageProps }: AppProps) {
+  const router = useRouter();
   const notDashBoard = !router.pathname.includes("dashboard");
   return (
     <ThemeProvider theme={theme}>

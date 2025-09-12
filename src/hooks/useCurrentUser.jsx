@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "./useAxiosSecure";
 import { useContext, useEffect } from "react"; // Import useEffect
-import { AuthContext } from "@/Provider/AuthProvider";
+import { AuthContext } from "@/Provider/auth-provider";
 
 const useCurrentUser = () => {
   const axiosSecure = useAxiosSecure();
@@ -24,7 +24,7 @@ const useCurrentUser = () => {
   });
 
   useEffect(() => {
-   refetch();
+    refetch();
   }, [user, refetch]);
 
   return { currentUser, refetch, isLoading };

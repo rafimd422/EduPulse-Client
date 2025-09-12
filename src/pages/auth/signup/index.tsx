@@ -1,44 +1,54 @@
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import React from "react";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { FormControl, IconButton, OutlinedInput } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import InputAdornment from "@mui/material/InputAdornment";
+import React, { useState, useContext, FormEvent, MouseEvent } from "react";
 import Head from "next/head";
+import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
+import {
+  Box,
+  Button,
+  Container,
+  CssBaseline,
+  FormControl,
+  Grid,
+  IconButton,
+  InputAdornment,
+  Link,
+  OutlinedInput,
+  TextField,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import axios from "axios";
 import swal from "sweetalert";
-import { AuthContext } from "@/Provider/AuthProvider";
-import Loading from "../../../assets/Loading/loading.json";
-import SocialLogin from "./../../../components/SocialLogin/SocialLogin";
+import SocialLogin from "../../../components/SocialLogin/SocialLogin";
+import { AuthContext } from "@/Provider/auth-provider";
 import useAxiosPublic from "@/hooks/useAxiosPublic";
-import { useState, useContext } from "react";
-import { useRouter } from "next/router";
-import dynamic from "next/dynamic";
+import Loading from "../../../assets/Loading/loading.json";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
-const SignUp = () => {
+const SignUp: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const { createUSer, updateUserProfile, loading } = useContext(AuthContext);
+  const { createUSer, updateUserProfile, loading } =
+    useContext(AuthContext) ?? {};
   const router = useRouter();
   const axiosPublic = useAxiosPublic();
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const photo = data.get("image") as File | null;
 
-    const photo = data.get("image");
+    if (!photo) {
+      swal("Error", "Please upload a profile image.", "error");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("image", photo);
-    await axios
-      .post(
+
+    try {
+      const res = await axios.post(
         `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`,
         formData,
         {
@@ -46,56 +56,75 @@ const SignUp = () => {
             "Content-Type": "multipart/form-data",
           },
         }
-      )
-      .then((res) => {
-        const user = {
-          email: data.get("email"),
-          password: data.get("password"),
-          image: res.data?.data?.display_url,
-          name: data.get("firstName") + " " + data.get("lastName"),
-        };
-        createUSer(user?.email, user?.password)
-          .then(() => {
-            updateUserProfile(user?.name, user?.image);
-            const userData = {
-              email: user.email,
-              image: user.image,
-              name: user.name,
-              role: "student",
-            };
-            axiosPublic.post("/user", userData).then((res) => {
-              console.log(res.data);
-            });
-            router.push("/");
-          })
-          .catch((error) => {
-            swal({
-              title: "Error!",
-              text: error.message.replace("Firebase: Error ", ""),
-              icon: "error",
-            });
-          });
+      );
 
-        if (loading) {
-          <Lottie animationData={Loading} />;
-        }
-      })
-      .catch((error) => console.log(error.message));
+      const user = {
+        email: data.get("email") as string,
+        password: data.get("password") as string,
+        image: res.data?.data?.display_url as string,
+        name: `${data.get("firstName")} ${data.get("lastName")}`,
+      };
+
+      if (!createUSer) {
+        swal("Error", "Sign up function is not available.", "error");
+        return;
+      }
+
+      await createUSer(user.email, user.password);
+      await updateUserProfile?.(user.name, user.image);
+
+      const userData = {
+        email: user.email,
+        image: user.image,
+        name: user.name,
+        role: "student",
+      };
+
+      await axiosPublic.post("/user", userData);
+
+      router.push("/");
+    } catch (error: any) {
+      swal({
+        title: "Error!",
+        text:
+          error.message?.replace("Firebase: Error ", "") ??
+          "Something went wrong",
+        icon: "error",
+      });
+    }
   };
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  const handleMouseDownPassword = (event) => {
+  const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
+
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Lottie animationData={Loading} />
+      </Box>
+    );
+  }
+
   return (
     <Box>
       <Head>
-        <title> Sign Up || EduPulse</title>
+        <title>Sign Up || EduPulse</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
+
       <Toolbar />
       <Toolbar />
+
       <Container component="main" maxWidth="sm">
         <CssBaseline />
 
@@ -114,12 +143,13 @@ const SignUp = () => {
           >
             <Typography
               component="h1"
-              color={"#708090"}
-              fontWeight={"bold"}
+              color="#708090"
+              fontWeight="bold"
               variant="h5"
             >
               Sign Up
             </Typography>
+
             <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
@@ -133,6 +163,7 @@ const SignUp = () => {
                     autoFocus
                   />
                 </Grid>
+
                 <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
@@ -142,7 +173,8 @@ const SignUp = () => {
                     autoComplete="family-name"
                   />
                 </Grid>
-                <Grid item xs={12} sm={12}>
+
+                <Grid item xs={12}>
                   <TextField
                     required
                     fullWidth
@@ -151,6 +183,7 @@ const SignUp = () => {
                     name="image"
                   />
                 </Grid>
+
                 <Grid item xs={12}>
                   <TextField
                     required
@@ -162,6 +195,7 @@ const SignUp = () => {
                     autoComplete="email"
                   />
                 </Grid>
+
                 <Grid item xs={12}>
                   <FormControl variant="outlined" fullWidth>
                     <OutlinedInput
@@ -186,6 +220,7 @@ const SignUp = () => {
                   </FormControl>
                 </Grid>
               </Grid>
+
               <Button
                 type="submit"
                 fullWidth
@@ -194,12 +229,14 @@ const SignUp = () => {
               >
                 Sign Up
               </Button>
+
               <SocialLogin />
+
               <Grid container justifyContent="flex-end">
                 <Grid item>
                   <Typography variant="body2">
                     Already have an account?{" "}
-                    <Link href={"/auth/signin"}>Sign in</Link>
+                    <Link href="/auth/signin">Sign in</Link>
                   </Typography>
                 </Grid>
               </Grid>
@@ -207,6 +244,7 @@ const SignUp = () => {
           </Box>
         </Toolbar>
       </Container>
+
       <Toolbar />
     </Box>
   );

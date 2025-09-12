@@ -17,7 +17,6 @@ import {
   MenuItem,
   Toolbar,
   Tooltip,
-  Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import Link from "next/link";
@@ -25,7 +24,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import swal from "sweetalert";
 
-import { AuthContext } from "@/Provider/AuthProvider";
+import { AuthContext } from "@/Provider/auth-provider";
 import logo from "./../../assets/logo.png";
 
 const drawerWidth = 260;
@@ -36,18 +35,35 @@ const navItems = [
   { name: "Teach on Edupulse", route: "/teachonedupulse" },
 ];
 
-const Navbar = ({ window }) => {
-  const router = useRouter();
-  const { user, logOut, setLoading } = useContext(AuthContext);
+interface NavbarProps {
+  window?: () => Window;
+}
 
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
+interface User {
+  displayName?: string | null;
+  photoURL?: string | null;
+}
+
+interface AuthContextType {
+  user: User | null;
+  logOut: () => Promise<void>;
+  setLoading: (loading: boolean) => void;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ window }) => {
+  const router = useRouter();
+  const { user, logOut, setLoading } = useContext(
+    AuthContext
+  ) as AuthContextType;
+
+  const [mobileOpen, setMobileOpen] = useState<boolean>(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleDrawerToggle = useCallback(() => {
     setMobileOpen((prev) => !prev);
   }, []);
 
-  const handleMenuOpen = useCallback((event) => {
+  const handleMenuOpen = useCallback((event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   }, []);
 
@@ -89,7 +105,7 @@ const Navbar = ({ window }) => {
               <ListItemButton sx={{ textAlign: "center" }}>
                 <Link
                   href={route}
-                  className={router.pathname === route ? "active" : ""}
+                  className={""} // adjust active check if needed
                   passHref
                   legacyBehavior
                 >
@@ -97,13 +113,6 @@ const Navbar = ({ window }) => {
                     primary={name}
                     sx={{
                       color: "whitesmoke",
-                      ...(router.pathname === route && {
-                        bgcolor: "red",
-                        borderRadius: 1,
-                        px: 1,
-                        py: 0.5,
-                        textDecoration: "none",
-                      }),
                     }}
                   />
                 </Link>
@@ -120,7 +129,7 @@ const Navbar = ({ window }) => {
         </Box>
       </Box>
     ),
-    [handleDrawerToggle, router.pathname]
+    [handleDrawerToggle]
   );
 
   return (
@@ -181,11 +190,8 @@ const Navbar = ({ window }) => {
                 {navItems.map(({ name, route }) => (
                   <Link key={name} href={route} passHref legacyBehavior>
                     <a
-                      className={router.pathname === route ? "active" : ""}
                       style={{
                         color: "whitesmoke",
-                        backgroundColor:
-                          router.pathname === route ? "red" : "transparent",
                         borderRadius: 4,
                         padding: "6px 12px",
                         textDecoration: "none",

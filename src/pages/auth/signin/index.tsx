@@ -1,63 +1,73 @@
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControl from "@mui/material/FormControl";
-import IconButton from "@mui/material/IconButton";
-import InputAdornment from "@mui/material/InputAdornment";
-import InputLabel from "@mui/material/InputLabel";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import Link from "@mui/material/Link";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
+import {
+  Box,
+  Button,
+  CssBaseline,
+  FormControl,
+  Grid,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  Link,
+  OutlinedInput,
+  TextField,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useContext, useState } from "react";
-import Toolbar from "@mui/material/Toolbar";
-import lottieFile from "../../../assets/login/login.json";
 import Head from "next/head";
-import { AuthContext } from "@/Provider/AuthProvider";
+import { JSX, useContext, useState } from "react";
 import { useRouter } from "next/router";
-import swal from "sweetalert";
-import SocialLogin from "./../../../components/SocialLogin/SocialLogin";
 import dynamic from "next/dynamic";
+import swal from "sweetalert";
+import lottieFile from "../../../assets/login/login.json";
+import { AuthContext } from "@/Provider/auth-provider";
+import SocialLogin from "../../../components/SocialLogin/SocialLogin";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
-export default function SignIn() {
+const SignIn = (): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
-  const { signIn } = useContext(AuthContext);
+  const auth = useContext(AuthContext);
   const router = useRouter();
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleClickShowPassword = () => {
+    setShowPassword((prev) => !prev);
+  };
 
-  const handleLogin = (event) => {
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const email = data.get("email");
-    const password = data.get("password");
+  };
 
-    signIn(email, password)
-      .then((result) => {
-        swal("Log In Successfull", {
+  const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    if (!auth?.signIn) {
+      swal("Authentication Error", "SignIn method is not available.", {
+        icon: "error",
+      });
+      return;
+    }
+
+    auth
+      .signIn(email, password)
+      .then(() => {
+        swal("Log In Successful", {
           icon: "success",
         });
-        if (router.pathname !== "/auth/signin") {
-          router.push(router.pathname);
-        } else {
-          router.push("/");
-        }
+        router.push(router.pathname !== "/auth/signin" ? router.pathname : "/");
       })
-      .catch((error) => {
+      .catch((error: Error) => {
         swal({
           title: "Error!",
           text: error.message.replace("Firebase: Error ", ""),
           icon: "error",
         });
       });
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
   };
 
   return (
@@ -84,16 +94,7 @@ export default function SignIn() {
           <Lottie animationData={lottieFile} />
         </Grid>
 
-        <Grid
-          item
-          xs={12}
-          sm={8}
-          md={5}
-          xl={6}
-          elevation={6}
-          marginTop="3rem"
-          square="true"
-        >
+        <Grid item xs={12} sm={8} md={5} xl={6} mt="3rem">
           <Box
             sx={{
               my: 8,
@@ -126,7 +127,7 @@ export default function SignIn() {
                 id="email"
                 label="Email Address"
                 name="email"
-                autoComplete="email" // Enable email autocomplete
+                autoComplete="email"
                 autoFocus
               />
 
@@ -161,13 +162,17 @@ export default function SignIn() {
               >
                 Sign In
               </Button>
+
               <SocialLogin />
-              <Grid container>
+
+              <Grid container justifyContent="flex-start" sx={{ mt: 2 }}>
                 <Grid item>
-                  {"Don't have an account?"}
-                  <Link href="/auth/signup" variant="body2">
-                    Sign Up
-                  </Link>
+                  <Typography variant="body2">
+                    {"Don't have an account? "}
+                    <Link href="/auth/signup" variant="body2">
+                      Sign Up
+                    </Link>
+                  </Typography>
                 </Grid>
               </Grid>
             </Box>
@@ -176,4 +181,6 @@ export default function SignIn() {
       </Grid>
     </Box>
   );
-}
+};
+
+export default SignIn;

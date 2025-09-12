@@ -1,9 +1,8 @@
 import DashboardLayout from "@/DashboardLayout";
 import useCurrentUser from "@/hooks/useCurrentUser";
-import { Container, Toolbar } from "@mui/material";
-import Head from "next/head";
-import loading from "../../../assets/Loading/loading.json";
 import {
+  Container,
+  Toolbar,
   Avatar,
   Box,
   Card,
@@ -11,11 +10,21 @@ import {
   Divider,
   Typography,
 } from "@mui/material";
+import Head from "next/head";
+import loading from "../../../assets/Loading/loading.json";
 import dynamic from "next/dynamic";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
-const Profile = () => {
+interface UserType {
+  _id?: string;
+  name?: string;
+  email?: string;
+  role?: string;
+  image?: string;
+}
+
+const Profile: React.FC = () => {
   const { currentUser, refetch, isLoading } = useCurrentUser();
 
   if (isLoading) {
@@ -34,6 +43,7 @@ const Profile = () => {
   }
 
   if (!currentUser || currentUser.length === 0) {
+    refetch();
     return (
       <Container sx={{ textAlign: "center", marginTop: "2rem" }}>
         <Lottie animationData={loading} />
@@ -44,10 +54,8 @@ const Profile = () => {
     );
   }
 
-  if (currentUser === null || currentUser?.length === 0) {
-    refetch();
-  }
-  const user = currentUser[0];
+  const user: UserType = currentUser[0];
+
   return (
     <DashboardLayout>
       <Head>

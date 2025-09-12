@@ -1,22 +1,33 @@
+import { FC } from "react";
 import PageTitle from "@/components/PageTitle/PageTitle";
-import { Box, Container, Typography } from "@mui/material";
-import Toolbar from "@mui/material/Toolbar";
-import Title from "./../../components/Title/Title";
-import CourseCards from "@/components/AllCourses/CourseCards";
+import { Box, Container, Typography, Toolbar } from "@mui/material";
+import Title from "@/components/Title/Title";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
-import loading from "../../assets/Loading/loading.json";
+import loading from "@/assets/Loading/loading.json";
 import dynamic from "next/dynamic";
+import CourseCards from "@/components/AllCourses/CourseCards";
+
+export interface Course {
+  _id: string;
+  title: string;
+  price: string;
+  shortDesc: string;
+  courseOutline: string;
+  image: string;
+  teacher: string;
+  teacherMail: string;
+  userImage: string;
+  status: string;
+  enrollCount: number;
+}
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
-const AllClasses = () => {
+const AllClasses: FC = () => {
   const axiosSecure = useAxiosSecure();
-  const {
-    data: approvedClass,
-    refetch,
-    isLoading,
-  } = useQuery({
+
+  const { data: coursesData, isLoading } = useQuery<Course[]>({
     queryKey: ["courses"],
     queryFn: async () => {
       const res = await axiosSecure.get("/classreq");
@@ -39,18 +50,20 @@ const AllClasses = () => {
     );
   }
 
-  const courses = approvedClass?.filter((ele) => ele.status === "approved");
+  const approvedCourses = coursesData?.filter(
+    (course) => course.status === "approved"
+  );
 
   return (
     <>
-      <PageTitle halmet={"All Courses"} />
+      <PageTitle halmet="All Courses" />
       <Toolbar />
       <Box>
         <Toolbar />
-        <Container maxWidth="lg" align="center">
-          <Title title={"Discover Your"} titleColor={" Learning Path"} />
+        <Container maxWidth="lg">
+          <Title title="Discover Your" titleColor=" Learning Path" />
           <Typography
-            maxWidth={"sm"}
+            maxWidth="sm"
             align="center"
             sx={{
               fontFamily: "'EB Garamond', serif",
@@ -67,17 +80,15 @@ const AllClasses = () => {
             }
           </Typography>
 
-          <Toolbar />
           <Toolbar
             sx={{
-              align: "center",
               display: "flex",
               flexWrap: "wrap",
               gap: "1rem",
               justifyContent: "center",
             }}
           >
-            {courses?.map((course) => (
+            {approvedCourses?.map((course) => (
               <CourseCards key={course._id} course={course} />
             ))}
           </Toolbar>

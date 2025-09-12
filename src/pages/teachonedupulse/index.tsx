@@ -12,23 +12,48 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import Loading from "../../assets/Loading/loading.json";
-import { useContext } from "react";
-import { AuthContext } from "@/Provider/AuthProvider";
+import { useContext, FormEvent } from "react";
+import { AuthContext } from "@/Provider/auth-provider";
 import swal from "sweetalert";
-import PrivateRoute from "@/Provider/PrivateRoute";
 import SignIn from "../auth/signin";
 import dynamic from "next/dynamic";
+import { User } from "firebase/auth";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
+const categories = [
+  "Web Development",
+  "Digital Marketing",
+  "Graphic Design",
+  "Data Science",
+  "Mobile App Development",
+] as const;
+
+const experienceOptions = ["Beginner", "Experienced", "Some Idea"] as const;
+
+type Experience = (typeof experienceOptions)[number];
+type Category = (typeof categories)[number];
+
+interface TeacherFormElements extends HTMLFormControlsCollection {
+  name: HTMLInputElement;
+  image: HTMLInputElement;
+  experience: HTMLInputElement;
+  courseTitle: HTMLInputElement;
+  category: HTMLInputElement;
+}
+
+interface TeacherForm extends HTMLFormElement {
+  readonly elements: TeacherFormElements;
+}
+
 const TeachOnEduPulse = () => {
-  const { user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext) as { user: User | null };
   const axiosSecure = useAxiosSecure();
 
   const mutation = useMutation({
-    mutationFn: async (event) => {
+    mutationFn: async (event: FormEvent<TeacherForm>) => {
       event.preventDefault();
-      const form = event.target;
+      const form = event.currentTarget;
       const photo = form.image.files[0];
       const formData = new FormData();
       formData.append("image", photo);
@@ -44,43 +69,22 @@ const TeachOnEduPulse = () => {
       );
       const imageUrl = res.data?.data?.display_url;
 
-      const name = form.name.value;
-      const experience = form.experience.value;
-      const title = form.courseTitle.value;
-      const category = form.category.value;
-
       const teacherData = {
-        category,
-        title,
-        experience,
+        category: form.category.value as Category,
+        title: form.courseTitle.value,
+        experience: form.experience.value as Experience,
         image: imageUrl,
-        name,
+        name: form.name.value,
         status: "Pending",
         email: user?.email,
       };
 
-      axiosSecure.post("/teacherRequest", teacherData).then((res) => {
-        console.log(res.data);
-        if (res.data?.insertedId) {
-          swal("Good job!", "Your Requst Is Under Review", "success");
-        }
-      });
+      const response = await axiosSecure.post("/teacherRequest", teacherData);
+      if (response.data?.insertedId) {
+        swal("Good job!", "Your request is under review", "success");
+      }
     },
   });
-
-  if (mutation.isLoading) {
-    <Lottie animationData={Loading} />;
-  }
-
-  const categories = [
-    "Web Development",
-    "Digital Marketing",
-    "Graphic Design",
-    "Data Science",
-    "Mobile App Development",
-  ];
-
-  const ExperienceOptions = ["Beginner", "Experienced", "Some Idea"];
 
   if (user === null) {
     return <SignIn />;
@@ -120,7 +124,7 @@ const TeachOnEduPulse = () => {
           onSubmit={mutation.mutate}
         >
           <TextField
-            value={user?.displayName}
+            defaultValue={user?.displayName || ""}
             variant="outlined"
             name="name"
             margin="normal"
@@ -149,8 +153,8 @@ const TeachOnEduPulse = () => {
             required
             name="experience"
           >
-            {ExperienceOptions.map((option, index) => (
-              <MenuItem key={index} value={option}>
+            {experienceOptions.map((option) => (
+              <MenuItem key={option} value={option}>
                 {option}
               </MenuItem>
             ))}
