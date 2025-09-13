@@ -1,4 +1,7 @@
 {
+   "engines": {
+    "node": "22.x"
+  },
   "name": "b8a12-client-side-rafimd422",
   "version": "0.1.0",
   "private": true,
