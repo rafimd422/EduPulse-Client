@@ -21,12 +21,11 @@ import { useContext } from "react";
 import { AuthContext } from "@/Provider/auth-provider";
 import loading from "../../../../assets/Loading/loading.json";
 import Link from "next/link";
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 import dynamic from "next/dynamic";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
-// Define a type for your class request items
 interface ClassRequestType {
   _id: string;
   teacher: string;
@@ -78,20 +77,36 @@ const MyClass: React.FC = () => {
   refetch();
 
   const handleDelete = async (id: string) => {
-    const willDelete = await swal({
+    const result = await Swal.fire({
       title: "Are you sure?",
-      text: "Are you sure that you want to delete this file?",
+      text: "Do you want to delete this class?",
       icon: "warning",
-      dangerMode: true,
+      showCancelButton: true,
+      confirmButtonText: "Delete",
+      cancelButtonText: "Cancel",
     });
 
-    if (willDelete) {
-      axiosSecure.delete(`/classreq/${id}`).then((res) => {
+    if (result.isConfirmed) {
+      try {
+        const res = await axiosSecure.delete(`/classreq/${id}`);
         if (res.data.deletedCount > 0) {
-          swal("Deleted!", "Your imaginary file has been deleted!", "success");
+          await Swal.fire({
+            title: "Deleted!",
+            text: "Your class has been deleted!",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
           refetch();
         }
-      });
+      } catch (error: any) {
+        console.error(error);
+        await Swal.fire({
+          title: "Error",
+          text: error.message || "Something went wrong",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
     }
   };
 

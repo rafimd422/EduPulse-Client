@@ -19,11 +19,11 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import axios from "axios";
-import swal from "sweetalert";
 import SocialLogin from "../../../components/SocialLogin/SocialLogin";
 import { AuthContext } from "@/Provider/auth-provider";
 import useAxiosPublic from "@/hooks/useAxiosPublic";
 import Loading from "../../../assets/Loading/loading.json";
+import Swal from "sweetalert2";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
@@ -40,7 +40,11 @@ const SignUp: React.FC = () => {
     const photo = data.get("image") as File | null;
 
     if (!photo) {
-      swal("Error", "Please upload a profile image.", "error");
+      Swal.fire({
+        title: "Error",
+        text: "Please upload a profile image.",
+        icon: "error",
+      });
       return;
     }
 
@@ -66,7 +70,11 @@ const SignUp: React.FC = () => {
       };
 
       if (!createUSer) {
-        swal("Error", "Sign up function is not available.", "error");
+        Swal.fire({
+          title: "Error",
+          text: "Sign up function is not available.",
+          icon: "error",
+        });
         return;
       }
 
@@ -82,9 +90,15 @@ const SignUp: React.FC = () => {
 
       await axiosPublic.post("/user", userData);
 
+      Swal.fire({
+        title: "Success",
+        text: "Registration completed successfully!",
+        icon: "success",
+      });
+
       router.push("/");
     } catch (error: any) {
-      swal({
+      Swal.fire({
         title: "Error!",
         text:
           error.message?.replace("Firebase: Error ", "") ??

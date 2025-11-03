@@ -22,10 +22,10 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import swal from "sweetalert";
 
 import { AuthContext } from "@/Provider/auth-provider";
 import logo from "./../../assets/logo.png";
+import Swal from "sweetalert2";
 
 const drawerWidth = 260;
 
@@ -71,20 +71,35 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
     setAnchorEl(null);
   }, []);
 
-  const handleLogout = useCallback(() => {
-    swal({
-      title: "Do you want to Log Out From This Account?",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((confirmed) => {
-      if (confirmed) {
-        logOut().then(() => setLoading(false));
-        swal("Log Out Successful", { icon: "success" });
+  const handleLogout = useCallback(async () => {
+    try {
+      const result = await Swal.fire({
+        title: "Do you want to Log Out From This Account?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Log Out",
+        cancelButtonText: "Cancel",
+      });
+
+      if (result.isConfirmed) {
+        await logOut();
+        setLoading(false);
+
+        await Swal.fire({
+          title: "Log Out Successful",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
       }
-    });
-    handleMenuClose();
-  }, [logOut, setLoading, handleMenuClose]);
+    } catch (error) {
+      console.error("Logout failed:", error);
+      Swal.fire({
+        title: "Error logging out",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+  }, [logOut, setLoading]);
 
   const container =
     window !== undefined ? () => window().document.body : undefined;

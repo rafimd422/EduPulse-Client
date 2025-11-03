@@ -14,7 +14,7 @@ import { useContext, FormEvent } from "react";
 import { AuthContext } from "@/Provider/auth-provider";
 import useAxiosPublic from "@/hooks/useAxiosPublic";
 import { useRouter } from "next/router";
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 
 const AddClass: React.FC = () => {
   const { user }: any = useContext(AuthContext);
@@ -32,7 +32,12 @@ const AddClass: React.FC = () => {
     const courseOutline = data.get("courseOutline") as string | null;
 
     if (!photo) {
-      swal("Error", "Image file is required", "error");
+      await Swal.fire({
+        title: "Error",
+        text: "Image file is required",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
       return;
     }
 
@@ -44,9 +49,7 @@ const AddClass: React.FC = () => {
         `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`,
         formData,
         {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+          headers: { "Content-Type": "multipart/form-data" },
         }
       );
 
@@ -65,14 +68,21 @@ const AddClass: React.FC = () => {
 
       await axiosPublic.post("/classreq", courseData);
 
-      swal(
-        "Your Class has been Added!",
-        "Please Wait For the admin response!",
-        "success"
-      );
+      await Swal.fire({
+        title: "Your Class has been Added!",
+        text: "Please wait for the admin response!",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
+
       router.push("/dashboard/teacher/myclass");
     } catch (error: any) {
-      swal("Error", error.message || "Something went wrong", "error");
+      await Swal.fire({
+        title: "Error",
+        text: error.message || "Something went wrong",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
   };
 

@@ -7,8 +7,8 @@ import Head from "next/head";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import loading from "../../../../assets/Loading/loading.json";
-import swal from "sweetalert";
 import dynamic from "next/dynamic";
+import Swal from "sweetalert2";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
@@ -54,49 +54,62 @@ const AllClasses: React.FC = () => {
     );
   }
 
-  const handleApprove = (id: string) => {
-    swal({
-      title: "Are you sure?",
-      text: "Do you want to accept This course?",
-      icon: "warning",
-      buttons: ["Cancel", "OK"],
-      dangerMode: true,
-    }).then((willApprove) => {
-      if (willApprove) {
-        axiosSecure.patch(`/classreq/accept/${id}`).then((res) => {
-          if (res.data?.modifiedCount > 0) {
-            refetch();
-            swal("Course Approved Successfully!", {
-              icon: "success",
-            });
-          } else {
-            swal("User role is not changed");
-          }
-        });
-      }
-    });
-  };
+const handleApprove = (id: string) => {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Do you want to accept this course?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "OK",
+    cancelButtonText: "Cancel",
+    reverseButtons: true,
+  }).then((result) => {
+    if (result.isConfirmed) {
+      axiosSecure.patch(`/classreq/accept/${id}`).then((res) => {
+        if (res.data?.modifiedCount > 0) {
+          refetch();
+          Swal.fire({
+            title: "Success!",
+            text: "Course Approved Successfully!",
+            icon: "success",
+          });
+        } else {
+          Swal.fire({
+            title: "Info",
+            text: "User role is not changed",
+            icon: "info",
+          });
+        }
+      });
+    }
+  });
+};
 
-  const handleReject = (id: string) => {
-    swal({
-      title: "Are you sure?",
-      text: "Do you want to reject this Course?",
-      icon: "warning",
-      buttons: ["Cancel", "OK"],
-      dangerMode: true,
-    }).then((willReject) => {
-      if (willReject) {
-        axiosSecure.patch(`/classreq/reject/${id}`).then((res) => {
-          if (res.data?.modifiedCount > 0) {
-            refetch();
-            swal("Course Rejected Successfully!", {
-              icon: "success",
-            });
-          }
-        });
-      }
-    });
-  };
+const handleReject = (id: string) => {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Do you want to reject this course?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "OK",
+    cancelButtonText: "Cancel",
+    reverseButtons: true,
+  }).then((result) => {
+    if (result.isConfirmed) {
+      axiosSecure.patch(`/classreq/reject/${id}`).then((res) => {
+        if (res.data?.modifiedCount > 0) {
+          refetch();
+          Swal.fire({
+            title: "Success!",
+            text: "Course Rejected Successfully!",
+            icon: "success",
+          });
+        }
+      });
+    }
+  });
+};
+
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 80 },

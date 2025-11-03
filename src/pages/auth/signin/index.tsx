@@ -18,10 +18,10 @@ import Head from "next/head";
 import { JSX, useContext, useState } from "react";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
-import swal from "sweetalert";
 import lottieFile from "../../../assets/login/login.json";
 import { AuthContext } from "@/Provider/auth-provider";
 import SocialLogin from "../../../components/SocialLogin/SocialLogin";
+import Swal from "sweetalert2";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
@@ -40,34 +40,42 @@ const SignIn = (): JSX.Element => {
     event.preventDefault();
   };
 
-  const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     const formData = new FormData(event.currentTarget);
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
     if (!auth?.signIn) {
-      swal("Authentication Error", "SignIn method is not available.", {
+      await Swal.fire({
+        title: "Authentication Error",
+        text: "SignIn method is not available.",
         icon: "error",
+        confirmButtonText: "OK",
       });
       return;
     }
 
-    auth
-      .signIn(email, password)
-      .then(() => {
-        swal("Log In Successful", {
-          icon: "success",
-        });
-        router.push(router.pathname !== "/auth/signin" ? router.pathname : "/");
-      })
-      .catch((error: Error) => {
-        swal({
-          title: "Error!",
-          text: error.message.replace("Firebase: Error ", ""),
-          icon: "error",
-        });
+    try {
+      await auth.signIn(email, password);
+
+      await Swal.fire({
+        title: "Log In Successful",
+        icon: "success",
+        confirmButtonText: "OK",
       });
+
+      // Redirect after login
+      router.push(router.pathname !== "/auth/signin" ? router.pathname : "/");
+    } catch (error: any) {
+      await Swal.fire({
+        title: "Error!",
+        text: error.message.replace("Firebase: Error ", ""),
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
   };
 
   return (

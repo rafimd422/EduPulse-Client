@@ -9,14 +9,13 @@ import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import loading from "../../../../assets/Loading/loading.json";
 import useAxiosPublic from "@/hooks/useAxiosPublic";
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 import { AuthContext } from "@/Provider/auth-provider";
 import SignIn from "@/pages/auth/signin";
 import dynamic from "next/dynamic";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
-// ✅ Define type for teacher request
 interface TeacherRequestType {
   _id: string;
   image?: string;
@@ -63,51 +62,89 @@ const TeacherRequest: React.FC = () => {
     );
   }
 
-  // --- Handlers --- //
-  const handleApprove = (id: string) => {
-    swal({
+  const handleApprove = async (id: string) => {
+    const result = await Swal.fire({
       title: "Are you sure?",
       text: "Do you want to accept this teacher?",
       icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((confirm) => {
-      if (confirm) {
-        axiosPublic.patch(`/teacherRequest/${id}`).then((res) => {
-          if (
-            res.data?.TeacherRequest?.modifiedCount > 0 ||
-            res.data?.userCollection?.modifiedCount > 0
-          ) {
-            refetch();
-            swal("Teacher Approved Successfully!", { icon: "success" });
-          } else {
-            swal("User role was not changed");
-          }
+      showCancelButton: true,
+      confirmButtonText: "Approve",
+      cancelButtonText: "Cancel",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const res = await axiosPublic.patch(`/teacherRequest/${id}`);
+        const { TeacherRequest, userCollection } = res.data || {};
+
+        if (
+          TeacherRequest?.modifiedCount > 0 ||
+          userCollection?.modifiedCount > 0
+        ) {
+          refetch();
+          await Swal.fire({
+            title: "Teacher Approved Successfully!",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        } else {
+          await Swal.fire({
+            title: "User role was not changed",
+            icon: "info",
+            confirmButtonText: "OK",
+          });
+        }
+      } catch (error) {
+        console.error(error);
+        await Swal.fire({
+          title: "Error",
+          text: "Something went wrong",
+          icon: "error",
+          confirmButtonText: "OK",
         });
       }
-    });
+    }
   };
 
-  const handleReject = (id: string) => {
-    swal({
+  const handleReject = async (id: string) => {
+    const result = await Swal.fire({
       title: "Are you sure?",
       text: "Do you want to reject this request?",
       icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((confirm) => {
-      if (confirm) {
-        axiosPublic.patch(`/teacherRequest/reject/${id}`).then((res) => {
-          if (res.data?.modifiedCount > 0) {
-            refetch();
-            swal("Teacher Rejected Successfully!", { icon: "success" });
-          }
+      showCancelButton: true,
+      confirmButtonText: "Reject",
+      cancelButtonText: "Cancel",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const res = await axiosPublic.patch(`/teacherRequest/reject/${id}`);
+        if (res.data?.modifiedCount > 0) {
+          refetch();
+          await Swal.fire({
+            title: "Teacher Rejected Successfully!",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        } else {
+          await Swal.fire({
+            title: "No changes were made",
+            icon: "info",
+            confirmButtonText: "OK",
+          });
+        }
+      } catch (error) {
+        console.error(error);
+        await Swal.fire({
+          title: "Error",
+          text: "Something went wrong",
+          icon: "error",
+          confirmButtonText: "OK",
         });
       }
-    });
+    }
   };
 
-  // ✅ Define DataGrid columns with types
   const columns: GridColDef<TeacherRequestType>[] = [
     {
       field: "image",

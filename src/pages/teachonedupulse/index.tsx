@@ -11,10 +11,9 @@ import Title from "./../../components/Title/Title";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
-import Loading from "../../assets/Loading/loading.json";
 import { useContext, FormEvent } from "react";
 import { AuthContext } from "@/Provider/auth-provider";
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 import SignIn from "../auth/signin";
 import dynamic from "next/dynamic";
 import { User } from "firebase/auth";
@@ -50,50 +49,81 @@ const TeachOnEduPulse = () => {
   const { user } = useContext(AuthContext) as { user: User | null };
   const axiosSecure = useAxiosSecure();
 
+  // Correctly typed mutation
   const mutation = useMutation({
-    mutationFn: async (event: FormEvent<TeacherForm>) => {
-      event.preventDefault();
-      const form = event.currentTarget;
-      const photo = form.image.files[0];
-      const formData = new FormData();
-      formData.append("image", photo);
-
+    mutationFn: async (formData: FormData) => {
       const res = await axios.post(
         `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`,
         formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
+        { headers: { "Content-Type": "multipart/form-data" } }
       );
-      const imageUrl = res.data?.data?.display_url;
-
-      const teacherData = {
-        category: form.category.value as Category,
-        title: form.courseTitle.value,
-        experience: form.experience.value as Experience,
-        image: imageUrl,
-        name: form.name.value,
-        status: "Pending",
-        email: user?.email,
-      };
-
-      const response = await axiosSecure.post("/teacherRequest", teacherData);
-      if (response.data?.insertedId) {
-        swal("Good job!", "Your request is under review", "success");
-      }
+      return res.data?.data?.display_url as string;
     },
   });
 
-  if (user === null) {
-    return <SignIn />;
-  }
+  if (!user) return <SignIn />;
+
+  const handleSubmit = async (event: FormEvent<TeacherForm>) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+
+    const photoInput = form.elements.namedItem(
+      "image"
+    ) as HTMLInputElement | null;
+    const photo = photoInput?.files?.[0];
+    if (!photo) {
+      await Swal.fire("Error", "Please upload a profile image.", "error");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", photo);
+
+    // Upload image and get URL
+    const imageUrl = await mutation.mutateAsync(formData);
+
+    const nameInput = form.elements.namedItem("name") as HTMLInputElement;
+    const experienceInput = form.elements.namedItem(
+      "experience"
+    ) as HTMLInputElement;
+    const courseTitleInput = form.elements.namedItem(
+      "courseTitle"
+    ) as HTMLInputElement;
+    const categoryInput = form.elements.namedItem(
+      "category"
+    ) as HTMLInputElement;
+
+    const teacherData = {
+      category: categoryInput.value as Category,
+      title: courseTitleInput.value,
+      experience: experienceInput.value as Experience,
+      image: imageUrl,
+      name: nameInput.value,
+      status: "Pending",
+      email: user?.email,
+    };
+
+    await axiosSecure.post("/teacherRequest", teacherData);
+
+    await Swal.fire({
+      title: "Good job!",
+      text: "Your request is under review",
+      icon: "success",
+      confirmButtonText: "OK",
+    });
+  };
 
   return (
     <Box sx={{ my: "2rem" }}>
       <Toolbar />
-      <Container maxWidth={"lg"} align="center">
+      <Container
+        maxWidth="lg"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         <Toolbar />
         <Title title={"Teach On"} titleColor={"Edupulse"} />
         <Typography
@@ -121,7 +151,7 @@ const TeachOnEduPulse = () => {
             maxWidth: "400px",
             marginTop: "2rem",
           }}
-          onSubmit={mutation.mutate}
+          onSubmit={handleSubmit}
         >
           <TextField
             defaultValue={user?.displayName || ""}
@@ -129,11 +159,7 @@ const TeachOnEduPulse = () => {
             name="name"
             margin="normal"
             required
-            InputProps={{
-              style: {
-                color: "black",
-              },
-            }}
+            InputProps={{ style: { color: "black" } }}
           />
 
           <TextField
@@ -141,7 +167,6 @@ const TeachOnEduPulse = () => {
             variant="outlined"
             margin="normal"
             name="image"
-            id="image"
             required
           />
 
@@ -186,9 +211,9 @@ const TeachOnEduPulse = () => {
           <Button
             type="submit"
             variant="contained"
-            disabled={mutation.isLoading}
+            disabled={mutation.isPending}
           >
-            {mutation.isLoading ? "Submitting..." : "Submit"}
+            disabled={mutation.isPending}
           </Button>
         </form>
       </Container>

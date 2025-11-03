@@ -15,7 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
 import { AuthContext } from "@/Provider/auth-provider";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 import dynamic from "next/dynamic";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
@@ -72,17 +72,26 @@ const Update = () => {
         shortDesc: formData.get("shortDesc"),
         courseOutline: formData.get("courseOutline"),
       };
+
       const res = await axiosSecure.patch(`/classreq/${id}`, updatedData);
+
       if (res.data.modifiedCount > 0) {
-        swal(
-          "Your Class has been Added!",
-          "Please Wait For the admin response!",
-          "success"
-        );
+        await Swal.fire({
+          title: "Success!",
+          text: "Your class has been updated! Please wait for the admin response.",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
         router.push("/dashboard/teacher/addclass");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error updating class:", error);
+      await Swal.fire({
+        title: "Error",
+        text: error.message || "Something went wrong",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
   };
 

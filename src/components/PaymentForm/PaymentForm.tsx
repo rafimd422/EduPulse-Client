@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import { Button, Container } from "@mui/material";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useRouter } from "next/router";
-import swal from "sweetalert";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import useCourseData from "@/hooks/useCourseData";
 import { AuthContext } from "@/Provider/auth-provider";
@@ -11,6 +10,7 @@ import type { StripeCardElement } from "@stripe/stripe-js";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 import loading from "../../assets/Loading/loading.json";
+import Swal from "sweetalert2";
 
 interface EnrollData {
   name: string | null | undefined;
@@ -54,7 +54,6 @@ const PaymentForm: React.FC = () => {
     if (!stripe || !elements) return;
 
     const card = elements.getElement(CardElement);
-
     if (!card) return;
 
     try {
@@ -65,11 +64,14 @@ const PaymentForm: React.FC = () => {
 
       if (error) {
         console.error("[Stripe Error]", error);
-        swal(`${error.type}`, `${error.message}`, "error");
+        await Swal.fire({
+          title: error.type,
+          text: error.message,
+          icon: "error",
+          confirmButtonText: "OK",
+        });
         return;
       }
-
-      console.log("[PaymentMethod]", paymentMethod);
 
       const response = await axiosSecure.post("/create-payment-intent", {
         price: dataForPayment?.price,
@@ -88,6 +90,12 @@ const PaymentForm: React.FC = () => {
 
       if (confirmError) {
         console.error("Confirm error", confirmError);
+        await Swal.fire({
+          title: "Payment Error",
+          text: confirmError.message,
+          icon: "error",
+          confirmButtonText: "OK",
+        });
         return;
       }
 
@@ -107,12 +115,22 @@ const PaymentForm: React.FC = () => {
       const postEnroll = await axiosSecure.post("/enrolled", enrollData);
 
       if (postEnroll.data.insertedId) {
-        swal("Success", `Your transaction ID: ${paymentIntent.id}`, "success");
+        await Swal.fire({
+          title: "Success",
+          text: `Your transaction ID: ${paymentIntent.id}`,
+          icon: "success",
+          confirmButtonText: "OK",
+        });
         router.push("/dashboard/student/enrollclass");
       }
     } catch (err) {
       console.error("Unexpected error during payment:", err);
-      swal("Error", "An error occurred during payment processing.", "error");
+      await Swal.fire({
+        title: "Error",
+        text: "An error occurred during payment processing.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
   };
 

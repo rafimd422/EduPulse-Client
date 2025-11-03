@@ -3,36 +3,42 @@ import useAxiosPublic from "@/hooks/useAxiosPublic";
 import { useRouter } from "next/router";
 import { useContext } from "react";
 import GoogleButton from "react-google-button";
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 
 export default function SocialLogin() {
   const { googleSignIn } = useContext(AuthContext);
   const router = useRouter();
   const axiosPublic = useAxiosPublic();
 
-  const handleGoogleLogin = () => {
-    googleSignIn()
-      .then((result) => {
-        const userData = {
-          email: result.user?.email,
-          image: result.user?.photoURL,
-          name: result.user?.displayName,
-          role: "student",
-        };
-        axiosPublic
-          .post("/user", userData)
-          .then((res) => {
-            router.push("/");
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await googleSignIn();
 
-            swal("Logged In!", "Successfully!", "success");
-          })
-          .catch((error) => {
-            swal("Error", error.message, "error");
-          });
-      })
-      .catch((error) => {
-        swal("Error", error.message, "error");
+      const userData = {
+        email: result.user?.email,
+        image: result.user?.photoURL,
+        name: result.user?.displayName,
+        role: "student",
+      };
+
+      await axiosPublic.post("/user", userData);
+
+      router.push("/");
+
+      await Swal.fire({
+        title: "Logged In!",
+        text: "Successfully!",
+        icon: "success",
+        confirmButtonText: "OK",
       });
+    } catch (error) {
+      await Swal.fire({
+        title: "Error",
+        text: error.message ?? "Something went wrong",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
   };
 
   return (

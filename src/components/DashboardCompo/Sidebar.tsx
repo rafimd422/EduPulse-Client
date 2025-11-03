@@ -24,7 +24,7 @@ import dynamic from "next/dynamic";
 
 const drawerWidth = 240;
 
-interface AppBarProps extends MuiAppBarProps {
+interface AppBarProps {
   open?: boolean;
 }
 

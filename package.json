@@ -1,58 +1,59 @@
 {
    "engines": {
-    "node": "22.x"
-  },
-  "name": "b8a12-client-side-rafimd422",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^5.14.18",
-    "@mui/material": "^5.14.18",
-    "@mui/x-data-grid": "^6.18.2",
-    "@stripe/react-stripe-js": "^2.4.0",
-    "@stripe/stripe-js": "^2.2.0",
-    "@tanstack/react-query": "^5.8.7",
-    "axios": "^1.6.2",
-    "firebase": "^10.7.0",
-    "keen-slider": "^6.8.6",
-    "lottie-react": "^2.4.0",
-    "next": "^14.0.3",
-    "nuka-carousel": "^7.0.0",
-    "prop-types": "^15.8.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-google-button": "^0.7.2",
-    "react-material-ui-carousel": "^3.4.2",
-    "react-slick": "^0.29.0",
-    "sweetalert": "^2.1.2"
-  },
-  "devDependencies": {
-    "@types/node": "^22.15.18",
-    "@types/react": "^19.1.4",
-    "@types/react-dom": "^19.1.5",
-    "eslint": "^8",
-    "eslint-config-next": "^14.0.3",
-    "typescript": "^5.8.3"
-  },
-  "description": "## Overview",
-  "main": "next.config.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rafimd422/EduPulse-Client.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/rafimd422/EduPulse-Client/issues"
-  },
-  "homepage": "https://github.com/rafimd422/EduPulse-Client#readme"
+      "node": "22.x"
+   },
+   "name": "b8a12-client-side-rafimd422",
+   "version": "0.1.0",
+   "private": true,
+   "scripts": {
+      "dev": "next dev",
+      "build": "next build",
+      "start": "next start",
+      "lint": "next lint"
+   },
+   "dependencies": {
+      "@emotion/react": "^11.11.1",
+      "@emotion/styled": "^11.11.0",
+      "@mui/icons-material": "^5.14.18",
+      "@mui/material": "^5.14.18",
+      "@mui/x-data-grid": "^6.18.2",
+      "@stripe/react-stripe-js": "^2.4.0",
+      "@stripe/stripe-js": "^2.2.0",
+      "@tanstack/react-query": "^5.8.7",
+      "axios": "^1.6.2",
+      "firebase": "^10.7.0",
+      "keen-slider": "^6.8.6",
+      "lottie-react": "^2.4.0",
+      "next": "^14.0.3",
+      "nuka-carousel": "^7.0.0",
+      "prop-types": "^15.8.1",
+      "react": "^18.2.0",
+      "react-dom": "^18.2.0",
+      "react-google-button": "^0.7.2",
+      "react-material-ui-carousel": "^3.4.2",
+      "react-slick": "^0.29.0",
+      "sweetalert2": "^11.26.3"
+   },
+   "devDependencies": {
+      "@types/node": "^22.15.18",
+      "@types/react": "^19.1.4",
+      "@types/react-dom": "^19.1.5",
+      "@types/sweetalert": "^1.1.28",
+      "eslint": "^8",
+      "eslint-config-next": "^14.0.3",
+      "typescript": "^5.8.3"
+   },
+   "description": "## Overview",
+   "main": "next.config.js",
+   "repository": {
+      "type": "git",
+      "url": "git+https://github.com/rafimd422/EduPulse-Client.git"
+   },
+   "keywords": [],
+   "author": "",
+   "license": "ISC",
+   "bugs": {
+      "url": "https://github.com/rafimd422/EduPulse-Client/issues"
+   },
+   "homepage": "https://github.com/rafimd422/EduPulse-Client#readme"
 }

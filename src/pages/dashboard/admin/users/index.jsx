@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import Image from "next/image";
 import loading from "../../../../assets/Loading/loading.json";
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
@@ -97,7 +97,7 @@ const Users = () => {
   ];
 
   const handleMakeAdmin = (id) => {
-    swal({
+    Swal({
       title: "Are you sure?",
       text: "Do You want to give the admin role to this user?",
       icon: "warning",
@@ -108,11 +108,11 @@ const Users = () => {
         axiosSecure.patch(`/user/admin/${id}`).then((res) => {
           if (res.data.modifiedCount > 0) {
             refetch();
-            swal("user got the admin role!", {
+            Swal("user got the admin role!", {
               icon: "success",
             });
           } else {
-            swal("User role is not changed");
+            Swal("User role is not changed");
           }
         });
       }

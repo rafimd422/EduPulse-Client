@@ -9,9 +9,9 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
-import swal from "sweetalert";
 import auth from "@/config/firebase.config";
 import useAxiosPublic from "@/hooks/useAxiosPublic";
+import Swal from "sweetalert2";
 
 interface AuthContextType {
   user: User | null;
@@ -52,18 +52,35 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     return signOut(auth);
   };
 
-  const updateUserProfile = (name: string, photo: string) => {
-    updateProfile(auth.currentUser!, {
-      displayName: name,
-      photoURL: photo,
-    }).then(() => {
+  const updateUserProfile = async (name: string, photo: string) => {
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "No user is logged in.",
+      });
+      return;
+    }
+
+    try {
+      await updateProfile(currentUser, { displayName: name, photoURL: photo });
       console.log("Updated Successfully");
-      swal({
+
+      await Swal.fire({
+        icon: "success",
         title: "Good job!",
         text: "Registration Successful",
-        icon: "success",
+        confirmButtonText: "OK",
       });
-    });
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "Something went wrong while updating your profile.",
+      });
+    }
   };
 
   useEffect(() => {
