@@ -115,9 +115,8 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
           minHeight: "100vh",
           px: 2,
           py: 2.5,
-          bgcolor: "#050816",
-          background:
-            "linear-gradient(160deg, #050816 0%, #0b1220 58%, #082f49 100%)",
+          bgcolor: "#000",
+          background: "#000",
           color: "#fff",
         }}
       >
@@ -206,14 +205,11 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
         component="nav"
         elevation={0}
         sx={{
-          bgcolor: "rgba(3, 7, 18, 0.78)",
-          background:
-            "linear-gradient(180deg, rgba(3, 7, 18, 0.92), rgba(3, 7, 18, 0.72))",
+          bgcolor: "#000",
+          background: "#000",
           color: "#fff",
           borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
           boxShadow: "0 14px 44px rgba(0, 0, 0, 0.22)",
-          backdropFilter: "blur(18px)",
-          WebkitBackdropFilter: "blur(18px)",
         }}
       >
         <Container maxWidth="xl">
