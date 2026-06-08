@@ -26,15 +26,17 @@ const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
-  const notDashBoard = !router.pathname.includes("dashboard");
+  const isDashboardRoute = router.pathname.includes("dashboard");
+  const isAuthRoute = router.pathname.startsWith("/auth/");
+  const showSiteChrome = !isDashboardRoute && !isAuthRoute;
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <AuthProvider>
         <QueryClientProvider client={queryClient}>
-          {notDashBoard && <Navbar />}
+          {showSiteChrome && <Navbar />}
           <Component {...pageProps} />
-          {notDashBoard && <Footer />}
+          {showSiteChrome && <Footer />}
         </QueryClientProvider>
       </AuthProvider>
     </ThemeProvider>
