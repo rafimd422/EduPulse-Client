@@ -28,6 +28,9 @@ import logo from "./../../assets/logo.png";
 import Swal from "sweetalert2";
 
 const drawerWidth = 260;
+const appBarHeight = { xs: 64, sm: 76 };
+const fontStack =
+  'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
 
 const navItems = [
   { name: "Home", route: "/" },
@@ -108,36 +111,85 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
     () => (
       <Box
         onClick={handleDrawerToggle}
-        sx={{ textAlign: "center", bgcolor: "black", height: "100vh" }}
+        sx={{
+          minHeight: "100vh",
+          px: 2,
+          py: 2.5,
+          bgcolor: "#050816",
+          background:
+            "linear-gradient(160deg, #050816 0%, #0b1220 58%, #082f49 100%)",
+          color: "#fff",
+        }}
       >
-        <Box sx={{ py: 2 }}>
-          <Image src={logo} alt="logo" width={200} height={80} priority />
+        <Box sx={{ mb: 2.5, display: "flex", justifyContent: "center" }}>
+          <Link href="/" passHref legacyBehavior>
+            <a aria-label="EduPulse home">
+              <Image
+                src={logo}
+                alt="EduPulse"
+                width={176}
+                height={72}
+                priority
+                style={{ width: "176px", height: "auto", display: "block" }}
+              />
+            </a>
+          </Link>
         </Box>
-        <Divider />
-        <List>
+        <Divider sx={{ borderColor: "rgba(255, 255, 255, 0.1)" }} />
+        <List sx={{ py: 2 }}>
           {navItems.map(({ name, route }) => (
-            <ListItem key={name} disablePadding>
-              <ListItemButton sx={{ textAlign: "center" }}>
-                <Link
-                  href={route}
-                  className={""} // adjust active check if needed
-                  passHref
-                  legacyBehavior
+            <ListItem key={name} disablePadding sx={{ mb: 0.75 }}>
+              <Link href={route} passHref legacyBehavior>
+                <ListItemButton
+                  component="a"
+                  sx={{
+                    borderRadius: 2,
+                    px: 2,
+                    py: 1.25,
+                    color: "rgba(255, 255, 255, 0.82)",
+                    transition: "all 180ms ease",
+                    textDecoration: "none",
+                    "&:hover": {
+                      bgcolor: "rgba(125, 211, 252, 0.12)",
+                      color: "#fff",
+                    },
+                  }}
                 >
                   <ListItemText
                     primary={name}
                     sx={{
-                      color: "whitesmoke",
+                      m: 0,
+                      ".MuiListItemText-primary": {
+                        fontFamily: fontStack,
+                        fontSize: 15,
+                        fontWeight: 700,
+                      },
                     }}
                   />
-                </Link>
-              </ListItemButton>
+                </ListItemButton>
+              </Link>
             </ListItem>
           ))}
         </List>
         <Box sx={{ mt: 2 }}>
           <Link href="/auth/signin" passHref legacyBehavior>
-            <Button variant="outlined" color="error" fullWidth>
+            <Button
+              variant="contained"
+              fullWidth
+              sx={{
+                minHeight: 46,
+                borderRadius: 2,
+                bgcolor: "#fff",
+                color: "#050816",
+                fontFamily: fontStack,
+                fontWeight: 800,
+                textTransform: "none",
+                boxShadow: "0 18px 40px rgba(0, 0, 0, 0.25)",
+                "&:hover": {
+                  bgcolor: "#e0f2fe",
+                },
+              }}
+            >
               Sign In
             </Button>
           </Link>
@@ -152,33 +204,69 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
       <CssBaseline />
       <AppBar
         component="nav"
+        elevation={0}
         sx={{
-          fontFamily: "monospace",
-          boxShadow: "0 1px 3px rgb(0 0 0 / 0.2)",
+          bgcolor: "rgba(3, 7, 18, 0.78)",
+          background:
+            "linear-gradient(180deg, rgba(3, 7, 18, 0.92), rgba(3, 7, 18, 0.72))",
+          color: "#fff",
+          borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+          boxShadow: "0 14px 44px rgba(0, 0, 0, 0.22)",
+          backdropFilter: "blur(18px)",
+          WebkitBackdropFilter: "blur(18px)",
         }}
       >
         <Container maxWidth="xl">
-          <Toolbar disableGutters>
+          <Toolbar
+            disableGutters
+            sx={{
+              minHeight: appBarHeight,
+              display: "grid",
+              gridTemplateColumns: { xs: "44px 1fr auto", sm: "auto 1fr auto" },
+              gap: { xs: 1, md: 3 },
+              alignItems: "center",
+            }}
+          >
             <IconButton
-              color="inherit"
               aria-label="open drawer"
               edge="start"
               onClick={handleDrawerToggle}
-              sx={{ mr: 2, display: { sm: "none" } }}
+              sx={{
+                width: 42,
+                height: 42,
+                color: "#fff",
+                display: { sm: "none" },
+                border: "1px solid rgba(255, 255, 255, 0.14)",
+                bgcolor: "rgba(255, 255, 255, 0.06)",
+                "&:hover": {
+                  bgcolor: "rgba(125, 211, 252, 0.12)",
+                },
+              }}
             >
               <MenuIcon />
             </IconButton>
 
             {/* Logo */}
-            <Box sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: { xs: "center", sm: "flex-start" },
+                minWidth: { sm: 190 },
+              }}
+            >
               <Link href="/" passHref legacyBehavior>
-                <a>
+                <a aria-label="EduPulse home">
                   <Image
                     src={logo}
-                    alt="logo"
-                    width={230}
-                    height={100}
+                    alt="EduPulse"
+                    width={188}
+                    height={78}
                     priority
+                    style={{
+                      width: "clamp(142px, 16vw, 188px)",
+                      height: "auto",
+                      display: "block",
+                    }}
                   />
                 </a>
               </Link>
@@ -188,10 +276,10 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
             <Box
               sx={{
                 display: "flex",
-                flexDirection: { xs: "row-reverse", sm: "row" },
-                justifyContent: { xs: "space-between", sm: "space-evenly" },
                 alignItems: "center",
-                width: "100%",
+                justifyContent: { xs: "flex-end", sm: "space-between" },
+                gap: { sm: 2, md: 3 },
+                minWidth: 0,
               }}
             >
               {/* Desktop nav */}
@@ -199,21 +287,38 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
                 sx={{
                   display: { xs: "none", sm: "flex" },
                   justifyContent: "center",
-                  gap: 2,
+                  alignItems: "center",
+                  gap: 0.75,
+                  mx: "auto",
+                  p: 0.5,
+                  borderRadius: 999,
+                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  bgcolor: "rgba(255, 255, 255, 0.06)",
                 }}
               >
                 {navItems.map(({ name, route }) => (
                   <Link key={name} href={route} passHref legacyBehavior>
-                    <a
-                      style={{
-                        color: "whitesmoke",
-                        borderRadius: 4,
-                        padding: "6px 12px",
+                    <Box
+                      component="a"
+                      sx={{
+                        color: "rgba(255, 255, 255, 0.82)",
+                        borderRadius: 999,
+                        padding: "10px 16px",
                         textDecoration: "none",
+                        fontFamily: fontStack,
+                        fontSize: 14,
+                        fontWeight: 800,
+                        lineHeight: 1,
+                        transition: "all 180ms ease",
+                        whiteSpace: "nowrap",
+                        "&:hover": {
+                          bgcolor: "rgba(125, 211, 252, 0.12)",
+                          color: "#fff",
+                        },
                       }}
                     >
                       {name}
-                    </a>
+                    </Box>
                   </Link>
                 ))}
               </Box>
@@ -223,10 +328,21 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
                 {user ? (
                   <>
                     <Tooltip title="Open settings">
-                      <IconButton onClick={handleMenuOpen} sx={{ p: 0 }}>
+                      <IconButton
+                        onClick={handleMenuOpen}
+                        sx={{
+                          p: 0.5,
+                          border: "1px solid rgba(255, 255, 255, 0.18)",
+                          bgcolor: "rgba(255, 255, 255, 0.08)",
+                          "&:hover": {
+                            bgcolor: "rgba(125, 211, 252, 0.12)",
+                          },
+                        }}
+                      >
                         <Avatar
                           alt={user.displayName || ""}
                           src={user.photoURL || ""}
+                          sx={{ width: 36, height: 36 }}
                         />
                       </IconButton>
                     </Tooltip>
@@ -241,6 +357,19 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
                         horizontal: "left",
                       }}
                       keepMounted
+                      PaperProps={{
+                        sx: {
+                          mt: 1.5,
+                          minWidth: 190,
+                          borderRadius: 2,
+                          border: "1px solid rgba(15, 23, 42, 0.08)",
+                          boxShadow: "0 22px 55px rgba(15, 23, 42, 0.18)",
+                          ".MuiMenuItem-root": {
+                            fontFamily: fontStack,
+                            fontSize: 14,
+                          },
+                        },
+                      }}
                     >
                       <MenuItem disabled sx={{ fontSize: 12 }}>
                         {user.displayName}
@@ -258,7 +387,25 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
                   </>
                 ) : (
                   <Link href="/auth/signin" passHref legacyBehavior>
-                    <Button variant="outlined" color="error">
+                    <Button
+                      variant="contained"
+                      sx={{
+                        minHeight: { xs: 42, sm: 44 },
+                        px: { xs: 2, sm: 2.5 },
+                        borderRadius: 2,
+                        bgcolor: "#fff",
+                        color: "#050816",
+                        fontFamily: fontStack,
+                        fontWeight: 800,
+                        textTransform: "none",
+                        boxShadow: "0 14px 34px rgba(255, 255, 255, 0.12)",
+                        whiteSpace: "nowrap",
+                        "&:hover": {
+                          bgcolor: "#e0f2fe",
+                          boxShadow: "0 18px 42px rgba(125, 211, 252, 0.22)",
+                        },
+                      }}
+                    >
                       Sign In
                     </Button>
                   </Link>
