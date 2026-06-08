@@ -1,0 +1,43 @@
+<svg width="244" height="64" viewBox="0 0 244 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">EduPulse</title>
+  <desc id="desc">EduPulse premium wordmark with a pulse-inspired learning emblem.</desc>
+  <defs>
+    <linearGradient id="markGradient" x1="6" y1="7" x2="54" y2="57" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7DD3FC"/>
+      <stop offset="0.52" stop-color="#2563EB"/>
+      <stop offset="1" stop-color="#800000"/>
+    </linearGradient>
+    <linearGradient id="pulseGradient" x1="17" y1="32" x2="47" y2="32" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#E0F2FE"/>
+      <stop offset="0.55" stop-color="#7DD3FC"/>
+      <stop offset="1" stop-color="#F8FAFC"/>
+    </linearGradient>
+    <filter id="softShadow" x="-14" y="-12" width="92" height="92" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset dy="5"/>
+      <feGaussianBlur stdDeviation="7"/>
+      <feComposite in2="hardAlpha" operator="out"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.125 0 0 0 0 0.537 0 0 0 0 0.878 0 0 0 0.42 0"/>
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#softShadow)">
+    <rect x="8" y="8" width="48" height="48" rx="16" fill="url(#markGradient)"/>
+    <rect x="11" y="11" width="42" height="42" rx="14" fill="#020617" fill-opacity="0.34"/>
+    <path d="M18 33.5H24.1L27.2 25.8L32.3 41.2L36.9 22.8L40.6 33.5H46" stroke="url(#pulseGradient)" stroke-width="3.25" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M20 20.5C23.2 17.7 27.35 16 32 16C36.65 16 40.8 17.7 44 20.5" stroke="#F8FAFC" stroke-opacity="0.72" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M44 43.5C40.8 46.3 36.65 48 32 48C27.35 48 23.2 46.3 20 43.5" stroke="#7DD3FC" stroke-opacity="0.72" stroke-width="2.4" stroke-linecap="round"/>
+  </g>
+
+  <g>
+    <text x="68" y="35" fill="#F8FAFC" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="26" font-weight="800" letter-spacing="0">
+      Edu<tspan fill="#7DD3FC">Pulse</tspan>
+    </text>
+    <text x="70" y="50" fill="#94A3B8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="8.5" font-weight="800" letter-spacing="0">
+      LEARN WITH MOMENTUM
+    </text>
+  </g>
+</svg>

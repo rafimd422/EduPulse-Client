@@ -20,15 +20,14 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import Link from "next/link";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import { AuthContext } from "@/Provider/auth-provider";
-import logo from "./../../assets/logo.png";
 import Swal from "sweetalert2";
 
 const drawerWidth = 260;
 const appBarHeight = { xs: 64, sm: 76 };
+const logoSrc = "/edupulse-premium-logo.svg";
 const fontStack =
   'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
 
@@ -123,13 +122,15 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
         <Box sx={{ mb: 2.5, display: "flex", justifyContent: "center" }}>
           <Link href="/" passHref legacyBehavior>
             <a aria-label="EduPulse home">
-              <Image
-                src={logo}
+              <Box
+                component="img"
+                src={logoSrc}
                 alt="EduPulse"
-                width={176}
-                height={72}
-                priority
-                style={{ width: "176px", height: "auto", display: "block" }}
+                sx={{
+                  width: 196,
+                  height: "auto",
+                  display: "block",
+                }}
               />
             </a>
           </Link>
@@ -252,14 +253,12 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
             >
               <Link href="/" passHref legacyBehavior>
                 <a aria-label="EduPulse home">
-                  <Image
-                    src={logo}
+                  <Box
+                    component="img"
+                    src={logoSrc}
                     alt="EduPulse"
-                    width={188}
-                    height={78}
-                    priority
-                    style={{
-                      width: "clamp(142px, 16vw, 188px)",
+                    sx={{
+                      width: "clamp(158px, 17vw, 214px)",
                       height: "auto",
                       display: "block",
                     }}
