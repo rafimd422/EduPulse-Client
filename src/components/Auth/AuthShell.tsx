@@ -1,5 +1,4 @@
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
-import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import SchoolRoundedIcon from "@mui/icons-material/SchoolRounded";
 import {
   Box,
@@ -74,39 +73,51 @@ export default function AuthShell({
         position: "relative",
         overflow: "hidden",
         minHeight: "100vh",
-        bgcolor: "#f6f4ee",
+        height: { lg: "100vh" },
+        bgcolor: "#f7f4ed",
         background:
-          "radial-gradient(circle at 12% 12%, rgba(14, 165, 233, 0.12), transparent 24%), radial-gradient(circle at 86% 10%, rgba(139, 30, 63, 0.11), transparent 24%), linear-gradient(180deg, #fbfaf7 0%, #f4f1ea 100%)",
-        py: { xs: 2, md: 3 },
+          "radial-gradient(circle at 12% 12%, rgba(14, 165, 233, 0.14), transparent 24%), radial-gradient(circle at 86% 10%, rgba(139, 30, 63, 0.12), transparent 24%), linear-gradient(180deg, #fcfbf7 0%, #f3eee4 100%)",
+        py: { xs: 2, md: 3, lg: 0 },
       }}
     >
       <CssBaseline />
 
-      <Container maxWidth="xl" sx={{ position: "relative" }}>
+      <Container
+        maxWidth="xl"
+        sx={{
+          position: "relative",
+          minHeight: { lg: "100vh" },
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: { lg: "center" },
+          py: { lg: 3 },
+        }}
+      >
         <Box
           sx={{
             display: "flex",
-            justifyContent: "flex-end",
+            justifyContent: "flex-start",
             mb: { xs: 2, md: 3 },
+            pt: { xs: 0.5, lg: 0 },
           }}
         >
           <Link href="/" passHref legacyBehavior>
             <Button
               component="a"
               startIcon={<ArrowBackRoundedIcon />}
-              endIcon={<HomeRoundedIcon />}
               sx={{
                 minHeight: 44,
                 px: 2,
                 borderRadius: 999,
-                border: "1px solid rgba(15, 23, 42, 0.1)",
-                bgcolor: "rgba(255, 255, 255, 0.78)",
+                border: "1px solid rgba(15, 23, 42, 0.09)",
+                bgcolor: "rgba(255, 255, 255, 0.84)",
                 color: "#0f172a",
                 fontFamily: authFontStack,
                 fontWeight: 800,
                 textTransform: "none",
-                boxShadow: "0 14px 30px rgba(15, 23, 42, 0.06)",
-                backdropFilter: "blur(10px)",
+                letterSpacing: 0.2,
+                boxShadow: "0 16px 34px rgba(15, 23, 42, 0.06)",
+                backdropFilter: "blur(14px)",
                 "&:hover": {
                   bgcolor: "#ffffff",
                 },
@@ -128,7 +139,7 @@ export default function AuthShell({
           <Box
             sx={{
               display: { xs: "none", lg: "flex" },
-              minHeight: 720,
+              minHeight: "min(680px, calc(100vh - 120px))",
               p: 5,
               borderRadius: 3,
               color: "#fff",
@@ -136,9 +147,18 @@ export default function AuthShell({
               flexDirection: "column",
               justifyContent: "space-between",
               background:
-                "linear-gradient(160deg, #050816 0%, #0f172a 55%, #1e293b 100%)",
-              boxShadow: "0 34px 90px rgba(15, 23, 42, 0.2)",
+                "linear-gradient(155deg, #040711 0%, #0f172a 52%, #1b2a41 100%)",
+              boxShadow: "0 36px 96px rgba(15, 23, 42, 0.22)",
               border: "1px solid rgba(255, 255, 255, 0.08)",
+              position: "relative",
+              "&::after": {
+                content: '""',
+                position: "absolute",
+                inset: 18,
+                borderRadius: 2.5,
+                border: "1px solid rgba(255, 255, 255, 0.06)",
+                pointerEvents: "none",
+              },
             }}
           >
             <Box>
@@ -148,6 +168,19 @@ export default function AuthShell({
                 alt="EduPulse"
                 sx={{ width: 214, height: "auto", display: "block", mb: 6 }}
               />
+              <Typography
+                sx={{
+                  mb: 1.5,
+                  color: "rgba(255, 255, 255, 0.62)",
+                  fontFamily: authFontStack,
+                  fontSize: 12,
+                  fontWeight: 800,
+                  textTransform: "uppercase",
+                  letterSpacing: 1.4,
+                }}
+              >
+                EduPulse Access
+              </Typography>
               <Typography
                 component="h1"
                 sx={{
@@ -206,11 +239,12 @@ export default function AuthShell({
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              minHeight: { lg: "min(680px, calc(100vh - 120px))" },
               borderRadius: 3,
               border: "1px solid rgba(15, 23, 42, 0.08)",
-              bgcolor: "rgba(255, 255, 255, 0.86)",
-              boxShadow: "0 34px 90px rgba(15, 23, 42, 0.1)",
-              backdropFilter: "blur(18px)",
+              bgcolor: "rgba(255, 255, 255, 0.88)",
+              boxShadow: "0 34px 90px rgba(15, 23, 42, 0.11)",
+              backdropFilter: "blur(20px)",
               p: { xs: 2.25, sm: 3.5, md: 4.5, lg: 5 },
             }}
           >
@@ -241,6 +275,19 @@ export default function AuthShell({
               >
                 <SchoolRoundedIcon />
               </Box>
+              <Typography
+                sx={{
+                  mb: 1,
+                  color: "#8b1e3f",
+                  fontFamily: authFontStack,
+                  fontSize: 12,
+                  fontWeight: 800,
+                  textTransform: "uppercase",
+                  letterSpacing: 1.2,
+                }}
+              >
+                Private access
+              </Typography>
               <Typography
                 component="h2"
                 sx={{
