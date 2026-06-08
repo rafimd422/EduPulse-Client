@@ -48,7 +48,7 @@ export default function SocialLogin() {
       variant="outlined"
       onClick={handleGoogleLogin}
       sx={{
-        minHeight: 48,
+        minHeight: 50,
         borderRadius: 2,
         borderColor: "#e2e8f0",
         bgcolor: "#fff",
@@ -61,6 +61,10 @@ export default function SocialLogin() {
           borderColor: "#cbd5e1",
           bgcolor: "#f8fafc",
           boxShadow: "0 16px 38px rgba(15, 23, 42, 0.08)",
+        },
+        "&.Mui-focusVisible": {
+          borderColor: "#8b1e3f",
+          boxShadow: "0 0 0 4px rgba(139, 30, 63, 0.12)",
         },
       }}
     >

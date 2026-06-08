@@ -149,7 +149,7 @@ const SignUp: React.FC = () => {
         pageTitle="Create account"
       >
         <Box component="form" onSubmit={handleSubmit}>
-          <Grid container spacing={2}>
+          <Grid container spacing={{ xs: 2, lg: 1.5, xl: 2 }}>
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="given-name"
@@ -233,7 +233,7 @@ const SignUp: React.FC = () => {
             variant="contained"
             endIcon={<PersonAddAltRounded />}
             sx={{
-              mt: 2.5,
+              mt: { xs: 2.5, lg: 2, xl: 2.5 },
               minHeight: 52,
               borderRadius: 2,
               bgcolor: "#8b1e3f",
@@ -252,7 +252,11 @@ const SignUp: React.FC = () => {
           </Button>
 
           <Divider
-            sx={{ my: 2.5, color: "#94a3b8", fontFamily: authFontStack }}
+            sx={{
+              my: { xs: 2.5, lg: 2, xl: 2.5 },
+              color: "#94a3b8",
+              fontFamily: authFontStack,
+            }}
           >
             or
           </Divider>
@@ -261,7 +265,7 @@ const SignUp: React.FC = () => {
 
           <Typography
             sx={{
-              mt: 2.5,
+              mt: { xs: 2.5, lg: 2, xl: 2.5 },
               color: "#64748b",
               fontFamily: authFontStack,
               fontSize: 14,

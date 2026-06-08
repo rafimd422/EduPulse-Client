@@ -90,7 +90,7 @@ const SignIn = (): JSX.Element => {
         pageTitle="Sign in"
       >
         <Box component="form" noValidate onSubmit={handleLogin}>
-          <Stack spacing={2}>
+          <Stack spacing={{ xs: 2, lg: 1.75, xl: 2 }}>
             <TextField
               required
               fullWidth
@@ -150,7 +150,11 @@ const SignIn = (): JSX.Element => {
           </Stack>
 
           <Divider
-            sx={{ my: 2.5, color: "#94a3b8", fontFamily: authFontStack }}
+            sx={{
+              my: { xs: 2.5, lg: 2, xl: 2.5 },
+              color: "#94a3b8",
+              fontFamily: authFontStack,
+            }}
           >
             or
           </Divider>
@@ -159,7 +163,7 @@ const SignIn = (): JSX.Element => {
 
           <Typography
             sx={{
-              mt: 2.5,
+              mt: { xs: 2.5, lg: 2, xl: 2.5 },
               color: "#64748b",
               fontFamily: authFontStack,
               fontSize: 14,
