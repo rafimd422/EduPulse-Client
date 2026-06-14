@@ -1,10 +1,9 @@
-import * as React from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { Box, Button, Container } from "@mui/material";
 import teacher from "../../assets/teacher/teacher.json";
 import Title from "../Title/Title";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
@@ -14,7 +13,7 @@ export default function Teacher() {
 
   return (
     <Box>
-      <Container maxWidth="lg" align="center">
+      <Container maxWidth="lg" sx={{ textAlign: "center" }}>
         <Title title={"Are You A"} titleColor="Teacher?" />
         <Grid
           container

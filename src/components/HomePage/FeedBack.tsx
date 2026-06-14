@@ -104,8 +104,6 @@
 // };
 
 // export default FeedBack;
-import React from 'react'
-
 const FeedBack = () => {
   return (
     <div>

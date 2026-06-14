@@ -1,5 +1,4 @@
 import { Box, Chip, Container, Grid, Paper, Typography } from "@mui/material";
-import React from "react";
 import Title from "./../../../components/Title/Title";
 
 const WhyChooseUs = () => {

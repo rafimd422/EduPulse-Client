@@ -1,6 +1,6 @@
 import DashboardLayout from "@/DashboardLayout";
 import { Container, Toolbar, Button } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import Title from "../../../../components/Title/Title";
 import Head from "next/head";
 import { useQuery } from "@tanstack/react-query";
@@ -9,27 +9,31 @@ import Image from "next/image";
 import loading from "../../../../assets/Loading/loading.json";
 import Swal from "sweetalert2";
 import useCurrentUser from "@/hooks/useCurrentUser";
-import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
+type UserRow = {
+  _id: string;
+  image?: string;
+  name?: string;
+  fullName?: string;
+  email: string;
+  role: string;
+};
+
 const Users = () => {
   const axiosSecure = useAxiosSecure();
   const { currentUser } = useCurrentUser();
-  const router = useRouter();
   const {
     data: allUsers = [],
     refetch,
     isLoading,
-  } = useQuery({
+  } = useQuery<UserRow[]>({
     queryKey: ["users"],
     queryFn: async () => {
       const res = await axiosSecure.get("/user");
       return res.data;
-    },
-    onSuccess: () => {
-      refetch();
     },
   });
 
@@ -48,25 +52,58 @@ const Users = () => {
     );
   }
 
-  const columns = [
+  const handleMakeAdmin = async (id: string) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to give the admin role to this user?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Make Admin",
+      cancelButtonText: "Cancel",
+    });
+
+    if (result.isConfirmed) {
+      const res = await axiosSecure.patch<{ modifiedCount?: number }>(
+        `/user/admin/${id}`
+      );
+
+      if (res.data.modifiedCount && res.data.modifiedCount > 0) {
+        refetch();
+        await Swal.fire({
+          title: "User got the admin role!",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+      } else {
+        await Swal.fire({
+          title: "User role is not changed",
+          icon: "info",
+          confirmButtonText: "OK",
+        });
+      }
+    }
+  };
+
+  const columns: GridColDef<UserRow>[] = [
     {
       field: "image",
       headerName: "Image",
       width: 60,
-      renderCell: (params) => (
-        <Image
-          src={params.row.image || ""}
-          width={96}
-          height={96}
-          alt={`Image for ${params.row.fullName}`}
-          style={{
-            width: "100%",
-            height: "auto",
-            objectFit: "cover",
-            borderRadius: "70%",
-          }}
-        />
-      ),
+      renderCell: (params: GridRenderCellParams<UserRow>) =>
+        params.row.image ? (
+          <Image
+            src={params.row.image}
+            width={96}
+            height={96}
+            alt={`Image for ${params.row.fullName ?? params.row.name ?? "user"}`}
+            style={{
+              width: "100%",
+              height: "auto",
+              objectFit: "cover",
+              borderRadius: "70%",
+            }}
+          />
+        ) : null,
     },
     { field: "name", headerName: "Name", width: 150 },
     { field: "email", headerName: "Email", width: 180 },
@@ -75,7 +112,7 @@ const Users = () => {
       field: "actions",
       headerName: "Actions",
       width: 180,
-      renderCell: (params) => (
+      renderCell: (params: GridRenderCellParams<UserRow>) => (
         <div style={{ display: "flex", gap: "4px" }}>
           {params.row.role === "admin" ? (
             <Button variant="contained" disabled color="primary" size="small">
@@ -95,29 +132,6 @@ const Users = () => {
       ),
     },
   ];
-
-  const handleMakeAdmin = (id) => {
-    Swal({
-      title: "Are you sure?",
-      text: "Do You want to give the admin role to this user?",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        axiosSecure.patch(`/user/admin/${id}`).then((res) => {
-          if (res.data.modifiedCount > 0) {
-            refetch();
-            Swal("user got the admin role!", {
-              icon: "success",
-            });
-          } else {
-            Swal("User role is not changed");
-          }
-        });
-      }
-    });
-  };
 
   if (currentUser) {
     return (
@@ -155,6 +169,8 @@ const Users = () => {
       </DashboardLayout>
     );
   }
+
+  return null;
 };
 
 export default Users;

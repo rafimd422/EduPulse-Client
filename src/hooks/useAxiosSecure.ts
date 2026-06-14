@@ -1,25 +1,33 @@
 import { AuthContext } from "@/Provider/auth-provider";
-import SignIn from "@/pages/auth/signin";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useContext } from "react";
+import type { AxiosError, InternalAxiosRequestConfig } from "axios";
 
 const axiosSecure = axios.create({
   baseURL: "https://eduserver-three.vercel.app",
 });
 const useAxiosSecure = () => {
   const router = useRouter();
-  const { logOut, setLoading } = useContext(AuthContext);
+  const authContext = useContext(AuthContext);
+
+  if (!authContext) {
+    throw new Error("useAxiosSecure must be used within AuthProvider");
+  }
+
+  const { logOut, setLoading } = authContext;
 
   axiosSecure.interceptors.request.use(
-    function (config) {
-      const token = localStorage.getItem("token");
+    function (config: InternalAxiosRequestConfig) {
+      const token =
+        typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
-      config.headers.authorization = `Bearer ${token}`;
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
       return config;
     },
-    function (error) {
-      // Do something with request error
+    function (error: AxiosError) {
       return Promise.reject(error);
     }
   );
@@ -28,7 +36,7 @@ const useAxiosSecure = () => {
     function (response) {
       return response;
     },
-    async (error) => {
+    async (error: AxiosError) => {
       const status = error?.response?.status;
 
       if (status === 401 || status === 403) {

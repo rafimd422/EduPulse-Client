@@ -1,6 +1,10 @@
 import Head from "next/head";
 
-const PageTitle = ({ halmet }) => {
+type PageTitleProps = {
+  halmet: string;
+};
+
+const PageTitle = ({ halmet }: PageTitleProps) => {
   return (
     <Head>
       <title>EduPulse || {halmet}</title>

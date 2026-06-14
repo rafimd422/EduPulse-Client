@@ -7,9 +7,15 @@ import { useContext } from "react";
 import Swal from "sweetalert2";
 
 export default function SocialLogin() {
-  const { googleSignIn } = useContext(AuthContext);
+  const authContext = useContext(AuthContext);
   const router = useRouter();
   const axiosPublic = useAxiosPublic();
+
+  if (!authContext) {
+    throw new Error("SocialLogin must be used within AuthProvider");
+  }
+
+  const { googleSignIn } = authContext;
 
   const handleGoogleLogin = async () => {
     try {
@@ -33,9 +39,12 @@ export default function SocialLogin() {
         confirmButtonText: "OK",
       });
     } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Something went wrong";
+
       await Swal.fire({
         title: "Error",
-        text: error.message ?? "Something went wrong",
+        text: message,
         icon: "error",
         confirmButtonText: "OK",
       });

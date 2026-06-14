@@ -2,10 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "./useAxiosSecure";
 import { useContext } from "react";
 import { AuthContext } from "@/Provider/auth-provider";
+import type { NextRouter } from "next/router";
 
-const useCourseData = (router) => {
+const useCourseData = (router: NextRouter) => {
   const axiosSecure = useAxiosSecure();
-  const { user } = useContext(AuthContext);
+  const authContext = useContext(AuthContext);
+  const user = authContext?.user;
 
   const {
     data: dataForPayment,
