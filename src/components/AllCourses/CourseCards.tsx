@@ -19,7 +19,7 @@ type CourseCardsProps = {
   course: {
     _id: string;
     title: string;
-    price: string;
+    price: string | number;
     shortDesc: string;
     courseOutline: string;
     image: string;

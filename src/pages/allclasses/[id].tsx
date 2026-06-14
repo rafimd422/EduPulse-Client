@@ -1,9 +1,8 @@
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
-import Image from "next/image";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
-import { Box, Button, Container, Toolbar, Typography } from "@mui/material";
+import { Alert, Box, Button, Container, Toolbar, Typography } from "@mui/material";
 
 import PageTitle from "@/components/PageTitle/PageTitle";
 import Title from "@/components/Title/Title";
@@ -18,7 +17,7 @@ const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 export interface Course {
   _id: string;
   title: string;
-  price: string;
+  price: string | number;
   shortDesc: string;
   courseOutline: string;
   image: string;
@@ -35,16 +34,20 @@ const ClassDetails: React.FC = () => {
   const axiosSecure = useAxiosSecure();
   const id = router.query.id as string;
 
-  const { data: updateClass, isLoading } = useQuery<Course>({
+  const { data: updateClass, isLoading, isError } = useQuery<Course>({
     queryKey: ["courses", id],
     queryFn: async () => {
       const res = await axiosSecure.get(`/classreq/${id}`);
       return res.data;
     },
-    enabled: !!id,
+    enabled: !!id && !!user,
   });
 
-  if (isLoading || !updateClass) {
+  if (!user) {
+    return <SignIn />;
+  }
+
+  if (isLoading || (!isError && !updateClass)) {
     return (
       <Container
         sx={{
@@ -59,8 +62,19 @@ const ClassDetails: React.FC = () => {
     );
   }
 
-  if (!user) {
-    return <SignIn />;
+  if (isError) {
+    return (
+      <>
+        <PageTitle halmet="Courses Details" />
+        <Toolbar />
+        <Container maxWidth="sm" sx={{ py: 8 }}>
+          <Alert severity="error">
+            We could not load this course right now. Please refresh the page or
+            return to all classes.
+          </Alert>
+        </Container>
+      </>
+    );
   }
 
   return (
@@ -95,16 +109,21 @@ const ClassDetails: React.FC = () => {
           {updateClass.title}
         </Typography>
 
-        {updateClass.image && (
-          <Image
+        {updateClass?.image && (
+          <Box
+            component="img"
             src={updateClass.image}
-            width={800}
-            height={500}
-            alt="Course Thumbnail"
-            priority
-            style={{
+            alt={updateClass.title || "Course Thumbnail"}
+            sx={{
               display: "block",
-              margin: "1rem auto",
+              width: 800,
+              maxWidth: "100%",
+              height: "auto",
+              maxHeight: 500,
+              objectFit: "cover",
+              mx: "auto",
+              my: "1rem",
+              borderRadius: 2,
             }}
           />
         )}

@@ -20,13 +20,11 @@ export default function Home() {
       </Head>
       <Toolbar />
       <Banner />
-      <div style={{ marginTop: "4rem", marginBottom: "4rem" }}>
-        <Trusted />
-      </div>
       <PopularCourses />
       <FeedBack />
       <TotalUserSection />
       <WhyChooseUs />
+      <Trusted />
       <Teacher />
       <Faq />
     </>

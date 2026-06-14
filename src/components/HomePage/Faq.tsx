@@ -53,7 +53,7 @@ const Faq = () => {
         overflow: "hidden",
         py: { xs: 8, md: 12 },
         background:
-          "radial-gradient(circle at 8% 8%, rgba(14, 165, 233, 0.08), transparent 22%), radial-gradient(circle at 92% 12%, rgba(128, 0, 0, 0.06), transparent 20%), linear-gradient(180deg, #fcfbf7 0%, #f6f3ec 100%)",
+          "radial-gradient(circle at 10% 10%, rgba(14, 165, 233, 0.08), transparent 24%), radial-gradient(circle at 92% 12%, rgba(180, 35, 24, 0.06), transparent 22%), linear-gradient(180deg, #fdfcf8 0%, #f5f2ea 100%)",
       }}
     >
       <Container maxWidth="lg" sx={{ position: "relative" }}>
@@ -68,46 +68,47 @@ const Faq = () => {
           <Title title={"Frequently Asked"} titleColor="Questions" />
           <Typography
             sx={{
-              mt: 2.5,
+              mt: 2.25,
               mx: "auto",
-              maxWidth: 680,
+              maxWidth: 700,
               color: "#667085",
               fontSize: { xs: 15, md: 16 },
-              lineHeight: 1.8,
+              lineHeight: 1.82,
             }}
           >
-            Find clear answers about enrollment, access, learning progress, and
-            payments so you can move through EduPulse with less friction.
+            Find quick, reliable answers about enrollment, access, progress,
+            and payments so moving through EduPulse feels simpler from the
+            start.
           </Typography>
         </Box>
 
         <Box
           sx={{
             display: "grid",
-            gridTemplateColumns: { xs: "1fr", lg: "0.92fr 1.08fr" },
+            gridTemplateColumns: { xs: "1fr", lg: "0.82fr 1.18fr" },
             gap: { xs: 3, lg: 4 },
-            alignItems: "stretch",
+            alignItems: "start",
           }}
         >
           <Box
             sx={{
               display: "flex",
               flexDirection: "column",
-              justifyContent: "space-between",
-              borderRadius: 3,
+              gap: 2,
+              borderRadius: "28px",
               border: "1px solid rgba(15, 23, 42, 0.08)",
-              bgcolor: "#ffffff",
-              boxShadow: "0 28px 70px rgba(15, 23, 42, 0.08)",
-              p: { xs: 2.5, md: 3.5 },
-              minHeight: { lg: 620 },
+              background:
+                "linear-gradient(180deg, rgba(255,255,255,0.98), rgba(249,250,251,0.98))",
+              boxShadow: "0 24px 54px rgba(15, 23, 42, 0.08)",
+              p: { xs: 2.5, md: 3 },
             }}
           >
-            <Box >
+            <Stack direction="row" spacing={1.25} alignItems="center">
               <Box
                 sx={{
-                  width: 48,
-                  height: 48,
-                  borderRadius: 2.5,
+                  width: 44,
+                  height: 44,
+                  borderRadius: "14px",
                   display: "grid",
                   placeItems: "center",
                   bgcolor: "#eef6ff",
@@ -117,80 +118,71 @@ const Faq = () => {
               >
                 <HelpOutlineRoundedIcon />
               </Box>
-              <Typography
-                sx={{
-                  mt: 2,
-                  color: "#111827",
-                  fontFamily: '"EB Garamond", Georgia, serif',
-                  fontSize: { xs: "2rem", md: "2.4rem" },
-                  fontWeight: 800,
-                  lineHeight: 1,
-                  letterSpacing: 0,
-                }}
-              >
-                Support that feels clear and immediate.
-              </Typography>
-              <Typography
-                sx={{
-                  mt: 2,
-                  color: "#667085",
-
-                  fontSize: 15,
-                  lineHeight: 1.8,
-                  maxWidth: 460,
-                }}
-              >
-                These are the questions learners ask most before they enroll.
-                The goal is simple: remove uncertainty and help people get to
-                the right class faster.
-              </Typography>
-            </Box>
+              <Box>
+                <Typography
+                  sx={{
+                    color: "#b42318",
+                    fontSize: 12,
+                    fontWeight: 800,
+                    letterSpacing: 0.35,
+                    textTransform: "uppercase",
+                  }}
+                >
+                  Quick help
+                </Typography>
+                <Typography
+                  sx={{
+                    mt: 0.35,
+                    color: "#111827",
+                    fontFamily: '"EB Garamond", Georgia, serif',
+                    fontSize: { xs: "1.15rem", md: "1.25rem" },
+                    fontWeight: 800,
+                    lineHeight: 1.2,
+                  }}
+                >
+                  Answers at a glance
+                </Typography>
+              </Box>
+            </Stack>
 
             <Box
               sx={{
                 mx: "auto",
                 width: "100%",
-                maxWidth: 360,
-                my: { xs: 3, lg: 2 },
+                maxWidth: 300,
+                py: { xs: 0.5, md: 1 },
               }}
             >
               <Lottie animationData={faq} />
             </Box>
 
             <Stack spacing={1.25}>
-              <Box
-                sx={{
-                  p: 2,
-                  borderRadius: 2,
-                  bgcolor: "#f8fafc",
-                  border: "1px solid #e2e8f0",
-                }}
-              >
-                <Typography
+              {[
+                "Enrollment, access, and payment basics in one place.",
+                "Designed to support the decision flow before class signup.",
+                "Compact reference panel paired with the full accordion list.",
+              ].map((item) => (
+                <Box
+                  key={item}
                   sx={{
-                    color: "#0f172a",
-
-                    fontSize: 13,
-                    fontWeight: 800,
-                    textTransform: "uppercase",
-                    letterSpacing: 0.4,
+                    p: 1.6,
+                    borderRadius: "18px",
+                    bgcolor: "#f8fafc",
+                    border: "1px solid #e2e8f0",
                   }}
                 >
-                  Fast answers
-                </Typography>
-                <Typography
-                  sx={{
-                    mt: 0.75,
-                    color: "#64748b",
-
-                    fontSize: 14,
-                    lineHeight: 1.7,
-                  }}
-                >
-                  Common enrollment and course questions are covered in one
-                  place.
-                </Typography>
-              </Box>
+                  <Typography
+                    sx={{
+                      color: "#475467",
+                      fontSize: 14,
+                      fontWeight: 700,
+                      lineHeight: 1.65,
+                    }}
+                  >
+                    {item}
+                  </Typography>
+                </Box>
+              ))}
             </Stack>
           </Box>
 
@@ -206,14 +198,19 @@ const Faq = () => {
                 key={item.question}
                 disableGutters
                 elevation={0}
+                defaultExpanded={idx === 0}
                 sx={{
-                  borderRadius: "20px !important",
+                  borderRadius: "22px !important",
                   overflow: "hidden",
                   border: "1px solid rgba(15, 23, 42, 0.08)",
-                  bgcolor: "rgba(255, 255, 255, 0.88)",
+                  bgcolor: "rgba(255, 255, 255, 0.92)",
                   boxShadow: "0 18px 40px rgba(15, 23, 42, 0.06)",
+                  transition: "transform 0.22s ease, box-shadow 0.22s ease",
                   "&::before": {
                     display: "none",
+                  },
+                  "&.Mui-expanded": {
+                    boxShadow: "0 24px 54px rgba(15, 23, 42, 0.1)",
                   },
                 }}
               >
@@ -221,13 +218,13 @@ const Faq = () => {
                   expandIcon={
                     <Box
                       sx={{
-                        width: 34,
-                        height: 34,
+                        width: 38,
+                        height: 38,
                         borderRadius: "50%",
                         display: "grid",
                         placeItems: "center",
-                        bgcolor: idx === 0 ? "#8b1e3f" : "#f1f5f9",
-                        color: idx === 0 ? "#fff" : "#0f172a",
+                        bgcolor: "#f1f5f9",
+                        color: "#0f172a",
                         transition: "all 180ms ease",
                         ".Mui-expanded &": {
                           bgcolor: "#8b1e3f",
@@ -241,48 +238,54 @@ const Faq = () => {
                   sx={{
                     px: { xs: 2, md: 2.5 },
                     py: 1,
-                    minHeight: 80,
+                    minHeight: 84,
                     "& .MuiAccordionSummary-content": {
-                      my: 1.25,
+                      my: 1.5,
                       mr: 2,
                     },
                   }}
                 >
-                  <Box>
-                    <Typography
+                  <Stack direction="row" spacing={1.5} alignItems="flex-start">
+                    <Box
                       sx={{
-                        mb: 0.5,
-                        color: "#8b1e3f",
-
-                        fontSize: 12,
-                        fontWeight: 800,
-                        textTransform: "uppercase",
-                        letterSpacing: 0.35,
+                        width: 40,
+                        height: 40,
+                        flex: "0 0 auto",
+                        borderRadius: "14px",
+                        display: "grid",
+                        placeItems: "center",
+                        bgcolor: idx === 0 ? "#fff5f4" : "#f8fafc",
+                        color: idx === 0 ? "#b42318" : "#475467",
+                        border: "1px solid rgba(15, 23, 42, 0.06)",
+                        fontSize: 13,
+                        fontWeight: 900,
                       }}
                     >
-                      {`Question ${idx + 1}`}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        color: "#111827",
-                        fontFamily: '"EB Garamond", Georgia, serif',
-                        fontSize: { xs: "1.25rem", md: "1.45rem" },
-                        fontWeight: 800,
-                        lineHeight: 1.2,
-                        letterSpacing: 0,
-                      }}
-                    >
-                      {item.question}
-                    </Typography>
-                  </Box>
+                      {String(idx + 1).padStart(2, "0")}
+                    </Box>
+                    <Box>
+                      <Typography
+                        sx={{
+                          color: "#111827",
+                          fontFamily: '"EB Garamond", Georgia, serif',
+                          fontSize: { xs: "1.22rem", md: "1.42rem" },
+                          fontWeight: 800,
+                          lineHeight: 1.2,
+                          letterSpacing: 0,
+                        }}
+                      >
+                        {item.question}
+                      </Typography>
+                    </Box>
+                  </Stack>
                 </AccordionSummary>
                 <AccordionDetails
                   sx={{ px: { xs: 2, md: 2.5 }, pb: 2.5, pt: 0 }}
                 >
                   <Typography
                     sx={{
+                      pl: { md: "56px" },
                       color: "#667085",
-
                       fontSize: 15,
                       lineHeight: 1.8,
                       maxWidth: 760,

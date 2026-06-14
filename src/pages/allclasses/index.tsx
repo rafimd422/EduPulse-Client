@@ -1,8 +1,8 @@
 import { FC } from "react";
 import PageTitle from "@/components/PageTitle/PageTitle";
-import { Box, Container, Stack, Typography, Toolbar } from "@mui/material";
+import { Alert, Box, Container, Stack, Typography, Toolbar } from "@mui/material";
 import Title from "@/components/Title/Title";
-import useAxiosSecure from "@/hooks/useAxiosSecure";
+import useAxiosPublic from "@/hooks/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
 import loading from "@/assets/Loading/loading.json";
 import dynamic from "next/dynamic";
@@ -11,7 +11,7 @@ import CourseCards from "@/components/AllCourses/CourseCards";
 export interface Course {
   _id: string;
   title: string;
-  price: string;
+  price: string | number;
   shortDesc: string;
   courseOutline: string;
   image: string;
@@ -25,12 +25,12 @@ export interface Course {
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 const AllClasses: FC = () => {
-  const axiosSecure = useAxiosSecure();
+  const axiosPublic = useAxiosPublic();
 
-  const { data: coursesData, isLoading } = useQuery<Course[]>({
+  const { data: coursesData, isLoading, isError } = useQuery<Course[]>({
     queryKey: ["courses"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/classreq");
+      const res = await axiosPublic.get("/classreq");
       return res.data;
     },
   });
@@ -172,7 +172,22 @@ const AllClasses: FC = () => {
             </Stack>
           </Box>
 
-          {approvedCourses.length > 0 ? (
+          {isError ? (
+            <Box
+              sx={{
+                maxWidth: 680,
+                mx: "auto",
+                borderRadius: 2,
+                overflow: "hidden",
+                boxShadow: "0 18px 50px rgba(15, 23, 42, 0.06)",
+              }}
+            >
+              <Alert severity="error">
+                We could not load the class list right now. Please refresh the
+                page or try again shortly.
+              </Alert>
+            </Box>
+          ) : approvedCourses.length > 0 ? (
             <Box
               sx={{
                 display: "grid",
