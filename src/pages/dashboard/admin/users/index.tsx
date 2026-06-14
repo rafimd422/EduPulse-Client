@@ -1,15 +1,22 @@
 import DashboardLayout from "@/DashboardLayout";
-import { Container, Toolbar, Button } from "@mui/material";
+import { Avatar, Button, Container, Toolbar, Typography } from "@mui/material";
 import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import Title from "../../../../components/Title/Title";
 import Head from "next/head";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
-import Image from "next/image";
 import loading from "../../../../assets/Loading/loading.json";
 import Swal from "sweetalert2";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import dynamic from "next/dynamic";
+import GroupsRoundedIcon from "@mui/icons-material/GroupsRounded";
+import {
+  AdminPageHeader,
+  AdminTableCard,
+  RoleBadge,
+  adminDataGridSx,
+  adminPageSx,
+  approveButtonSx,
+} from "@/components/DashboardCompo/adminPanelStyles";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
@@ -88,47 +95,70 @@ const Users = () => {
     {
       field: "image",
       headerName: "Image",
-      width: 60,
-      renderCell: (params: GridRenderCellParams<UserRow>) =>
-        params.row.image ? (
-          <Image
-            src={params.row.image}
-            width={96}
-            height={96}
-            alt={`Image for ${params.row.fullName ?? params.row.name ?? "user"}`}
-            style={{
-              width: "100%",
-              height: "auto",
-              objectFit: "cover",
-              borderRadius: "70%",
-            }}
-          />
-        ) : null,
+      width: 92,
+      renderCell: (params: GridRenderCellParams<UserRow>) => (
+        <Avatar
+          src={params.row.image}
+          alt={`Image for ${params.row.fullName ?? params.row.name ?? "user"}`}
+          sx={{
+            width: 48,
+            height: 48,
+            border: "3px solid #fff",
+            boxShadow: "0 8px 18px rgba(16, 24, 40, 0.12)",
+          }}
+        >
+          {(params.row.fullName ?? params.row.name ?? "U").charAt(0)}
+        </Avatar>
+      ),
     },
-    { field: "name", headerName: "Name", width: 150 },
-    { field: "email", headerName: "Email", width: 180 },
-    { field: "role", headerName: "Role", width: 130 },
+    {
+      field: "name",
+      headerName: "Name",
+      minWidth: 180,
+      flex: 0.8,
+      renderCell: (params: GridRenderCellParams<UserRow>) => (
+        <Typography sx={{ color: "#101828", fontWeight: 800 }}>
+          {params.row.name ?? params.row.fullName}
+        </Typography>
+      ),
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      minWidth: 240,
+      flex: 1,
+      renderCell: (params: GridRenderCellParams<UserRow>) => (
+        <Typography noWrap sx={{ color: "#475467", fontWeight: 700 }}>
+          {params.row.email}
+        </Typography>
+      ),
+    },
+    {
+      field: "role",
+      headerName: "Role",
+      minWidth: 140,
+      renderCell: (params: GridRenderCellParams<UserRow>) => (
+        <RoleBadge role={params.row.role} />
+      ),
+    },
     {
       field: "actions",
       headerName: "Actions",
-      width: 180,
+      minWidth: 180,
       renderCell: (params: GridRenderCellParams<UserRow>) => (
-        <div style={{ display: "flex", gap: "4px" }}>
-          {params.row.role === "admin" ? (
-            <Button variant="contained" disabled color="primary" size="small">
-              Make Admin
-            </Button>
-          ) : (
-            <Button
-              variant="contained"
-              color="primary"
-              size="small"
-              onClick={() => handleMakeAdmin(params.row._id)}
-            >
-              Make Admin
-            </Button>
-          )}
-        </div>
+        <Button
+          variant="contained"
+          disabled={params.row.role === "admin"}
+          size="small"
+          sx={approveButtonSx}
+          onClick={
+            params.row.role === "admin"
+              ? undefined
+              : () => handleMakeAdmin(params.row._id)
+          }
+        >
+          Make Admin
+        </Button>
       ),
     },
   ];
@@ -143,28 +173,34 @@ const Users = () => {
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <Toolbar />
-        <Title title={"All Our Users"} />
-        <Container
-          maxWidth="md"
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            mt: "1rem",
-          }}
-        >
-          <DataGrid
-            rows={allUsers}
-            columns={columns}
-            getRowId={(row) => row._id}
-            initialState={{
-              pagination: {
-                paginationModel: { page: 0, pageSize: 5 },
-              },
-            }}
-            pageSizeOptions={[5, 10]}
-            style={{ width: "fit-content" }}
+        <Container maxWidth={false} disableGutters sx={adminPageSx}>
+          <AdminPageHeader
+            eyebrow="User management"
+            title="All Our Users"
+            subtitle="Manage account roles with clearer identity, email, and role presentation."
+            icon={<GroupsRoundedIcon />}
           />
+          <AdminTableCard
+            title="User directory"
+            subtitle="The existing make-admin action remains available for eligible users."
+            minWidth={860}
+          >
+            <DataGrid
+              rows={allUsers}
+              columns={columns}
+              getRowId={(row) => row._id}
+              initialState={{
+                pagination: {
+                  paginationModel: { page: 0, pageSize: 5 },
+                },
+              }}
+              pageSizeOptions={[5, 10]}
+              rowHeight={76}
+              columnHeaderHeight={58}
+              autoHeight
+              sx={adminDataGridSx}
+            />
+          </AdminTableCard>
         </Container>
       </DashboardLayout>
     );

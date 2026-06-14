@@ -1,14 +1,32 @@
 import React from "react";
 import DashboardLayout from "@/DashboardLayout";
-import { Container, Toolbar, Button, Avatar } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Container,
+  Stack,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import Title from "./../../../../components/Title/Title";
 import Head from "next/head";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import loading from "../../../../assets/Loading/loading.json";
 import dynamic from "next/dynamic";
 import Swal from "sweetalert2";
+import SchoolRoundedIcon from "@mui/icons-material/SchoolRounded";
+import {
+  AdminPageHeader,
+  AdminTableCard,
+  StatusBadge,
+  adminDataGridSx,
+  adminPageSx,
+  approveButtonSx,
+  dangerButtonSx,
+  rejectButtonSx,
+  successButtonSx,
+} from "@/components/DashboardCompo/adminPanelStyles";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
@@ -54,126 +72,178 @@ const AllClasses: React.FC = () => {
     );
   }
 
-const handleApprove = (id: string) => {
-  Swal.fire({
-    title: "Are you sure?",
-    text: "Do you want to accept this course?",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonText: "OK",
-    cancelButtonText: "Cancel",
-    reverseButtons: true,
-  }).then((result) => {
-    if (result.isConfirmed) {
-      axiosSecure.patch(`/classreq/accept/${id}`).then((res) => {
-        if (res.data?.modifiedCount > 0) {
-          refetch();
-          Swal.fire({
-            title: "Success!",
-            text: "Course Approved Successfully!",
-            icon: "success",
-          });
-        } else {
-          Swal.fire({
-            title: "Info",
-            text: "User role is not changed",
-            icon: "info",
-          });
-        }
-      });
-    }
-  });
-};
+  const handleApprove = (id: string) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to accept this course?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "OK",
+      cancelButtonText: "Cancel",
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.patch(`/classreq/accept/${id}`).then((res) => {
+          if (res.data?.modifiedCount > 0) {
+            refetch();
+            Swal.fire({
+              title: "Success!",
+              text: "Course Approved Successfully!",
+              icon: "success",
+            });
+          } else {
+            Swal.fire({
+              title: "Info",
+              text: "User role is not changed",
+              icon: "info",
+            });
+          }
+        });
+      }
+    });
+  };
 
-const handleReject = (id: string) => {
-  Swal.fire({
-    title: "Are you sure?",
-    text: "Do you want to reject this course?",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonText: "OK",
-    cancelButtonText: "Cancel",
-    reverseButtons: true,
-  }).then((result) => {
-    if (result.isConfirmed) {
-      axiosSecure.patch(`/classreq/reject/${id}`).then((res) => {
-        if (res.data?.modifiedCount > 0) {
-          refetch();
-          Swal.fire({
-            title: "Success!",
-            text: "Course Rejected Successfully!",
-            icon: "success",
-          });
-        }
-      });
-    }
-  });
-};
-
+  const handleReject = (id: string) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to reject this course?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "OK",
+      cancelButtonText: "Cancel",
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.patch(`/classreq/reject/${id}`).then((res) => {
+          if (res.data?.modifiedCount > 0) {
+            refetch();
+            Swal.fire({
+              title: "Success!",
+              text: "Course Rejected Successfully!",
+              icon: "success",
+            });
+          }
+        });
+      }
+    });
+  };
 
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 80 },
+    { field: "id", headerName: "ID", width: 84 },
     {
       field: "image",
       headerName: "Image",
-      width: 60,
+      width: 92,
       renderCell: (params: GridRenderCellParams) => (
-        <div
-          style={{
-            width: 60,
-            height: 60,
-            borderRadius: "50%",
-            overflow: "hidden",
+        <Avatar
+          alt={`Image for ${params.row.name}`}
+          src={params.row.image || ""}
+          sx={{
+            width: 48,
+            height: 48,
+            border: "3px solid #fff",
+            boxShadow: "0 8px 18px rgba(16, 24, 40, 0.12)",
           }}
         >
-          <Avatar
-            alt={`Image for ${params.row.name}`}
-            src={params.row.image || ""}
-            sx={{ width: 70, height: 70 }}
-          />
-        </div>
+          {params.row.name?.charAt(0)}
+        </Avatar>
       ),
     },
-    { field: "name", headerName: "Name", width: 150 },
-    { field: "email", headerName: "Email", width: 180 },
-    { field: "title", headerName: "Title", width: 150 },
-    { field: "description", headerName: "Description", width: 130 },
-    { field: "status", headerName: "Status", width: 130 },
+    {
+      field: "name",
+      headerName: "Name",
+      minWidth: 170,
+      flex: 0.8,
+      renderCell: (params: GridRenderCellParams) => (
+        <Typography noWrap sx={{ color: "#101828", fontWeight: 800 }}>
+          {params.row.name}
+        </Typography>
+      ),
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      minWidth: 230,
+      flex: 1,
+      renderCell: (params: GridRenderCellParams) => (
+        <Typography noWrap sx={{ color: "#475467", fontWeight: 700 }}>
+          {params.row.email}
+        </Typography>
+      ),
+    },
+    {
+      field: "title",
+      headerName: "Title",
+      minWidth: 210,
+      flex: 1,
+      renderCell: (params: GridRenderCellParams) => (
+        <Typography
+          noWrap
+          title={params.row.title}
+          sx={{ color: "#344054", fontWeight: 800 }}
+        >
+          {params.row.title}
+        </Typography>
+      ),
+    },
+    {
+      field: "description",
+      headerName: "Description",
+      minWidth: 260,
+      flex: 1.2,
+      renderCell: (params: GridRenderCellParams) => (
+        <Typography
+          noWrap
+          title={params.row.description}
+          sx={{ color: "#667085", fontWeight: 700, maxWidth: "100%" }}
+        >
+          {params.row.description}
+        </Typography>
+      ),
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      minWidth: 140,
+      renderCell: (params: GridRenderCellParams) => (
+        <StatusBadge status={params.row.status} />
+      ),
+    },
     {
       field: "actions",
       headerName: "Actions",
-      width: 180,
+      minWidth: 220,
       renderCell: (params: GridRenderCellParams) => (
-        <div style={{ display: "flex", gap: "4px" }}>
+        <Stack direction="row" spacing={1}>
           {params.row.status === "approved" ? (
-            <Button variant="contained" color="success" size="small">
+            <Button variant="contained" size="small" sx={successButtonSx}>
               Approved
             </Button>
           ) : params.row.status === "rejected" ? (
-            <Button variant="contained" color="error" size="small">
+            <Button variant="contained" size="small" sx={dangerButtonSx}>
               Rejected
             </Button>
           ) : (
-            <div>
+            <>
               <Button
                 variant="contained"
-                color="primary"
                 size="small"
+                sx={approveButtonSx}
                 onClick={() => handleApprove(params.row._id)}
               >
                 Approve
               </Button>
               <Button
-                variant="contained"
-                color="error"
+                variant="outlined"
                 size="small"
+                sx={rejectButtonSx}
                 onClick={() => handleReject(params.row._id)}
               >
                 Reject
               </Button>
-            </div>
+            </>
           )}
-        </div>
+        </Stack>
       ),
     },
   ];
@@ -200,31 +270,33 @@ const handleReject = (id: string) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Toolbar />
-      <Container
-        maxWidth="lg"
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          minHeight: "40vh",
-          alignItems: "center",
-          mt: "1rem",
-          gap: "1rem",
-        }}
-      >
-        <Title title={"All Classes"} />
-        <DataGrid
-          rows={rows || []}
-          columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
-            },
-          }}
-          pageSizeOptions={[5, 10]}
-          style={{ width: "fit-content" }}
-          autoHeight
+      <Container maxWidth={false} disableGutters sx={adminPageSx}>
+        <AdminPageHeader
+          eyebrow="Class approvals"
+          title="All Classes"
+          subtitle="Review submitted classes with clearer teacher details, status, and long-content scanning."
+          icon={<SchoolRoundedIcon />}
         />
+        <AdminTableCard
+          title="Class request table"
+          subtitle="Existing approval and rejection actions are preserved for pending classes."
+          minWidth={1180}
+        >
+          <DataGrid
+            rows={rows || []}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 5 },
+              },
+            }}
+            pageSizeOptions={[5, 10]}
+            rowHeight={76}
+            columnHeaderHeight={58}
+            autoHeight
+            sx={adminDataGridSx}
+          />
+        </AdminTableCard>
       </Container>
     </DashboardLayout>
   );
