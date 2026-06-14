@@ -40,9 +40,6 @@ const metrics = [
   },
 ];
 
-const fontStack =
-  '"Avenir Next", "Segoe UI", "Helvetica Neue", Arial, sans-serif';
-
 const TotalUserSection = () => {
   return (
     <Box
@@ -71,7 +68,6 @@ const TotalUserSection = () => {
               mx: "auto",
               maxWidth: 620,
               color: "#667085",
-              fontFamily: fontStack,
               fontSize: { xs: 15, md: 16 },
               lineHeight: 1.75,
             }}
@@ -129,7 +125,6 @@ const TotalUserSection = () => {
                   <Typography
                     sx={{
                       color: "#8b1e3f",
-                      fontFamily: fontStack,
                       fontSize: 12,
                       fontWeight: 800,
                       textTransform: "uppercase",
@@ -155,7 +150,6 @@ const TotalUserSection = () => {
               <Typography
                 sx={{
                   color: "#667085",
-                  fontFamily: fontStack,
                   fontSize: 15,
                   lineHeight: 1.8,
                   maxWidth: 580,
@@ -223,7 +217,6 @@ const TotalUserSection = () => {
                     sx={{
                     mt: 0.75,
                     color: "#0f172a",
-                    fontFamily: fontStack,
                     fontSize: 15,
                     fontWeight: 800,
                     minHeight: 40,
@@ -235,7 +228,6 @@ const TotalUserSection = () => {
                     sx={{
                       mt: 0.75,
                       color: "#667085",
-                      fontFamily: fontStack,
                       fontSize: 13,
                       lineHeight: 1.7,
                     }}
@@ -278,7 +270,6 @@ const TotalUserSection = () => {
                   <Typography
                     sx={{
                       color: "#8b1e3f",
-                      fontFamily: fontStack,
                       fontSize: 12,
                       fontWeight: 800,
                       textTransform: "uppercase",
@@ -291,7 +282,6 @@ const TotalUserSection = () => {
                     sx={{
                       mt: 0.35,
                       color: "#111827",
-                      fontFamily: fontStack,
                       fontSize: 15,
                       fontWeight: 800,
                     }}
@@ -301,7 +291,6 @@ const TotalUserSection = () => {
                   <Typography
                     sx={{
                       color: "#667085",
-                      fontFamily: fontStack,
                       fontSize: 14,
                       lineHeight: 1.7,
                     }}
@@ -358,7 +347,6 @@ const TotalUserSection = () => {
                 <Typography
                   sx={{
                     color: "rgba(255, 255, 255, 0.74)",
-                    fontFamily: fontStack,
                     fontSize: 12,
                     fontWeight: 800,
                     textTransform: "uppercase",
@@ -371,7 +359,6 @@ const TotalUserSection = () => {
                   sx={{
                     mt: 0.75,
                     color: "#fff",
-                    fontFamily: '"EB Garamond", Georgia, serif',
                     fontSize: { xs: "1.6rem", md: "1.9rem" },
                     fontWeight: 800,
                     lineHeight: 1.1,
@@ -384,7 +371,6 @@ const TotalUserSection = () => {
                   sx={{
                     mt: 1,
                     color: "rgba(255, 255, 255, 0.76)",
-                    fontFamily: fontStack,
                     fontSize: 14,
                     lineHeight: 1.75,
                   }}
@@ -414,7 +400,6 @@ const TotalUserSection = () => {
                 <Typography
                   sx={{
                     color: "#8b1e3f",
-                    fontFamily: fontStack,
                     fontSize: 12,
                     fontWeight: 800,
                     textTransform: "uppercase",
@@ -440,7 +425,6 @@ const TotalUserSection = () => {
                   sx={{
                     mt: 1,
                     color: "#667085",
-                    fontFamily: fontStack,
                     fontSize: 14,
                     lineHeight: 1.75,
                   }}
@@ -462,7 +446,6 @@ const TotalUserSection = () => {
                 <Typography
                   sx={{
                     color: "#0f5fa8",
-                    fontFamily: fontStack,
                     fontSize: 12,
                     fontWeight: 800,
                     textTransform: "uppercase",
@@ -488,7 +471,6 @@ const TotalUserSection = () => {
                   sx={{
                     mt: 1,
                     color: "#667085",
-                    fontFamily: fontStack,
                     fontSize: 14,
                     lineHeight: 1.75,
                   }}

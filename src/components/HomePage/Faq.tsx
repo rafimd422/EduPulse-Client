@@ -1,6 +1,5 @@
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import HelpOutlineRoundedIcon from "@mui/icons-material/HelpOutlineRounded";
-import SupportAgentRoundedIcon from "@mui/icons-material/SupportAgentRounded";
 import {
   Accordion,
   AccordionDetails,
@@ -45,9 +44,6 @@ const faqs = [
   },
 ];
 
-const fontStack =
-  '"Avenir Next", "Segoe UI", "Helvetica Neue", Arial, sans-serif';
-
 const Faq = () => {
   return (
     <Box
@@ -76,7 +72,6 @@ const Faq = () => {
               mx: "auto",
               maxWidth: 680,
               color: "#667085",
-              fontFamily: fontStack,
               fontSize: { xs: 15, md: 16 },
               lineHeight: 1.8,
             }}
@@ -107,7 +102,7 @@ const Faq = () => {
               minHeight: { lg: 620 },
             }}
           >
-            <Box>
+            <Box >
               <Box
                 sx={{
                   width: 48,
@@ -127,7 +122,7 @@ const Faq = () => {
                   mt: 2,
                   color: "#111827",
                   fontFamily: '"EB Garamond", Georgia, serif',
-                  fontSize: { xs: "2rem", md: "2.6rem" },
+                  fontSize: { xs: "2rem", md: "2.4rem" },
                   fontWeight: 800,
                   lineHeight: 1,
                   letterSpacing: 0,
@@ -139,7 +134,7 @@ const Faq = () => {
                 sx={{
                   mt: 2,
                   color: "#667085",
-                  fontFamily: fontStack,
+
                   fontSize: 15,
                   lineHeight: 1.8,
                   maxWidth: 460,
@@ -174,7 +169,7 @@ const Faq = () => {
                 <Typography
                   sx={{
                     color: "#0f172a",
-                    fontFamily: fontStack,
+
                     fontSize: 13,
                     fontWeight: 800,
                     textTransform: "uppercase",
@@ -187,60 +182,13 @@ const Faq = () => {
                   sx={{
                     mt: 0.75,
                     color: "#64748b",
-                    fontFamily: fontStack,
+
                     fontSize: 14,
                     lineHeight: 1.7,
                   }}
                 >
                   Common enrollment and course questions are covered in one
                   place.
-                </Typography>
-              </Box>
-
-              <Box
-                sx={{
-                  p: 2,
-                  borderRadius: 2,
-                  bgcolor: "#fff6f7",
-                  border: "1px solid rgba(128, 0, 0, 0.1)",
-                }}
-              >
-                <Stack direction="row" spacing={1.25} sx={{ alignItems: "center" }}>
-                  <Box
-                    sx={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: "50%",
-                      display: "grid",
-                      placeItems: "center",
-                      bgcolor: "#8b1e3f",
-                      color: "#fff",
-                    }}
-                  >
-                    <SupportAgentRoundedIcon fontSize="small" />
-                  </Box>
-                  <Typography
-                    sx={{
-                      color: "#111827",
-                      fontFamily: fontStack,
-                      fontSize: 15,
-                      fontWeight: 800,
-                    }}
-                  >
-                    Need more help?
-                  </Typography>
-                </Stack>
-                <Typography
-                  sx={{
-                    mt: 1,
-                    color: "#6b7280",
-                    fontFamily: fontStack,
-                    fontSize: 14,
-                    lineHeight: 1.7,
-                  }}
-                >
-                  Start with the course details page first. Most enrollment,
-                  pricing, and access questions are answered there.
                 </Typography>
               </Box>
             </Stack>
@@ -305,7 +253,7 @@ const Faq = () => {
                       sx={{
                         mb: 0.5,
                         color: "#8b1e3f",
-                        fontFamily: fontStack,
+
                         fontSize: 12,
                         fontWeight: 800,
                         textTransform: "uppercase",
@@ -328,11 +276,13 @@ const Faq = () => {
                     </Typography>
                   </Box>
                 </AccordionSummary>
-                <AccordionDetails sx={{ px: { xs: 2, md: 2.5 }, pb: 2.5, pt: 0 }}>
+                <AccordionDetails
+                  sx={{ px: { xs: 2, md: 2.5 }, pb: 2.5, pt: 0 }}
+                >
                   <Typography
                     sx={{
                       color: "#667085",
-                      fontFamily: fontStack,
+
                       fontSize: 15,
                       lineHeight: 1.8,
                       maxWidth: 760,

@@ -17,7 +17,7 @@ const Title: FC<TitleProps> = ({ title, titleColor }) => {
         sx={{ color: "red" }}
       >
         {title}
-        {titleColor && <span style={{ color: "#800000" }}>{titleColor}</span>}
+        {titleColor && <span style={{ color: "#800000" }}> {titleColor}</span>}
       </Typography>
     </Box>
   );
